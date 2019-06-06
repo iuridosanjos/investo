@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import e.investo.R;
+import e.investo.lender.LoanApplicationsApresentacao;
 import e.investo.lender.LoanApplicationsList;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -340,7 +341,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
 
-                Intent intent = new Intent(getBaseContext(), LoanApplicationsList.class);
+                Intent intent = new Intent(getBaseContext(), LoanApplicationsApresentacao.class);
                 startActivity(intent);
 
             } else {
