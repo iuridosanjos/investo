@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/itemListViewBackground">
+
+    <ImageView
+        android:id="@+id/imgEstablishmentLogo"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:foreground="@drawable/ic_launcher_foreground"
+        android:background="@drawable/ic_launcher_background"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtEstablishmentName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome do estabelecimento"
+            android:textStyle="bold"
+            android:gravity="center_vertical|start"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/txtAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Endereço"
+            android:gravity="center_vertical|start"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:id="@+id/txtRequestedValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Valor em R$"
+            android:textStyle="bold"
+            android:gravity="center_vertical|start"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
+
+</LinearLayout>

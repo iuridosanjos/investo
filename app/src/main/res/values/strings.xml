@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">investo</string>
+    <string name="title_activity_login">Registro</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Senha</string>
+    <string name="action_sign_in">Entrar ou registrar</string>
+    <string name="action_sign_in_short">Entrar</string>
+    <string name="error_invalid_email">O endereço de email é inválido</string>
+    <string name="error_invalid_password">A senha é muito curta</string>
+    <string name="error_incorrect_password">A senha está incorreta</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">Permissão de leitura de \'contatos\' é necessário para autocompletar o email</string>
+    <string name="loading">Carregando...</string>
+    <string name="no_loan_applications_found">Nada foi encontrado.</string>
 </resources>
