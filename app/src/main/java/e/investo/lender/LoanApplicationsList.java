@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import e.investo.R;
 import e.investo.data.LoanApplication;
+import e.investo.data.User;
 import e.investo.lender.adapter.LoanApplicationAdapter;
 
 public class LoanApplicationsList extends AppCompatActivity {
@@ -19,8 +20,8 @@ public class LoanApplicationsList extends AppCompatActivity {
     private ListView mListView;
 
     private static final String[] DUMMY_LOAN_APPLICATIONS = new String[]{
-            "Java Café@Rua Embargador do Sol, Boa Viagem@5000",
-            "Itália em casa (Delivery)@Av. Conde da Lua, Graças@1700"
+            "Java Café@Rua Embargador do Sol, Boa Viagem@5000@Manoel Alquimo",
+            "Itália em casa (Delivery)@Av. Conde da Lua, Graças@1700@Josefina Marta"
     };
 
     @Override
@@ -50,6 +51,9 @@ public class LoanApplicationsList extends AppCompatActivity {
             loan.EstablishmentName = split[0];
             loan.Address = split[1];
             loan.RequestedValue = Double.parseDouble(split[2]);
+            loan.Owner = new User();
+            loan.Owner.Id = i+1;
+            loan.Owner.Name = split[3];
 
             mLoans[i] = loan;
         }

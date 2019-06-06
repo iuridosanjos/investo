@@ -11,11 +11,10 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 
 import e.investo.R;
+import e.investo.common.CommonFormats;
 import e.investo.data.LoanApplication;
 
 public class LoanApplicationAdapter extends BaseAdapter {
-
-    private static DecimalFormat CURRENCY_FORMAT = new DecimalFormat("#,###.00");
 
     private Context mContext;
     private LoanApplication[] mLoans;
@@ -64,7 +63,7 @@ public class LoanApplicationAdapter extends BaseAdapter {
         //holder.imgLogo.setImageResource(R.drawable.icon);
         holder.txtEstablishmentName.setText(loan.EstablishmentName);
         holder.txtAddress.setText(loan.Address);
-        holder.txtRequestedValue.setText("R$ " + CURRENCY_FORMAT.format(loan.RequestedValue));
+        holder.txtRequestedValue.setText("R$ " + CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue));
 
         return convertView;
     }

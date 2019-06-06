@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">investo</string>
-    <string name="title_activity_login">Registro</string>
+    <string name="title_activity_login">Login</string>
+    <string name="loading">Carregando...</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>
@@ -11,6 +13,12 @@
     <string name="error_incorrect_password">A senha está incorreta</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">Permissão de leitura de \'contatos\' é necessário para autocompletar o email</string>
-    <string name="loading">Carregando...</string>
+
+    <!-- Strings related to loan application -->
     <string name="no_loan_applications_found">Nada foi encontrado.</string>
+    <string name="see_on_map">Mapa</string>
+    <string name="requested_value">Valor</string>
+    <string name="address">Endereço</string>
+    <string name="owner">Proprietário</string>
+    <string name="lend">Emprestar</string>
 </resources>
