@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".lender.ChooseLoanAmountActivity" />
         <activity
             android:name=".SplashScreenActivity"
             android:label="investo"
@@ -27,10 +28,8 @@
         <activity android:name=".lender.LoanApplicationsListActivity" />
         <activity
             android:name=".login.LoginActivity"
-            android:label="investo"></activity>
-        <activity android:name=".login.SelectProfileViewActivity">
-
-        </activity>
+            android:label="investo" />
+        <activity android:name=".login.SelectProfileViewActivity"></activity>
     </application>
 
 </manifest>

@@ -34,21 +34,31 @@ public class LoanApplicationDetailActivity extends AppCompatActivity {
         TextView textAddress = (TextView) findViewById(R.id.txtAddress);
         TextView textOwner = (TextView) findViewById(R.id.txtOwner);
         TextView textRequestedValue = (TextView) findViewById(R.id.txtRequestedValue);
-        Button btnGoToMap = (Button) findViewById(R.id.btnSeeAddressOnMap);
 
         if (mLoan != null){
             textEstablishmentName.setText(mLoan.EstablishmentName);
             textAddress.setText(mLoan.Address);
             textOwner.setText(mLoan.Owner.Name);
-            textRequestedValue.setText("R$ " + CommonFormats.CURRENCY_FORMAT.format(mLoan.RequestedValue));
+            textRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(mLoan.RequestedValue));
         }
 
+        Button btnGoToMap = (Button) findViewById(R.id.btnSeeAddressOnMap);
         btnGoToMap.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 onGoToMapClick(v);
+            }
+        });
+
+        Button btnLendMoney = (Button) findViewById(R.id.btnLendMoney);
+        btnLendMoney.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onLendMoneyClick(v);
             }
         });
     }
@@ -62,5 +72,12 @@ public class LoanApplicationDetailActivity extends AppCompatActivity {
 
         if (it != null)
             startActivity(it);
+    }
+
+    public void onLendMoneyClick(View view)
+    {
+        Intent it = new Intent(getBaseContext(), ChooseLoanAmountActivity.class);
+        it.putExtra(ChooseLoanAmountActivity.EXTRA_MAX_AMOUNT, mLoan.RequestedValue);
+        startActivity(it);
     }
 }

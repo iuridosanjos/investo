@@ -26,5 +26,6 @@
     <string name="address">Endereço</string>
     <string name="owner">Proprietário</string>
     <string name="lend">Emprestar</string>
-    <string name="loan_applications_list_prefix">Seguem as possibilidades de empréstimos...</string>
+    <string name="loan_applications_list_prefix">Baseado em suas informações, selecionamos os seguintes empreendimentos:</string>
+    <string name="how_much_want_to_loan">Quanto você quer emprestar?</string>
 </resources>

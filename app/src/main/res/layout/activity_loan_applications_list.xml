@@ -9,14 +9,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/loan_applications_list_prefix"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:layout_marginBottom="10dp"/>
 
     <ListView
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="20dp"
+        android:paddingTop="30dp"
         android:id="@+id/listLoans"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"/>

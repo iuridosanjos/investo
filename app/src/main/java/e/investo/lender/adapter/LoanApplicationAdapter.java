@@ -63,7 +63,7 @@ public class LoanApplicationAdapter extends BaseAdapter {
         //holder.imgLogo.setImageResource(R.drawable.icon);
         holder.txtEstablishmentName.setText(loan.EstablishmentName);
         holder.txtAddress.setText(loan.Address);
-        holder.txtRequestedValue.setText("R$ " + CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue));
+        holder.txtRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue));
 
         return convertView;
     }
