@@ -14,7 +14,7 @@ import e.investo.data.LoanApplication;
 import e.investo.data.User;
 import e.investo.lender.adapter.LoanApplicationAdapter;
 
-public class LoanApplicationsList extends AppCompatActivity {
+public class LoanApplicationsListActivity extends AppCompatActivity {
 
     private LoanApplication[] mLoans;
     private ListView mListView;
@@ -80,8 +80,8 @@ public class LoanApplicationsList extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     LoanApplication loan = (LoanApplication) adapterView.getItemAtPosition(i);
 
-                    Intent it = new Intent(getBaseContext(), LoanApplicationDetail.class);
-                    it.putExtra(LoanApplicationDetail.EXTRA_LOAN_APPLICATION_ITEM, loan);
+                    Intent it = new Intent(getBaseContext(), LoanApplicationDetailActivity.class);
+                    it.putExtra(LoanApplicationDetailActivity.EXTRA_LOAN_APPLICATION_ITEM, loan);
 
                     startActivity(it);
                 }

@@ -22,4 +22,5 @@
     <string name="owner">Proprietário</string>
     <string name="lend">Emprestar</string>
     <string name="title_activity_apresentacao">apresentacao</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>

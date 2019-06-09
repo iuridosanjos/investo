@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="itemListViewBackground">#eeeeee</color>
+    <color name="colorBackground">#E6FFFA</color>
 </resources>

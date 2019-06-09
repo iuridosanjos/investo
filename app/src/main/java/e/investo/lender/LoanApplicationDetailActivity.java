@@ -12,7 +12,7 @@ import e.investo.common.CommonFormats;
 import e.investo.common.CommonIntents;
 import e.investo.data.LoanApplication;
 
-public class LoanApplicationDetail extends AppCompatActivity {
+public class LoanApplicationDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_LOAN_APPLICATION_ITEM = "LoanApplication";
 

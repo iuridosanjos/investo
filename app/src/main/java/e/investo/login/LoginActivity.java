@@ -35,7 +35,6 @@ import java.util.List;
 
 import e.investo.R;
 import e.investo.lender.LoanApplicationsApresentacao;
-import e.investo.lender.LoanApplicationsList;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
