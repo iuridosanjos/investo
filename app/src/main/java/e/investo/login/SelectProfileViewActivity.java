@@ -8,16 +8,16 @@ import android.view.View;
 import e.investo.R;
 import e.investo.lender.LoanApplicationsListActivity;
 
-public class ApresentacaoActivity extends AppCompatActivity {
+public class SelectProfileViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_apresentacao);
+        setContentView(R.layout.activity_select_profile_view);
 
     }
 
-    public void onClick(View v){
+    public void onClickLenderProfile(View v){
         startActivity(new Intent(this, LoanApplicationsListActivity.class));
     }
 

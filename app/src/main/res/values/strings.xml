@@ -14,6 +14,11 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">Permissão de leitura de \'contatos\' é necessário para autocompletar o email</string>
 
+    <!-- Strings related to choosing the view profile -->
+    <string name="choose_profile_question">Seja bem vindo!\nQual perfil deseja acessar?</string>
+    <string name="borrower_profile">Tomador</string>
+    <string name="lender_profile">Emprestador</string>
+
     <!-- Strings related to loan application -->
     <string name="no_loan_applications_found">Nada foi encontrado.</string>
     <string name="see_on_map">Mapa</string>
@@ -21,6 +26,5 @@
     <string name="address">Endereço</string>
     <string name="owner">Proprietário</string>
     <string name="lend">Emprestar</string>
-    <string name="title_activity_apresentacao">apresentacao</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="loan_applications_list_prefix">Seguem as possibilidades de empréstimos...</string>
 </resources>

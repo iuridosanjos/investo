@@ -28,9 +28,7 @@
         <activity
             android:name=".login.LoginActivity"
             android:label="investo"></activity>
-        <activity
-            android:name=".login.ApresentacaoActivity"
-            android:label="@string/title_activity_apresentacao">
+        <activity android:name=".login.SelectProfileViewActivity">
 
         </activity>
     </application>

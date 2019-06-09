@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import e.investo.R;
-import e.investo.lender.LoanApplicationsApresentacao;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -336,17 +335,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
 
             if (success) {
 
-                Intent intent = new Intent(getBaseContext(), LoanApplicationsApresentacao.class);
+                Intent intent = new Intent(getBaseContext(), SelectProfileViewActivity.class);
                 startActivity(intent);
 
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
+
+            showProgress(false);
         }
 
         @Override
