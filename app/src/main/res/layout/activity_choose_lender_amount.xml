@@ -22,7 +22,7 @@
 
     <TextView
         android:text="R$ 0,00"
-        android:id="@+id/txtLoanAmount"
+        android:id="@+id/txtAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -58,7 +58,7 @@
             android:layout_weight="1"/>
 
         <TextView
-            android:id="@+id/txtMaxLoanAmount"
+            android:id="@+id/txtMaxAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"

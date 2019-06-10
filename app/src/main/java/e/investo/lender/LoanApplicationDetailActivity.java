@@ -76,8 +76,8 @@ public class LoanApplicationDetailActivity extends AppCompatActivity {
 
     public void onLendMoneyClick(View view)
     {
-        Intent it = new Intent(getBaseContext(), ChooseLoanAmountActivity.class);
-        it.putExtra(ChooseLoanAmountActivity.EXTRA_MAX_AMOUNT, mLoan.RequestedValue);
+        Intent it = new Intent(getBaseContext(), ChooseLenderAmountActivity.class);
+        it.putExtra(ChooseLenderAmountActivity.EXTRA_MAX_AMOUNT, mLoan.RequestedValue);
         startActivity(it);
     }
 }

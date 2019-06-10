@@ -19,7 +19,7 @@
     <string name="borrower_profile">Tomador</string>
     <string name="lender_profile">Emprestador</string>
 
-    <!-- Strings related to loan application -->
+    <!-- Strings related to loan application from a LENDER VIEW -->
     <string name="no_loan_applications_found">Nada foi encontrado.</string>
     <string name="see_on_map">Mapa</string>
     <string name="requested_value">Valor</string>
@@ -28,4 +28,8 @@
     <string name="lend">Emprestar</string>
     <string name="loan_applications_list_prefix">Baseado em suas informações, selecionamos os seguintes empreendimentos:</string>
     <string name="how_much_want_to_loan">Quanto você quer emprestar?</string>
+
+    <!-- Strings related to lend from a BORROWER VIEW -->
+    <string name="how_much_want_to_borrow">Quanto você precisa?</string>
+    <string name="send_to_credit_analysis">Enviar para análise</string>
 </resources>
