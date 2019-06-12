@@ -5,19 +5,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.data.LoanApplication;
+import e.investo.data.PaymentInfo;
 
-public class LoanApplicationAdapter extends BaseAdapter {
+public class SelfLoanApplicationAdapter extends BaseAdapter {
 
     private Context mContext;
     private LoanApplication[] mLoans;
 
-    public LoanApplicationAdapter(Context c, LoanApplication[] loans){
+    public SelfLoanApplicationAdapter(Context c, LoanApplication[] loans){
         mContext = c;
         mLoans = loans;
     }
@@ -44,7 +48,7 @@ public class LoanApplicationAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.loan_application_item_view, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.self_loan_application_item_view, null);
 
             holder = new ViewHolder();
             //holder.imgLogo = (ImageView) convertView.findViewById(R.id.imgEstablishmentLogo);
@@ -52,6 +56,7 @@ public class LoanApplicationAdapter extends BaseAdapter {
             holder.txtEstablishmentType = (TextView) convertView.findViewById(R.id.txtEstablishmentType);
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
+            holder.txtPaymentInfo = (TextView) convertView.findViewById(R.id.txtPaymentInfo);
 
             convertView.setTag(holder);
 
@@ -60,19 +65,40 @@ public class LoanApplicationAdapter extends BaseAdapter {
         }
 
         //holder.imgLogo.setImageResource(R.drawable.icon);
-        holder.txtEstablishmentName.setText(loan.EstablishmentName.toUpperCase());
-        holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
-        holder.txtAddress.setText(loan.Address.toUpperCase());
+        holder.txtEstablishmentName.setText(loan.EstablishmentName);
+        holder.txtEstablishmentType.setText(loan.EstablishmentType);
+        holder.txtAddress.setText(loan.Address);
         holder.txtValueInfo.setText(String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue), loan.ParcelsAmount, loan.MonthlyInterests));
+        holder.txtPaymentInfo.setText(getPaymentInfo(loan.PaymentInfo));
 
         return convertView;
     }
 
+    private String getPaymentInfo(PaymentInfo paymentInfo)
+    {
+        Date currentTime = Calendar.getInstance().getTime();
+
+        if (paymentInfo == null)
+            return "Sem registros de pagamento.";
+        else if (paymentInfo.NextDueDate.compareTo(currentTime) > 0)
+        { // Pagamento atrasado
+            return String.format("Atraso de %s parcelas. %s de %s parcelas pagas.", Math.max(0, paymentInfo.NextParcelNumber - paymentInfo.ParcelsAlreadyPayed - 1), paymentInfo.ParcelsAlreadyPayed, paymentInfo.ParcelsCount);
+        }
+        else if (paymentInfo.ParcelsAlreadyPayed > 0)
+        { // Esperando próximo pagamento, mas algumas parcelas já foram pagas
+            return String.format("Em situação normal. %s de %s parcelas pagas. Próximo vencimento em %s.", paymentInfo.ParcelsAlreadyPayed, paymentInfo.ParcelsCount, CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
+        }
+        else
+        { // Esperando primeiro pagamento
+            return String.format("Em situação normal. Próximo vencimento em %s.", CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
+        }
+    }
+
     static class ViewHolder {
-        ImageView imgLogo;
         TextView txtEstablishmentName;
         TextView txtEstablishmentType;
         TextView txtAddress;
         TextView txtValueInfo;
+        TextView txtPaymentInfo;
     }
 }
