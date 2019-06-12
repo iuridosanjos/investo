@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "762310108883",
+    "firebase_url": "https://investo-26403.firebaseio.com",
+    "project_id": "investo-26403",
+    "storage_bucket": "investo-26403.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762310108883:android:b173871ad318a5ad",
+        "android_client_info": {
+          "package_name": "e.investo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762310108883-hbemq2ir8jtacug2ub6pqvsaugkn61ue.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "e.investo",
+            "certificate_hash": "8aa669889aad98dbebaf983818739c957f6c4486"
+          }
+        },
+        {
+          "client_id": "762310108883-etqbrgfli8nf9m15dgn78o7mpdac5hah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoTIGS9oZl8ZJi8drgk-DZertzdOi8-xM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762310108883-etqbrgfli8nf9m15dgn78o7mpdac5hah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
