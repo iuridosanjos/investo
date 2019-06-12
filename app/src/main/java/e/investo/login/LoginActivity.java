@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,11 +30,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import e.investo.R;
+import e.investo.conection.Conection;
+import e.investo.lender.LoanApplicationsListActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -65,6 +76,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView cadastrar;
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,17 +100,59 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        cadastrar = (TextView) findViewById(R.id.cadastrar);
+        cadastrar.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View view) {
-                attemptLogin();
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), Register.class);
+                startActivity(i);
             }
         });
 
+        TextView tvCadastrar = (TextView) findViewById(R.id.cadastrar);
+        tvCadastrar.setTextColor(Color.BLUE);
+
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        /*mEmailSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), LoanApplicationsListActivity.class);
+                startActivity(i);
+            }
+        });
+        */
+
+        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = mEmailView.getText().toString().trim();
+                String senha  = mPasswordView.getText().toString().trim();
+                loginUser(email, senha);
+            }
+        });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
+
+    private void loginUser(String email, String senha) {
+        auth.signInWithEmailAndPassword(email, senha)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Intent i = new Intent(LoginActivity.this, Profile.class);
+                            startActivity(i);
+                        }else{
+                            alert("Email ou senha errado");
+                        }
+                    }
+                });
+    }
+
+    private void alert(String msg) {
+        Toast.makeText(LoginActivity.this,msg,Toast.LENGTH_LONG).show();
+    }
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
@@ -126,6 +182,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
         }
         return false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth = Conection.getFirebaseAuth();
     }
 
     /**

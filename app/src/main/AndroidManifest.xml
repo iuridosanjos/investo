@@ -14,7 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".borrower.ChooseBorrowerAmountActivity"></activity>
+        <activity
+            android:name=".login.Profile"
+            android:label="@string/title_activity_perfil"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".login.Register"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".borrower.ChooseBorrowerAmountActivity" />
         <activity android:name=".lender.ChooseLenderAmountActivity" />
         <activity
             android:name=".SplashScreenActivity"

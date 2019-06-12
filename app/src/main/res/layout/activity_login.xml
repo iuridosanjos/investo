@@ -70,8 +70,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
+                android:text="Entrar"
                 android:textStyle="bold"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="ou"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/cadastrar"
+                android:gravity="center_horizontal"
+                android:clickable="true"
+                android:text="Cadastrar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
     </ScrollView>

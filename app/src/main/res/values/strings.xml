@@ -32,4 +32,6 @@
     <!-- Strings related to lend from a BORROWER VIEW -->
     <string name="how_much_want_to_borrow">Quanto você precisa?</string>
     <string name="send_to_credit_analysis">Enviar para análise</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_perfil">Perfil</string>
 </resources>
