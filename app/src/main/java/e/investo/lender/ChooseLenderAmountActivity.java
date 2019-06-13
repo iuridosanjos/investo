@@ -76,7 +76,7 @@ public class ChooseLenderAmountActivity extends AppCompatActivity {
         mLoan.PaymentInfo.NextParcelNumber = 1;
         mLoan.PaymentInfo.NextParcelValue = mLoan.PaymentInfo.TotalValue / mLoan.PaymentInfo.ParcelsCount;
 
-        DataMocks.LOGGED_USER_LOAN_APPLICATIONS.add(mLoan);
+        DataMocks.AddUserLoanApplication(mLoan);
 
         Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG);
 

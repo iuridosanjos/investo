@@ -43,4 +43,19 @@ public class DataMocks {
 
         return list;
     }
+
+    public static void AddUserLoanApplication(LoanApplication loanApplication)
+    {
+        if (!contains(loanApplication.Id, LOGGED_USER_LOAN_APPLICATIONS))
+            LOGGED_USER_LOAN_APPLICATIONS.add(loanApplication);
+    }
+    private static boolean contains(long id, List<LoanApplication> applications)
+    {
+        for (int i = 0; i < applications.size(); i++) {
+            if (applications.get(i).Id == id)
+                return true;
+        }
+
+        return false;
+    }
 }

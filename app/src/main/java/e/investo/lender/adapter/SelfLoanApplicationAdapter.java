@@ -56,7 +56,8 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
             holder.txtEstablishmentType = (TextView) convertView.findViewById(R.id.txtEstablishmentType);
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
-            holder.txtPaymentInfo = (TextView) convertView.findViewById(R.id.txtPaymentInfo);
+            holder.txtPaymentInfo1 = (TextView) convertView.findViewById(R.id.txtPaymentInfo1);
+            holder.txtPaymentInfo2 = (TextView) convertView.findViewById(R.id.txtPaymentInfo2);
 
             convertView.setTag(holder);
 
@@ -65,16 +66,17 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         }
 
         //holder.imgLogo.setImageResource(R.drawable.icon);
-        holder.txtEstablishmentName.setText(loan.EstablishmentName);
-        holder.txtEstablishmentType.setText(loan.EstablishmentType);
-        holder.txtAddress.setText(loan.Address);
-        holder.txtValueInfo.setText(String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue), loan.ParcelsAmount, loan.MonthlyInterests));
-        holder.txtPaymentInfo.setText(getPaymentInfo(loan.PaymentInfo));
+        holder.txtEstablishmentName.setText(loan.EstablishmentName.toUpperCase());
+        holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
+        holder.txtAddress.setText(loan.Address.toUpperCase());
+        holder.txtValueInfo.setText(String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.PaymentInfo.TotalValue), loan.PaymentInfo.ParcelsCount, loan.MonthlyInterests));
+        holder.txtPaymentInfo1.setText(getPaymentStatus(loan.PaymentInfo).toUpperCase());
+        holder.txtPaymentInfo2.setText((getPaymentParcelsInfo(loan.PaymentInfo)));
 
         return convertView;
     }
 
-    private String getPaymentInfo(PaymentInfo paymentInfo)
+    private String getPaymentStatus(PaymentInfo paymentInfo)
     {
         Date currentTime = Calendar.getInstance().getTime();
 
@@ -82,16 +84,23 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
             return "Sem registros de pagamento.";
         else if (paymentInfo.NextDueDate.compareTo(currentTime) > 0)
         { // Pagamento atrasado
-            return String.format("Atraso de %s parcelas. %s de %s parcelas pagas.", Math.max(0, paymentInfo.NextParcelNumber - paymentInfo.ParcelsAlreadyPayed - 1), paymentInfo.ParcelsAlreadyPayed, paymentInfo.ParcelsCount);
+            return String.format("Atraso de %s parcelas", Math.max(0, paymentInfo.NextParcelNumber - paymentInfo.ParcelsAlreadyPayed - 1), CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
         }
         else if (paymentInfo.ParcelsAlreadyPayed > 0)
         { // Esperando próximo pagamento, mas algumas parcelas já foram pagas
-            return String.format("Em situação normal. %s de %s parcelas pagas. Próximo vencimento em %s.", paymentInfo.ParcelsAlreadyPayed, paymentInfo.ParcelsCount, CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
+            return String.format("Pagamento em situação normal", paymentInfo.ParcelsAlreadyPayed);
         }
         else
         { // Esperando primeiro pagamento
-            return String.format("Em situação normal. Próximo vencimento em %s.", CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
+            return String.format("Aguardando pagamento", CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
         }
+    }
+    private String getPaymentParcelsInfo(PaymentInfo paymentInfo)
+    {
+        if (paymentInfo == null)
+            return "";
+
+        return String.format("Parcela %s/%s de %s com venc. %s", paymentInfo.NextParcelNumber, paymentInfo.ParcelsCount, CommonFormats.CURRENCY_FORMAT.format(paymentInfo.NextParcelValue), CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
     }
 
     static class ViewHolder {
@@ -99,6 +108,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         TextView txtEstablishmentType;
         TextView txtAddress;
         TextView txtValueInfo;
-        TextView txtPaymentInfo;
+        TextView txtPaymentInfo1;
+        TextView txtPaymentInfo2;
     }
 }
