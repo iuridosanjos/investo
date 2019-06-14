@@ -10,13 +10,13 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:text="@string/how_much_want_to_loan"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         />
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/money_image"/>
 
@@ -34,7 +34,7 @@
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="10dp"

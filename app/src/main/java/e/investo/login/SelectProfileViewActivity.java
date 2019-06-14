@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.lender.LoanApplicationsListActivity;
 
-public class SelectProfileViewActivity extends AppCompatActivity {
+public class SelectProfileViewActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -45,6 +47,7 @@ import java.util.List;
 import e.investo.R;
 import e.investo.conection.Conection;
 import e.investo.lender.LoanApplicationsListActivity;
+import e.investo.lender.SelfLoanApplicationsListActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -79,6 +82,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private TextView cadastrar;
 
     private FirebaseAuth auth;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

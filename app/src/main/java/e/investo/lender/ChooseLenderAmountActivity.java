@@ -13,13 +13,14 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
+import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.data.DataMocks;
 import e.investo.data.LoanApplication;
 import e.investo.data.PaymentInfo;
 
-public class ChooseLenderAmountActivity extends AppCompatActivity {
+public class ChooseLenderAmountActivity extends BaseActivity {
 
     public static final String EXTRA_LOAN_APPLICATION_ITEM = "LoanApplication";
 
