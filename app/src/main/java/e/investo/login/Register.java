@@ -137,7 +137,8 @@ public class Register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                        if(task.isSuccessful()){
                            updateUserInfo(nome, prickedImg, auth.getCurrentUser());
-                           Intent i = new Intent(Register.this, Profile.class);
+                           //Intent i = new Intent(Register.this, Profile.class);
+                           Intent i = new Intent(Register.this, SelectProfileViewActivity.class);
                            startActivity(i);
                            finish();
                        }else{

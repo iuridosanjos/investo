@@ -135,18 +135,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void loginUser(String email, String senha) {
-        auth.signInWithEmailAndPassword(email, senha)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Intent i = new Intent(LoginActivity.this, Profile.class);
-                            startActivity(i);
-                        }else{
-                            alert("Email ou senha errado");
+        try {
+            auth.signInWithEmailAndPassword(email, senha)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                //Intent i = new Intent(LoginActivity.this, Profile.class);
+                                Intent i = new Intent(LoginActivity.this, SelectProfileViewActivity.class);
+                                startActivity(i);
+                            } else {
+                                alert("Email ou senha errado");
+                            }
                         }
-                    }
-                });
+                    });
+        }
+        catch (Exception ex)
+        {
+            alert("Não foi possível entrar com essas credenciais");
+        }
     }
 
     private void alert(String msg) {
