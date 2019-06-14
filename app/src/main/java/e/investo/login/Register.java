@@ -15,12 +15,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.net.URI;
 
@@ -31,6 +38,7 @@ public class Register extends AppCompatActivity {
 
     static  int REQUESCODE = 1;
     private EditText editEmail, editNome, editSenha, editConfSenha;
+    private ProgressBar loadingprogress;
     private ImageView imguserPhoto;
     private Button btnRegistrar;
     private FirebaseAuth auth;
@@ -70,15 +78,28 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                loadingprogress.setVisibility(View.VISIBLE);
+                btnRegistrar.setVisibility(View.INVISIBLE);
+
                String email = editEmail.getText().toString().trim();
                String nome = editNome.getText().toString().trim();
                //String cpfCnpj = editcpfCnpj.getText().toString().trim();
                String senha = editSenha.getText().toString().trim();
                String confirmaSenha = editConfSenha.getText().toString().trim();
-               criarUser(nome, email, senha, confirmaSenha);
 
+               if(email.isEmpty() || nome.isEmpty() || senha.isEmpty() || confirmaSenha.isEmpty()){
+                    showMessage("Por favor Verifique todos os campos");
+                    btnRegistrar.setVisibility(View.VISIBLE);
+                    loadingprogress.setVisibility(View.INVISIBLE);
+               }else {
+                   criarUser(nome, email, senha, confirmaSenha);
+               }
             }
         });
+    }
+
+    private void showMessage(String verify) {
+        Toast.makeText(getApplicationContext(), verify, Toast.LENGTH_SHORT).show();
     }
 
     private void openGallery() {
@@ -109,21 +130,53 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    private void criarUser(String nome, String email, String senha, String confirmaSenha) {
+    private void criarUser(final String nome, String email, String senha, String confirmaSenha) {
         auth.createUserWithEmailAndPassword(email,senha)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                        if(task.isSuccessful()){
-                           alert("Usuário Cadastrado com Sucesso");
+                           updateUserInfo(nome, prickedImg, auth.getCurrentUser());
                            Intent i = new Intent(Register.this, Profile.class);
                            startActivity(i);
                            finish();
                        }else{
-                           alert("Erro de Cadastro");
+                           alert("Erro de Cadastro" + task.getException().getMessage());
+                           btnRegistrar.setVisibility(View.VISIBLE);
+                           loadingprogress.setVisibility(View.INVISIBLE);
                        }
                     }
                 });
+    }
+
+    private void updateUserInfo(final String nome, final Uri prickedImg, final FirebaseUser currentUser) {
+
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_photos");
+        final StorageReference imgFilePath = mStorage.child(prickedImg.getLastPathSegment());
+        imgFilePath.putFile(prickedImg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imgFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                                                                            .setDisplayName(nome)
+                                                                            .setPhotoUri(prickedImg)
+                                                                            .build();
+
+                        currentUser.updateProfile(profileChangeRequest)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        alert("Usuário Cadastrado com Sucesso");
+                                    }
+                                });
+
+                    }
+                });
+            }
+        });
     }
 
     private void alert(String msg){
@@ -151,6 +204,9 @@ public class Register extends AppCompatActivity {
         editConfSenha = (EditText) findViewById(R.id.confSenha);
         btnRegistrar = (Button) findViewById(R.id.register);
         imguserPhoto = (ImageView) findViewById(R.id.userphoto);
+        loadingprogress = (ProgressBar) findViewById(R.id.loadingprogress);
+
+        loadingprogress.setVisibility(View.INVISIBLE);
     }
 
     @Override
