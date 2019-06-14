@@ -3,6 +3,10 @@
     <string name="title_activity_login">Login</string>
     <string name="loading">Carregando...</string>
 
+    <!-- Strings related to menu -->
+    <string name="menu_self_investiments">Meus investimentos</string>
+    <string name="menu_logout">Sair da conta</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Senha</string>

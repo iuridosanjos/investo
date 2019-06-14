@@ -7,12 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.common.CommonIntents;
 import e.investo.data.LoanApplication;
 
-public class LoanApplicationDetailActivity extends AppCompatActivity {
+public class LoanApplicationDetailActivity extends BaseActivity {
 
     public static final String EXTRA_LOAN_APPLICATION_ITEM = "LoanApplication";
 

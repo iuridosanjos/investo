@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 
-public class ChooseBorrowerAmountActivity extends AppCompatActivity {
+public class ChooseBorrowerAmountActivity extends BaseActivity {
 
     public static final String EXTRA_MAX_AMOUNT = "MaxAmount";
 

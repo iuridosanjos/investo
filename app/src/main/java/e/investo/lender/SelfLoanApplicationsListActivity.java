@@ -9,13 +9,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.data.DataMocks;
 import e.investo.data.LoanApplication;
 import e.investo.lender.adapter.LoanApplicationAdapter;
 import e.investo.lender.adapter.SelfLoanApplicationAdapter;
 
-public class SelfLoanApplicationsListActivity extends AppCompatActivity {
+public class SelfLoanApplicationsListActivity extends BaseActivity {
 
     private LoanApplication[] mLoans;
     private ListView mListView;

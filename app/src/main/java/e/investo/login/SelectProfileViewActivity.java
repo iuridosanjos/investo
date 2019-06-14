@@ -12,11 +12,12 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.conection.Conection;
 import e.investo.lender.LoanApplicationsListActivity;
 
-public class SelectProfileViewActivity extends AppCompatActivity {
+public class SelectProfileViewActivity extends BaseActivity {
 
     private FirebaseAuth auth;
     private FirebaseUser user;
