@@ -19,7 +19,7 @@ import e.investo.conection.Conection;
 
 public class Register extends AppCompatActivity {
 
-    private EditText editEmail, editcpfCnpj, editSenha;
+    private EditText editEmail, editNome, editSenha, editConfSenha;
     private Button btnRegistrar;
     private FirebaseAuth auth;
 
@@ -41,16 +41,19 @@ public class Register extends AppCompatActivity {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                String email = editEmail.getText().toString().trim();
+               String nome = editNome.getText().toString().trim();
                //String cpfCnpj = editcpfCnpj.getText().toString().trim();
                String senha = editSenha.getText().toString().trim();
-               criarUser(email,senha);
+               String confirmaSenha = editConfSenha.getText().toString().trim();
+               criarUser(nome, email, senha, confirmaSenha);
 
             }
         });
     }
 
-    private void criarUser(String email,String senha) {
+    private void criarUser(String nome, String email, String senha, String confirmaSenha) {
         auth.createUserWithEmailAndPassword(email,senha)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -75,8 +78,10 @@ public class Register extends AppCompatActivity {
     private void inicializarCmp() {
 
         editEmail = (EditText) findViewById(R.id.emailRegister);
-        editcpfCnpj = (EditText) findViewById(R.id.cpf_cnpj);
+        //editcpfCnpj = (EditText) findViewById(R.id.cpf_cnpj);
+        editNome = (EditText) findViewById(R.id.nome);
         editSenha = (EditText) findViewById(R.id.senhaCadastro);
+        editConfSenha = (EditText) findViewById(R.id.confSenha);
         btnRegistrar = (Button) findViewById(R.id.register);
     }
 

@@ -9,16 +9,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import e.investo.R;
 import e.investo.data.DataMocks;
 import e.investo.data.LoanApplication;
-import e.investo.data.User;
 import e.investo.lender.adapter.LoanApplicationAdapter;
+import e.investo.lender.adapter.SelfLoanApplicationAdapter;
 
-public class LoanApplicationsListActivity extends AppCompatActivity {
+public class SelfLoanApplicationsListActivity extends AppCompatActivity {
 
     private LoanApplication[] mLoans;
     private ListView mListView;
@@ -26,7 +23,7 @@ public class LoanApplicationsListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loan_applications_list);
+        setContentView(R.layout.activity_self_loan_applications_list);
     }
 
     @Override
@@ -39,10 +36,10 @@ public class LoanApplicationsListActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        mLoans = new LoanApplication[DataMocks.LOAN_APPLICATIONS.size()];
+        mLoans = new LoanApplication[DataMocks.LOGGED_USER_LOAN_APPLICATIONS.size()];
 
-        for (int i = 0; i < DataMocks.LOAN_APPLICATIONS.size(); i++)
-            mLoans[i] = DataMocks.LOAN_APPLICATIONS.get(i);
+        for (int i = 0; i < DataMocks.LOGGED_USER_LOAN_APPLICATIONS.size(); i++)
+            mLoans[i] = DataMocks.LOGGED_USER_LOAN_APPLICATIONS.get(i);
     }
 
     private void setupListView() {
@@ -57,11 +54,11 @@ public class LoanApplicationsListActivity extends AppCompatActivity {
         {
             textLoading.setVisibility(View.INVISIBLE);
 
-            LoanApplicationAdapter mLoanAdapter = new LoanApplicationAdapter(getBaseContext(), mLoans);
+            SelfLoanApplicationAdapter mLoanAdapter = new SelfLoanApplicationAdapter(getBaseContext(), mLoans);
 
             mListView.setAdapter(mLoanAdapter);
 
-            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     LoanApplication loan = (LoanApplication) adapterView.getItemAtPosition(i);
@@ -71,7 +68,7 @@ public class LoanApplicationsListActivity extends AppCompatActivity {
 
                     startActivity(it);
                 }
-            });
+            });*/
         }
     }
 

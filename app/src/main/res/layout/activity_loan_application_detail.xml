@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:text="ESTABELECIMENTO"
+        android:text="EMPREENDIMENTO"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textAppearance="?android:attr/textAppearanceLarge"

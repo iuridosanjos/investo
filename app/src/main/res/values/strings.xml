@@ -16,8 +16,8 @@
 
     <!-- Strings related to choosing the view profile -->
     <string name="choose_profile_question">Seja bem vindo!\nQual perfil deseja acessar?</string>
-    <string name="borrower_profile">Tomador</string>
-    <string name="lender_profile">Emprestador</string>
+    <string name="borrower_profile">Empreendedor</string>
+    <string name="lender_profile">Investidor</string>
 
     <!-- Strings related to loan application from a LENDER VIEW -->
     <string name="no_loan_applications_found">Nada foi encontrado.</string>
@@ -28,6 +28,7 @@
     <string name="lend">Emprestar</string>
     <string name="loan_applications_list_prefix">Baseado em suas informações, selecionamos os seguintes empreendimentos:</string>
     <string name="how_much_want_to_loan">Quanto você quer emprestar?</string>
+    <string name="self_loan_applications_list_prefix">MEUS INVESTIMENTOS</string>
 
     <!-- Strings related to lend from a BORROWER VIEW -->
     <string name="how_much_want_to_borrow">Quanto você precisa?</string>
