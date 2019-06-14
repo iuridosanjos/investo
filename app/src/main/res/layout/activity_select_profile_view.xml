@@ -12,16 +12,24 @@
     tools:context=".login.SelectProfileViewActivity">
 
     <TextView
+        android:id="@+id/nomeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginTop="100dp"
+        android:textSize="25dp"
+        android:textAlignment="center"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/choose_profile_question"
-        android:layout_marginTop="100dp"
         android:layout_marginBottom="50dp"
         android:textSize="25dp"
         android:textAlignment="center"/>
 
     <ImageButton
-        android:id="@+id/userEmprestador"
+        android:id="@+id/userImg"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginBottom="50dp"
