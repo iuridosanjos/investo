@@ -39,15 +39,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import e.investo.R;
-import e.investo.conection.Conection;
-import e.investo.lender.LoanApplicationsListActivity;
-import e.investo.lender.SelfLoanApplicationsListActivity;
+import e.investo.conection.Connection;
+import e.investo.data.SystemInfo;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -85,6 +82,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportActionBar().hide();
         return true;
     }
 
@@ -96,6 +94,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Desloga o usuário, caso esteja logado
+        Connection.logOut();
+        SystemInfo.Instance.Reset();
+
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -155,6 +157,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 //Intent i = new Intent(LoginActivity.this, Profile.class);
+                                SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
+
                                 Intent i = new Intent(LoginActivity.this, SelectProfileViewActivity.class);
                                 startActivity(i);
                             } else {
@@ -207,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onStart() {
         super.onStart();
-        auth = Conection.getFirebaseAuth();
+        auth = Connection.getFirebaseAuth();
     }
 
     /**

@@ -1,10 +1,7 @@
 package e.investo.login;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import e.investo.R;
-import e.investo.conection.Conection;
+import e.investo.conection.Connection;
 
 public class Profile extends AppCompatActivity {
 
@@ -35,7 +32,7 @@ public class Profile extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Conection.logOut();
+                Connection.logOut();
                 finish();
             }
         });
@@ -52,8 +49,8 @@ public class Profile extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        auth = Conection.getFirebaseAuth();
-        user = Conection.getFirebaseUser();
+        auth = Connection.getFirebaseAuth();
+        user = Connection.getFirebaseUser();
         verificaUser();
     }
 

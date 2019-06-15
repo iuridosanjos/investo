@@ -2,8 +2,6 @@ package e.investo.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.renderscript.Script;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import e.investo.BaseActivity;
 import e.investo.R;
-import e.investo.conection.Conection;
+import e.investo.conection.Connection;
 import e.investo.lender.LoanApplicationsListActivity;
 
 public class SelectProfileViewActivity extends BaseActivity {
@@ -37,7 +35,7 @@ public class SelectProfileViewActivity extends BaseActivity {
 
        // auth = FirebaseAuth.getInstance();
        // user = auth.getCurrentUser();
-        auth = Conection.getFirebaseAuth();
+        auth = Connection.getFirebaseAuth();
         user = auth.getCurrentUser();
 
         verificaUser();

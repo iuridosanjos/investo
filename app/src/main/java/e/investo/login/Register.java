@@ -31,10 +31,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.net.URI;
-
 import e.investo.R;
-import e.investo.conection.Conection;
+import e.investo.conection.Connection;
+import e.investo.data.SystemInfo;
 
 public class Register extends AppCompatActivity {
 
@@ -149,6 +148,9 @@ public class Register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                        if(task.isSuccessful()){
                            updateUserInfo(nome, prickedImg, auth.getCurrentUser());
+
+                           SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
+
                            //Intent i = new Intent(Register.this, Profile.class);
                            Intent i = new Intent(Register.this, SelectProfileViewActivity.class);
                            startActivity(i);
@@ -225,6 +227,6 @@ public class Register extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        auth = Conection.getFirebaseAuth();
+        auth = Connection.getFirebaseAuth();
     }
 }

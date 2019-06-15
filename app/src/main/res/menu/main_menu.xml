@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_user_profile" android:icon="@drawable/user" app:showAsAction="always|withText" android:title="Usuário" />
+    <item android:id="@+id/menu_user_profile" android:icon="@drawable/user" app:showAsAction="ifRoom|withText" android:title="Usuário" />
 
     <item android:id="@+id/menu_self_investiments" android:title="@string/menu_self_investiments" app:showAsAction="never" />
 

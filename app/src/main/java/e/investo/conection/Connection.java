@@ -6,14 +6,14 @@ import android.support.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Conection {
+public class Connection {
 
 
     private static FirebaseAuth firebaseAuth;
     private static FirebaseAuth.AuthStateListener authStateListener;
     private static FirebaseUser firebaseUser;
 
-    private Conection() {
+    private Connection() {
 
     }
 
@@ -44,6 +44,7 @@ public class Conection {
 
     public static  void logOut(){
 
-        firebaseAuth .signOut();
+        if (firebaseAuth != null)
+            firebaseAuth .signOut();
     }
 }
