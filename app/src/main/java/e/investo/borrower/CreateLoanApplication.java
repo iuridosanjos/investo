@@ -10,6 +10,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.UUID;
+
 import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonConstants;
@@ -31,6 +36,9 @@ public class CreateLoanApplication extends BaseActivity {
     TextView txtRequestedValue;
     TextView txtParcelsInfo;
 
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +53,7 @@ public class CreateLoanApplication extends BaseActivity {
         txtParcelsInfo = (TextView) findViewById(R.id.txtParcelsInfo);
         TextView txtMaxRequestedValue = (TextView) findViewById(R.id.txtMaxAmount);
         TextView txtMaxParcelsAmount = (TextView) findViewById(R.id.txtMaxParcelsAmount);
+        inicializarFirabase();
 
         Button btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener()
@@ -65,6 +74,11 @@ public class CreateLoanApplication extends BaseActivity {
         seekBarParcelsAmount.setOnSeekBarChangeListener(seekBarParcelsAmountChangeListener);
         txtMaxParcelsAmount.setText(String.format("%sx", CommonConstants.MAX_POSSIBLE_PARCELS_AMOUNT));
         updateParcelsAmount(seekBarParcelsAmount.getProgress());
+    }
+
+    private void inicializarFirabase() {
+        firebaseDatabase = firebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
     }
 
     private void updateRequestedValue(int progress)
@@ -94,6 +108,7 @@ public class CreateLoanApplication extends BaseActivity {
     {
         LoanApplication loanApplication = new LoanApplication();
         loanApplication.Id = DataMocks.LOAN_APPLICATIONS.get(DataMocks.LOAN_APPLICATIONS.size() - 1).Id + 1;
+        loanApplication.setIdAplication(UUID.randomUUID().toString());
         loanApplication.Owner = new User();
         loanApplication.Owner.Id = SystemInfo.Instance.LoggedUserID;
         loanApplication.Owner.Name = SystemInfo.Instance.LoggedUserName;
@@ -108,6 +123,7 @@ public class CreateLoanApplication extends BaseActivity {
         loanApplication.RequestedValue = getRequestedValue();
         loanApplication.ParcelsAmount = getParcelsAmount();
 
+        databaseReference.child("Aplicacoes").child(loanApplication.getIdAplication()).setValue(loanApplication);
         Toast.makeText(getBaseContext(), "Pedido de empréstimo criado!", Toast.LENGTH_LONG).show();
         DataMocks.LOAN_APPLICATIONS.add(loanApplication);
     }

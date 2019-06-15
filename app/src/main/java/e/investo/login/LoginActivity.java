@@ -157,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 //Intent i = new Intent(LoginActivity.this, Profile.class);
-                                SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
+                               // SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
 
                                 Intent i = new Intent(LoginActivity.this, SelectProfileViewActivity.class);
                                 startActivity(i);

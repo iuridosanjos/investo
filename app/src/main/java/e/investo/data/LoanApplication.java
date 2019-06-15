@@ -5,6 +5,8 @@ import java.io.Serializable;
 // Representa um pedido de empréstimo
 public class LoanApplication implements Serializable {
     public long Id;
+    public String idAplication;
+
 
     public User Owner;
 
@@ -25,4 +27,13 @@ public class LoanApplication implements Serializable {
 
     // Informações de pagamento do pedido de empréstimo.
     public PaymentInfo PaymentInfo;
+
+    public String getIdAplication() {
+        return idAplication;
+    }
+
+    public void setIdAplication(String idAplication) {
+        this.idAplication = idAplication;
+    }
+
 }
