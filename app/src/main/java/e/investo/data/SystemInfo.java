@@ -11,11 +11,13 @@ public class SystemInfo {
     public static SystemInfo Instance = new SystemInfo();
 
     public String LoggedUserName;
+    public String LoggedUserID;
     public Bitmap LoggedUserPhoto;
 
     public void Update(FirebaseUser user, ContentResolver contentResolver)
     {
         LoggedUserName = user.getDisplayName();
+        LoggedUserID = user.getUid();
         LoggedUserPhoto = getUserPhoto(user.getPhotoUrl());
     }
 

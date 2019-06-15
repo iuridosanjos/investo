@@ -39,4 +39,13 @@
     <string name="send_to_credit_analysis">Enviar para análise</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_perfil">Perfil</string>
+    <string name="create_loan_application_title">CADASTRO DE PEDIDO DE EMPRÉSTIMO</string>
+    <string name="company_info_section_subtitle">INFORMAÇÕES DA EMPRESA</string>
+    <string name="loan_application_section_subtitle">INFORMAÇÕES DO EMPRÉSTIMO</string>
+    <string name="prompt_establishment_name">Nome do empreendimento</string>
+    <string name="prompt_establishment_type">Tipo do empreendimento</string>
+    <string name="prompt_address">Endereço</string>
+    <string name="prompt_requested_value">Valor:</string>
+    <string name="prompt_parcels_amount">Pagamento:</string>
+
 </resources>

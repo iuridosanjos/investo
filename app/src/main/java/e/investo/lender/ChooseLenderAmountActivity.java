@@ -84,7 +84,7 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
         DataMocks.AddUserLoanApplication(mLoan);
 
-        Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG);
+        Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
 
         Intent it = new Intent(getBaseContext(), SelfLoanApplicationsListActivity.class);
         startActivity(it);

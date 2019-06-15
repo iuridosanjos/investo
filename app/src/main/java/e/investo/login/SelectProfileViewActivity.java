@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import e.investo.BaseActivity;
 import e.investo.R;
+import e.investo.borrower.CreateLoanApplication;
 import e.investo.conection.Connection;
 import e.investo.lender.LoanApplicationsListActivity;
 
@@ -43,6 +44,10 @@ public class SelectProfileViewActivity extends BaseActivity {
 
     public void onClickLenderProfile(View v){
         startActivity(new Intent(this, LoanApplicationsListActivity.class));
+    }
+
+    public void onClickBorrowerProfile(View v){
+        startActivity(new Intent(this, CreateLoanApplication.class));
     }
 
     private void inicilizarCmp() {
