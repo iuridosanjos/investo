@@ -24,6 +24,8 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
     public static final String EXTRA_LOAN_APPLICATION_ITEM = "LoanApplication";
 
+    private static final int MINIMUM_VALUE_INCREMENT = 50;
+
     TextView txtLoanAmount;
     LoanApplication mLoan;
     SeekBar seekBar;
@@ -41,7 +43,7 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
         seekBar = findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
-        seekBar.setMax((int)(mLoan.RequestedValue * 100));
+        seekBar.setMax((int)(mLoan.RequestedValue / MINIMUM_VALUE_INCREMENT));
 
         int progress = seekBar.getProgress();
         updateLendAmount(progress);
@@ -59,21 +61,24 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
     private void updateLendAmount(int progress)
     {
-        double value = (double)progress / 100;
+        double value = (double)progress * MINIMUM_VALUE_INCREMENT;
         txtLoanAmount.setText(CommonFormats.CURRENCY_FORMAT.format(value));
     }
     private double getLendAmount()
     {
-        return (double)seekBar.getProgress() / 100;
+        return (double)seekBar.getProgress() * MINIMUM_VALUE_INCREMENT;
     }
 
     public void onLendMoneyClick(View view)
     {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 30);
+
         mLoan.PaymentInfo = new PaymentInfo();
         mLoan.PaymentInfo.TotalValue = getLendAmount();
         mLoan.PaymentInfo.ParcelsAlreadyPayed = 0;
         mLoan.PaymentInfo.ParcelsCount = mLoan.ParcelsAmount;
-        mLoan.PaymentInfo.NextDueDate = Calendar.getInstance().getTime();
+        mLoan.PaymentInfo.NextDueDate = c.getTime();
         mLoan.PaymentInfo.NextParcelNumber = 1;
         mLoan.PaymentInfo.NextParcelValue = mLoan.PaymentInfo.TotalValue / mLoan.PaymentInfo.ParcelsCount;
 

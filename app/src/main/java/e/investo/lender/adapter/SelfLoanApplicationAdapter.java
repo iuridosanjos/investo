@@ -82,7 +82,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
 
         if (paymentInfo == null)
             return "Sem registros de pagamento.";
-        else if (paymentInfo.NextDueDate.compareTo(currentTime) > 0)
+        else if (paymentInfo.NextDueDate.compareTo(currentTime) < 0)
         { // Pagamento atrasado
             return String.format("Atraso de %s parcelas", Math.max(0, paymentInfo.NextParcelNumber - paymentInfo.ParcelsAlreadyPayed - 1), CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
         }
