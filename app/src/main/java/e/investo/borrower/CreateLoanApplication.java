@@ -78,6 +78,7 @@ public class CreateLoanApplication extends BaseActivity {
 
     private void inicializarFirabase() {
         firebaseDatabase = firebaseDatabase.getInstance();
+        firebaseDatabase.setPersistenceEnabled(true);
         databaseReference = firebaseDatabase.getReference();
     }
 
