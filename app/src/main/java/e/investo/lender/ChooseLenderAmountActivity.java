@@ -10,8 +10,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 import e.investo.BaseActivity;
 import e.investo.R;
@@ -29,6 +33,8 @@ public class ChooseLenderAmountActivity extends BaseActivity {
     TextView txtLoanAmount;
     LoanApplication mLoan;
     SeekBar seekBar;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +75,20 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         return (double)seekBar.getProgress() * MINIMUM_VALUE_INCREMENT;
     }
 
+    private void inicializarFirabase() {
+        firebaseDatabase = firebaseDatabase.getInstance();
+        firebaseDatabase.setPersistenceEnabled(true);
+        databaseReference = firebaseDatabase.getReference();
+    }
+
     public void onLendMoneyClick(View view)
     {
+        inicializarFirabase();
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, 30);
 
         mLoan.PaymentInfo = new PaymentInfo();
+        mLoan.PaymentInfo.setIdPayment(UUID.randomUUID().toString());
         mLoan.PaymentInfo.TotalValue = getLendAmount();
         mLoan.PaymentInfo.ParcelsAlreadyPayed = 0;
         mLoan.PaymentInfo.ParcelsCount = mLoan.ParcelsAmount;
@@ -82,8 +96,9 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         mLoan.PaymentInfo.NextParcelNumber = 1;
         mLoan.PaymentInfo.NextParcelValue = mLoan.PaymentInfo.TotalValue / mLoan.PaymentInfo.ParcelsCount;
 
-        DataMocks.AddUserLoanApplication(mLoan);
 
+        DataMocks.AddUserLoanApplication(mLoan);
+        databaseReference.child("Investimentos").child(mLoan.PaymentInfo.getIdPayment()).setValue(mLoan.PaymentInfo);
         Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
 
         Intent it = new Intent(getBaseContext(), SelfLoanApplicationsListActivity.class);
