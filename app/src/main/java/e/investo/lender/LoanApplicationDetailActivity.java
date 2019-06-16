@@ -3,9 +3,14 @@ package e.investo.lender;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import e.investo.BaseActivity;
 import e.investo.R;
@@ -18,6 +23,8 @@ public class LoanApplicationDetailActivity extends BaseActivity {
     public static final String EXTRA_LOAN_APPLICATION_ITEM = "LoanApplication";
 
     private LoanApplication mLoan;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +46,11 @@ public class LoanApplicationDetailActivity extends BaseActivity {
         if (mLoan != null){
             textEstablishmentName.setText(mLoan.EstablishmentName);
             textAddress.setText(mLoan.Address);
-            textOwner.setText(mLoan.Owner.Name);
+            //textOwner.setText(mLoan.Owner.Name);
             textRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(mLoan.RequestedValue));
+        }else{
+
+            Toast.makeText(this, "Erro ao Carregar o mLoan", Toast.LENGTH_SHORT).show();
         }
 
         Button btnGoToMap = (Button) findViewById(R.id.btnSeeAddressOnMap);
@@ -63,6 +73,7 @@ public class LoanApplicationDetailActivity extends BaseActivity {
             }
         });
     }
+
 
     public void onGoToMapClick(View view)
     {

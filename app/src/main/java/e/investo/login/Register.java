@@ -27,13 +27,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.UUID;
+
 import e.investo.R;
 import e.investo.conection.Connection;
 import e.investo.data.SystemInfo;
+import e.investo.data.User;
 
 public class Register extends AppCompatActivity {
 
@@ -45,6 +50,8 @@ public class Register extends AppCompatActivity {
     private FirebaseAuth auth;
     Uri prickedImg;
     static  int PReqCode = 1;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,6 +68,7 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         inicializarCmp();
+        inicializarFirabase();
         eventoClicks();
     }
 
@@ -103,6 +111,10 @@ public class Register extends AppCompatActivity {
                     btnRegistrar.setVisibility(View.VISIBLE);
                     loadingprogress.setVisibility(View.INVISIBLE);
                }else {
+                   //User user = new User();
+                   //user.setId(UUID.randomUUID().toString());
+                   //user.setName(nome);
+                   //databaseReference.child("Usuarios").child(user.getId()).setValue(user);
                    criarUser(nome, email, senha, confirmaSenha);
                }
             }
@@ -141,7 +153,15 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    private void inicializarFirabase() {
+        firebaseDatabase = firebaseDatabase.getInstance();
+        firebaseDatabase.setPersistenceEnabled(true);
+        databaseReference = firebaseDatabase.getReference();
+    }
+
     private void criarUser(final String nome, String email, String senha, String confirmaSenha) {
+
+
         auth.createUserWithEmailAndPassword(email,senha)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -149,7 +169,8 @@ public class Register extends AppCompatActivity {
                        if(task.isSuccessful()){
                            updateUserInfo(nome, prickedImg, auth.getCurrentUser());
 
-                           SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
+
+                          // SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
 
                            //Intent i = new Intent(Register.this, Profile.class);
                            Intent i = new Intent(Register.this, SelectProfileViewActivity.class);

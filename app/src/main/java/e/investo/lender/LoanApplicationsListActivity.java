@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -63,6 +64,12 @@ public class LoanApplicationsListActivity extends BaseActivity {
     }
 */
     private void inicializarFirabase() {
+        /*
+        if(databaseReference == null){
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database.setPersistenceEnabled(true);
+            databaseReference = database.getReference();
+        }*/
         firebaseDatabase = firebaseDatabase.getInstance();
         firebaseDatabase.setPersistenceEnabled(true);
         databaseReference = firebaseDatabase.getReference();
@@ -111,7 +118,10 @@ public class LoanApplicationsListActivity extends BaseActivity {
 
                         LoanApplicationAdapter mLoanAdapter = new LoanApplicationAdapter(getBaseContext(), mLoans);
                         mListView.setAdapter(mLoanAdapter);
+
                     }
+
+
                 }
 
                 @Override
@@ -126,14 +136,15 @@ public class LoanApplicationsListActivity extends BaseActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     LoanApplication loan = (LoanApplication) adapterView.getItemAtPosition(i);
+                  //  DatabaseReference loan = (DatabaseReference) adapterView.getItemAtPosition(i);
 
                     Intent it = new Intent(getBaseContext(), LoanApplicationDetailActivity.class);
                     it.putExtra(LoanApplicationDetailActivity.EXTRA_LOAN_APPLICATION_ITEM, loan);
-
                     startActivity(it);
                 }
             });
-        //}
+
+
     }
 
     private class AsyncDataTask extends AsyncTask<Object, Object, Object> {
