@@ -88,7 +88,7 @@ public class SelfLoanApplicationsListActivity extends BaseActivity {
                 {
                     for (int i = 0; i < ltLoanApplications.size(); i++)
                         mLoans[i] = ltLoanApplications.get(i);
-                    SelfLoanApplicationAdapter mLoanAdapter = new SelfLoanApplicationAdapter(getBaseContext(), mLoans);
+                    SelfLoanApplicationAdapter mLoanAdapter = new SelfLoanApplicationAdapter(getBaseContext(), ltLoanApplications);
 
                     mListView.setAdapter(mLoanAdapter);
 

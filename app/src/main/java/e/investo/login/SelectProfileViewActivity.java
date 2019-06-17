@@ -14,6 +14,7 @@ import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.borrower.CreateLoanApplication;
 import e.investo.conection.Connection;
+import e.investo.lender.ListAllLoanApplicationsSpecifier;
 import e.investo.lender.LoanApplicationsListActivity;
 
 public class SelectProfileViewActivity extends BaseActivity {
@@ -43,7 +44,9 @@ public class SelectProfileViewActivity extends BaseActivity {
     }
 
     public void onClickLenderProfile(View v){
-        startActivity(new Intent(this, LoanApplicationsListActivity.class));
+        Intent intent = new Intent(this, LoanApplicationsListActivity.class);
+        intent.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new ListAllLoanApplicationsSpecifier());
+        startActivity(intent);
     }
 
     public void onClickBorrowerProfile(View v){

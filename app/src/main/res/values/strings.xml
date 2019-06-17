@@ -2,6 +2,7 @@
     <string name="app_name">investo</string>
     <string name="title_activity_login">Login</string>
     <string name="loading">Carregando...</string>
+    <string name="error_generic_text">Ocorreu um erro</string>
 
     <!-- Strings related to menu -->
     <string name="menu_self_investiments">Meus investimentos</string>
@@ -47,5 +48,6 @@
     <string name="prompt_address">Endereço</string>
     <string name="prompt_requested_value">Valor:</string>
     <string name="prompt_parcels_amount">Pagamento:</string>
+    <string name="borrower_loan_applications_list_prefix">MEUS PEDIDOS DE EMPRÉSTIMOS</string>
 
 </resources>

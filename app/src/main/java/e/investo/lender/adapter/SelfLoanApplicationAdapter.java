@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
@@ -19,36 +19,36 @@ import e.investo.data.PaymentInfo;
 public class SelfLoanApplicationAdapter extends BaseAdapter {
 
     private Context mContext;
-    private LoanApplication[] mLoans;
+    private List<LoanApplication> mLoans;
 
-    public SelfLoanApplicationAdapter(Context c, LoanApplication[] loans){
+    public SelfLoanApplicationAdapter(Context c, List<LoanApplication> loans){
         mContext = c;
         mLoans = loans;
     }
 
     @Override
     public int getCount() {
-        return (mLoans != null) ? mLoans.length : 0;
+        return (mLoans != null) ? mLoans.size() : 0;
     }
 
     @Override
     public Object getItem(int i) {
-        return mLoans[i];
+        return mLoans.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return mLoans[i].Id;
+        return mLoans.get(i).Id;
     }
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        LoanApplication loan = mLoans[i];
+        LoanApplication loan = mLoans.get(i);
 
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.self_loan_application_item_view, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.loan_application_item_view_self, null);
 
             holder = new ViewHolder();
             //holder.imgLogo = (ImageView) convertView.findViewById(R.id.imgEstablishmentLogo);
@@ -69,11 +69,19 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         holder.txtEstablishmentName.setText(loan.EstablishmentName.toUpperCase());
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
-        holder.txtValueInfo.setText(String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.PaymentInfo.TotalValue), loan.PaymentInfo.ParcelsCount, loan.MonthlyInterests));
+        holder.txtValueInfo.setText(getValueInfo(loan));
         holder.txtPaymentInfo1.setText(getPaymentStatus(loan.PaymentInfo).toUpperCase());
         holder.txtPaymentInfo2.setText((getPaymentParcelsInfo(loan.PaymentInfo)));
 
         return convertView;
+    }
+
+    private String getValueInfo(LoanApplication loan) {
+
+        if (loan.PaymentInfo == null)
+            return "Sem registros de pagamento";
+
+        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.PaymentInfo.TotalValue), loan.PaymentInfo.ParcelsCount, loan.MonthlyInterests);
     }
 
     private String getPaymentStatus(PaymentInfo paymentInfo)
@@ -81,7 +89,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         Date currentTime = Calendar.getInstance().getTime();
 
         if (paymentInfo == null)
-            return "Sem registros de pagamento.";
+            return "Sem registros de pagamento";
         else if (paymentInfo.NextDueDate.compareTo(currentTime) < 0)
         { // Pagamento atrasado
             return String.format("Atraso de %s parcelas", Math.max(0, paymentInfo.NextParcelNumber - paymentInfo.ParcelsAlreadyPayed - 1), CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));

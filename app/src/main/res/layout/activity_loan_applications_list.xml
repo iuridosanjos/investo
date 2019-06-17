@@ -6,9 +6,10 @@
     tools:context=".lender.LoanApplicationsListActivity">
 
     <TextView
+        android:id="@+id/listLoans_prefix_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/loan_applications_list_prefix"
+        android:text="Texto de prefixo"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"

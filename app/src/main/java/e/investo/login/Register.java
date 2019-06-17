@@ -50,8 +50,6 @@ public class Register extends AppCompatActivity {
     private FirebaseAuth auth;
     Uri prickedImg;
     static  int PReqCode = 1;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,7 +66,6 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         inicializarCmp();
-        inicializarFirabase();
         eventoClicks();
     }
 
@@ -151,12 +148,6 @@ public class Register extends AppCompatActivity {
         else{
             openGallery();
         }
-    }
-
-    private void inicializarFirabase() {
-        firebaseDatabase = firebaseDatabase.getInstance();
-        firebaseDatabase.setPersistenceEnabled(true);
-        databaseReference = firebaseDatabase.getReference();
     }
 
     private void criarUser(final String nome, String email, String senha, String confirmaSenha) {

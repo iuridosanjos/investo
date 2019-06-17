@@ -20,6 +20,7 @@ import java.util.UUID;
 import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonFormats;
+import e.investo.conection.Connection;
 import e.investo.data.DataMocks;
 import e.investo.data.LoanApplication;
 import e.investo.data.PaymentInfo;
@@ -33,8 +34,6 @@ public class ChooseLenderAmountActivity extends BaseActivity {
     TextView txtLoanAmount;
     LoanApplication mLoan;
     SeekBar seekBar;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +74,8 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         return (double)seekBar.getProgress() * MINIMUM_VALUE_INCREMENT;
     }
 
-    private void inicializarFirabase() {
-        firebaseDatabase = firebaseDatabase.getInstance();
-        firebaseDatabase.setPersistenceEnabled(true);
-        databaseReference = firebaseDatabase.getReference();
-    }
-
     public void onLendMoneyClick(View view)
     {
-        inicializarFirabase();
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, 30);
 
@@ -98,10 +90,14 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
 
         DataMocks.AddUserLoanApplication(mLoan);
-        databaseReference.child("Investimentos").child(mLoan.PaymentInfo.getIdPayment()).setValue(mLoan.PaymentInfo);
+        DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimentos");
+        databaseReference.setValue(mLoan);
+        databaseReference.child(mLoan.PaymentInfo.getIdPayment()).setValue(mLoan.PaymentInfo);
+
         Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
 
-        Intent it = new Intent(getBaseContext(), SelfLoanApplicationsListActivity.class);
+        Intent it = new Intent(getBaseContext(), LoanApplicationsListActivity.class);
+        it.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new SelfLoanApplicationsSpecifier());
         startActivity(it);
     }
 

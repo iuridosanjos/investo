@@ -28,6 +28,9 @@ public class LoanApplication implements Serializable {
     // Informações de pagamento do pedido de empréstimo.
     public PaymentInfo PaymentInfo;
 
+    // Status do pedido de empréstimo
+    public LoanApplicationStatus Status;
+
     public String getIdAplication() {
         return idAplication;
     }

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import e.investo.BaseActivity;
+import e.investo.ILoanApplicationListSpecifier;
+import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.data.DataMocks;
 import e.investo.data.LoanApplication;
@@ -31,18 +34,42 @@ import e.investo.lender.adapter.LoanApplicationAdapter;
 
 public class LoanApplicationsListActivity extends BaseActivity {
 
+    public static final String EXTRA_LIST_SPECIFIER = "ListSpecifier";
+
     private LoanApplication[] mLoans;
     private ListView mListView;
+    TextView txtLoading;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     List<LoanApplication> ltLoanApplications = new ArrayList<LoanApplication>();
-    //ArrayAdapter<LoanApplication>  arrayAdapterPessoa;
+    ILoanApplicationListSpecifier mListSpecifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loan_applications_list);
-        inicializarFirabase();
+
+        mListSpecifier = (ILoanApplicationListSpecifier) getIntent().getSerializableExtra(EXTRA_LIST_SPECIFIER);
+
+        mListSpecifier.SetPrefixMessage((TextView) findViewById(R.id.listLoans_prefix_message), getBaseContext());
+
+        mListSpecifier.SetOnLoadCompletedEventListener(new OnLoadCompletedEventListener() {
+            @Override
+            public void OnLoadCompleted(Object result) {
+                setupListView((List<LoanApplication>)result);
+            }
+        });
+
+        mListView = findViewById(R.id.listLoans);
+        txtLoading = (TextView) findViewById(R.id.txtLoading);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                LoanApplication loan = (LoanApplication) adapterView.getItemAtPosition(i);
+                mListSpecifier.OnClick(getBaseContext(), loan);
+            }
+        });
     }
 
 
@@ -50,119 +77,19 @@ public class LoanApplicationsListActivity extends BaseActivity {
     public void onStart() {
         super.onStart();
 
-        mListView = findViewById(R.id.listLoans);
-
-        new AsyncDataTask().execute();
+        mListSpecifier.BeginGetLoanApplications(getBaseContext());
     }
 
-/*
-    private void loadData() {
-        mLoans = new LoanApplication[DataMocks.LOAN_APPLICATIONS.size()];
+    private void setupListView(List<LoanApplication> loanApplications) {
 
-        for (int i = 0; i < DataMocks.LOAN_APPLICATIONS.size(); i++)
-            mLoans[i] = DataMocks.LOAN_APPLICATIONS.get(i);
-    }
-*/
-    private void inicializarFirabase() {
-        /*
-        if(databaseReference == null){
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            database.setPersistenceEnabled(true);
-            databaseReference = database.getReference();
-        }*/
-        firebaseDatabase = firebaseDatabase.getInstance();
-        firebaseDatabase.setPersistenceEnabled(true);
-        databaseReference = firebaseDatabase.getReference();
-    }
+        if (loanApplications == null || loanApplications.size() == 0) {
+            txtLoading.setText(getString(R.string.no_loan_applications_found));
+        } else {
 
-   /* public void eventoDatabase() {
-        databaseReference.child("Aplicacoes").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot objSnapshot: dataSnapshot.getChildren()){
-                    LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
-                    mListView.add(loanApplication);
-                }
-            }
+            BaseAdapter adapter = mListSpecifier.GetAdapter(getBaseContext(), loanApplications);
+            mListView.setAdapter(adapter);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-*/
-    private void setupListView() {
-
-
-            databaseReference.child("Aplicacoes").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    TextView textLoading = (TextView)findViewById(R.id.txtLoading);
-
-                    textLoading.setVisibility(View.INVISIBLE);
-                    for(DataSnapshot objSnapshot: dataSnapshot.getChildren()){
-                        LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
-                        ltLoanApplications.add(loanApplication);
-                    }
-
-                    mLoans = new LoanApplication[ltLoanApplications.size()];
-                    if (mLoans == null || mLoans.length == 0)
-                        {
-                           textLoading.setText(getString(R.string.no_loan_applications_found));
-                        }else{
-
-                        for (int i = 0; i < ltLoanApplications.size(); i++)
-                            mLoans[i] = ltLoanApplications.get(i);
-
-                        LoanApplicationAdapter mLoanAdapter = new LoanApplicationAdapter(getBaseContext(), mLoans);
-                        mListView.setAdapter(mLoanAdapter);
-
-                    }
-
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-
-
-            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    LoanApplication loan = (LoanApplication) adapterView.getItemAtPosition(i);
-                  //  DatabaseReference loan = (DatabaseReference) adapterView.getItemAtPosition(i);
-
-                    Intent it = new Intent(getBaseContext(), LoanApplicationDetailActivity.class);
-                    it.putExtra(LoanApplicationDetailActivity.EXTRA_LOAN_APPLICATION_ITEM, loan);
-                    startActivity(it);
-                }
-            });
-
-
-    }
-
-    private class AsyncDataTask extends AsyncTask<Object, Object, Object> {
-
-        @Override
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Object doInBackground(Object... params) {
-            //load data in backgroud
-           // loadData();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object result) {
-            setupListView();
+            txtLoading.setVisibility(View.GONE);
         }
     }
 }
