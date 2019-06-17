@@ -18,8 +18,8 @@ public class DataMocks {
         app.EstablishmentName = "Java Café";
         app.EstablishmentType = "Comedoria";
         app.Owner = new User();
-        app.Owner.Id = "1";
-        app.Owner.Name = "Manoel Alquimo";
+        app.Owner.id = "1";
+        app.Owner.name = "Manoel Alquimo";
         app.Address = "Av. Agamenon Magalhães";
         app.RequestedValue = 5000;
         app.ParcelsAmount = 12;
@@ -32,8 +32,8 @@ public class DataMocks {
         app.EstablishmentName = "Itália em casa";
         app.EstablishmentType = "Comedoria Delivery";
         app.Owner = new User();
-        app.Owner.Id = "2";
-        app.Owner.Name = "Josefina Marta";
+        app.Owner.id = "2";
+        app.Owner.name = "Josefina Marta";
         app.Address = "Av. Conde da Boa Vista";
         app.RequestedValue = 2700;
         app.ParcelsAmount = 8;

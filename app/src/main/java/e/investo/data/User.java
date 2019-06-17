@@ -3,27 +3,35 @@ package e.investo.data;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    public String Id;
+    public String id;
 
-    public String Name;
+    public String name;
+
+
+    public String cpfUser;
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
-    }
-
-    public String getIdAplication() {
-        return Id;
+        this.name = name;
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
+
+    public String getCpfUser() {
+        return cpfUser;
+    }
+
+    public void setCpfUser(String cpfUser) {
+        this.cpfUser = cpfUser;
+    }
+
 }

@@ -99,8 +99,8 @@ public class CreateLoanApplication extends BaseActivity {
         loanApplication.Id = DataMocks.LOAN_APPLICATIONS.get(DataMocks.LOAN_APPLICATIONS.size() - 1).Id + 1;
         loanApplication.setIdAplication(UUID.randomUUID().toString());
         loanApplication.Owner = new User();
-        loanApplication.Owner.Id = SystemInfo.Instance.LoggedUserID;
-        loanApplication.Owner.Name = SystemInfo.Instance.LoggedUserName;
+        loanApplication.Owner.id = SystemInfo.Instance.LoggedUserID;
+        loanApplication.Owner.name = SystemInfo.Instance.LoggedUserName;
         loanApplication.MonthlyInterests = 0.55; // Em tese esse valor será dito apenas depois que a análise for concluída
 
         // Informações da empresa
@@ -112,7 +112,7 @@ public class CreateLoanApplication extends BaseActivity {
         loanApplication.RequestedValue = getRequestedValue();
         loanApplication.ParcelsAmount = getParcelsAmount();
 
-        Connection.GetDatabaseReference().child("Aplicacoes").child(loanApplication.getIdAplication()).setValue(loanApplication);
+            Connection.GetDatabaseReference().child("Aplicacoes").child(loanApplication.getIdAplication()).setValue(loanApplication);
         Toast.makeText(getBaseContext(), "Pedido de empréstimo criado!", Toast.LENGTH_LONG).show();
         DataMocks.LOAN_APPLICATIONS.add(loanApplication);
     }

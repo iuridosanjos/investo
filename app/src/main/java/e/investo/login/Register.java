@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import e.investo.conection.Connection;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -50,6 +51,8 @@ public class Register extends AppCompatActivity {
     private FirebaseAuth auth;
     Uri prickedImg;
     static  int PReqCode = 1;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,7 +70,11 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         inicializarCmp();
         eventoClicks();
+
+
     }
+
+
 
     private void eventoClicks() {
        /* btnRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +83,8 @@ public class Register extends AppCompatActivity {
                 finish();
             }
         }); */
+
+
 
        imguserPhoto.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -103,15 +112,17 @@ public class Register extends AppCompatActivity {
                String senha = editSenha.getText().toString().trim();
                String confirmaSenha = editConfSenha.getText().toString().trim();
 
+
                if(email.isEmpty() || nome.isEmpty() || senha.isEmpty() || confirmaSenha.isEmpty()){
                     showMessage("Por favor Verifique todos os campos");
                     btnRegistrar.setVisibility(View.VISIBLE);
                     loadingprogress.setVisibility(View.INVISIBLE);
                }else {
-                   //User user = new User();
-                   //user.setId(UUID.randomUUID().toString());
-                   //user.setName(nome);
-                   //databaseReference.child("Usuarios").child(user.getId()).setValue(user);
+                   User user = new User();
+                   user.setId(UUID.randomUUID().toString());
+                   user.setName(nome);
+                   user.setCpfUser("1021312312312");
+                   Connection.GetDatabaseReference().child("Usuario").child(user.getId()).setValue(user);
                    criarUser(nome, email, senha, confirmaSenha);
                }
             }
