@@ -3,6 +3,7 @@
     <string name="title_activity_login">Login</string>
     <string name="loading">Carregando...</string>
     <string name="error_generic_text">Ocorreu um erro</string>
+    <string name="error_unfilled_fields">Há campos obrigatórios não informados</string>
 
     <!-- Strings related to menu -->
     <string name="menu_self_investiments">Meus investimentos</string>
@@ -16,7 +17,7 @@
     <string name="error_invalid_email">O endereço de email é inválido</string>
     <string name="error_invalid_password">A senha é muito curta</string>
     <string name="error_incorrect_password">A senha está incorreta</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_field_required">Campo obrigatório</string>
     <string name="permission_rationale">Permissão de leitura de \'contatos\' é necessário para autocompletar o email</string>
 
     <!-- Strings related to choosing the view profile -->
@@ -44,10 +45,14 @@
     <string name="company_info_section_subtitle">INFORMAÇÕES DA EMPRESA</string>
     <string name="loan_application_section_subtitle">INFORMAÇÕES DO EMPRÉSTIMO</string>
     <string name="prompt_establishment_name">Nome do empreendimento</string>
+    <string name="prompt_cnpj">CNPJ</string>
     <string name="prompt_establishment_type">Tipo do empreendimento</string>
     <string name="prompt_address">Endereço</string>
     <string name="prompt_requested_value">Valor:</string>
-    <string name="prompt_parcels_amount">Pagamento:</string>
+    <string name="prompt_parcels_amount">Parcelamento:</string>
+    <string name="prompt_monthly_interests">Taxa de juros:</string>
+    <string name="prompt_total_value_after_taxes">Valor final:</string>
     <string name="borrower_loan_applications_list_prefix">MEUS PEDIDOS DE EMPRÉSTIMOS</string>
+    <string name="error_requested_value_required">O valor do empréstimo não foi informado</string>
 
 </resources>

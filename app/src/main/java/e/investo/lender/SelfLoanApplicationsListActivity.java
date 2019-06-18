@@ -1,12 +1,9 @@
 package e.investo.lender;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,9 +18,7 @@ import java.util.List;
 
 import e.investo.BaseActivity;
 import e.investo.R;
-import e.investo.data.DataMocks;
 import e.investo.data.LoanApplication;
-import e.investo.lender.adapter.LoanApplicationAdapter;
 import e.investo.lender.adapter.SelfLoanApplicationAdapter;
 
 public class SelfLoanApplicationsListActivity extends BaseActivity {
@@ -49,14 +44,6 @@ public class SelfLoanApplicationsListActivity extends BaseActivity {
 
         new AsyncDataTask().execute();
     }
-/*
-    private void loadData() {
-        mLoans = new LoanApplication[DataMocks.LOGGED_USER_LOAN_APPLICATIONS.size()];
-
-        for (int i = 0; i < DataMocks.LOGGED_USER_LOAN_APPLICATIONS.size(); i++)
-            mLoans[i] = DataMocks.LOGGED_USER_LOAN_APPLICATIONS.get(i);
-    }
-*/
 
     private void inicializarFirabase() {
 

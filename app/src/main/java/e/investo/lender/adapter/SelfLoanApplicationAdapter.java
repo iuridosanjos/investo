@@ -38,7 +38,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return mLoans.get(i).Id;
+        return 0;
     }
 
     @Override

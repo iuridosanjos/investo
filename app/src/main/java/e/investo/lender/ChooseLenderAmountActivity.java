@@ -1,8 +1,6 @@
 package e.investo.lender;
 
 import android.content.Intent;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,17 +9,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.conection.Connection;
-import e.investo.data.DataMocks;
 import e.investo.data.LoanApplication;
 import e.investo.data.PaymentInfo;
 
@@ -88,8 +83,6 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         mLoan.PaymentInfo.NextParcelNumber = 1;
         mLoan.PaymentInfo.NextParcelValue = mLoan.PaymentInfo.TotalValue / mLoan.PaymentInfo.ParcelsCount;
 
-
-        DataMocks.AddUserLoanApplication(mLoan);
         DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimentos");
         databaseReference.setValue(mLoan);
         databaseReference.child(mLoan.PaymentInfo.getIdPayment()).setValue(mLoan.PaymentInfo);

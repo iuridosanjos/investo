@@ -4,13 +4,12 @@ import java.io.Serializable;
 
 // Representa um pedido de empréstimo
 public class LoanApplication implements Serializable {
-    public long Id;
     public String idAplication;
-
 
     public User Owner;
 
     public String EstablishmentName;
+    public String CNPJ;
     public String EstablishmentType;
 
     // Valor requisitado no empréstimo.

@@ -1,24 +1,14 @@
 package e.investo.lender;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +17,7 @@ import e.investo.BaseActivity;
 import e.investo.ILoanApplicationListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
-import e.investo.data.DataMocks;
 import e.investo.data.LoanApplication;
-import e.investo.data.User;
-import e.investo.lender.adapter.LoanApplicationAdapter;
 
 public class LoanApplicationsListActivity extends BaseActivity {
 
