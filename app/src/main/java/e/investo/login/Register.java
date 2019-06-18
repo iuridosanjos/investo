@@ -37,14 +37,14 @@ import com.google.firebase.storage.UploadTask;
 import java.util.UUID;
 
 import e.investo.R;
-import e.investo.conection.Connection;
-import e.investo.data.SystemInfo;
+import e.investo.data.MaskType;
+import e.investo.data.MaskUtil;
 import e.investo.data.User;
 
 public class Register extends AppCompatActivity {
 
     static  int REQUESCODE = 1;
-    private EditText editEmail, editNome, editSenha, editConfSenha;
+    private EditText editEmail, editNome,  editCpf, editSenha, editConfSenha;
     private ProgressBar loadingprogress;
     private ImageView imguserPhoto;
     private Button btnRegistrar;
@@ -108,12 +108,12 @@ public class Register extends AppCompatActivity {
 
                String email = editEmail.getText().toString().trim();
                String nome = editNome.getText().toString().trim();
-               //String cpfCnpj = editcpfCnpj.getText().toString().trim();
+               String cpf = editCpf.getText().toString().trim();
                String senha = editSenha.getText().toString().trim();
                String confirmaSenha = editConfSenha.getText().toString().trim();
 
 
-               if(email.isEmpty() || nome.isEmpty() || senha.isEmpty() || confirmaSenha.isEmpty()){
+               if(email.isEmpty() || cpf.isEmpty()|| nome.isEmpty() || senha.isEmpty() || confirmaSenha.isEmpty()){
                     showMessage("Por favor Verifique todos os campos");
                     btnRegistrar.setVisibility(View.VISIBLE);
                     loadingprogress.setVisibility(View.INVISIBLE);
@@ -121,8 +121,8 @@ public class Register extends AppCompatActivity {
                    User user = new User();
                    user.setId(UUID.randomUUID().toString());
                    user.setName(nome);
-                   user.setCpfUser("1021312312312");
-                   Connection.GetDatabaseReference().child("Usuario").child(user.getId()).setValue(user);
+                   user.setCpfUser(cpf);
+                   Connection.GetDatabaseReference().child("Usuario").child(auth.getCurrentUser().getUid()).setValue(user);
                    criarUser(nome, email, senha, confirmaSenha);
                }
             }
@@ -169,7 +169,7 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                        if(task.isSuccessful()){
-                           updateUserInfo(nome, prickedImg, auth.getCurrentUser());
+                          // updateUserInfo(nome, prickedImg, auth.getCurrentUser());
 
 
                           // SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
@@ -236,8 +236,10 @@ public class Register extends AppCompatActivity {
     private void inicializarCmp() {
 
         editEmail = (EditText) findViewById(R.id.emailRegister);
-        //editcpfCnpj = (EditText) findViewById(R.id.cpf_cnpj);
+       //
         editNome = (EditText) findViewById(R.id.nome);
+        editCpf = (EditText) findViewById(R.id.cpf);
+        editCpf.addTextChangedListener(MaskUtil.insert(editCpf, MaskType.CPF));
         editSenha = (EditText) findViewById(R.id.senhaCadastro);
         editConfSenha = (EditText) findViewById(R.id.confSenha);
         btnRegistrar = (Button) findViewById(R.id.register);
