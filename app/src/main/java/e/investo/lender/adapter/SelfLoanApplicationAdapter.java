@@ -13,6 +13,7 @@ import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
+import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 import e.investo.data.PaymentInfo;
 
@@ -56,8 +57,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
             holder.txtEstablishmentType = (TextView) convertView.findViewById(R.id.txtEstablishmentType);
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
-            holder.txtPaymentInfo1 = (TextView) convertView.findViewById(R.id.txtPaymentInfo1);
-            holder.txtPaymentInfo2 = (TextView) convertView.findViewById(R.id.txtPaymentInfo2);
+            holder.txtStatus = (TextView) convertView.findViewById(R.id.txtStatus);
 
             convertView.setTag(holder);
 
@@ -70,18 +70,13 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
         holder.txtValueInfo.setText(getValueInfo(loan));
-        holder.txtPaymentInfo1.setText(getPaymentStatus(loan.PaymentInfo).toUpperCase());
-        holder.txtPaymentInfo2.setText((getPaymentParcelsInfo(loan.PaymentInfo)));
+        holder.txtStatus.setText(String.format("Realizado em %s", CommonFormats.DATETIME_FORMAT.format(loan.DataPayment.dataCriacao)));
 
         return convertView;
     }
 
     private String getValueInfo(LoanApplication loan) {
-
-        if (loan.PaymentInfo == null)
-            return "Sem registros de pagamento";
-
-        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.PaymentInfo.TotalValue), loan.PaymentInfo.ParcelsCount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
+        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.DataPayment.valorEmprestimo), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
     private String getPaymentStatus(PaymentInfo paymentInfo)
@@ -116,7 +111,6 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         TextView txtEstablishmentType;
         TextView txtAddress;
         TextView txtValueInfo;
-        TextView txtPaymentInfo1;
-        TextView txtPaymentInfo2;
+        TextView txtStatus;
     }
 }

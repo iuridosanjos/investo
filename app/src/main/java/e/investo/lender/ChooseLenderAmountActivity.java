@@ -96,8 +96,7 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimento");
-      //  databaseReference.setValue(mLoan.DataPayment);
-        databaseReference.child(mLoan.DataPayment.getIdUser()).setValue(mLoan.DataPayment);
+        databaseReference.child(mLoan.DataPayment.getIdUser()).child(mLoan.getIdAplication()).setValue(mLoan.DataPayment);
 
         Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
 
