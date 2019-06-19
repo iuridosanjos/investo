@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/DefaultTheme">
-        <activity android:name=".borrower.CreateLoanApplication"></activity>
+        <activity android:name=".borrower.CreateLoanApplication" />
         <activity android:name=".lender.SelfLoanApplicationsListActivity" />
         <activity android:name=".lender.ChooseLenderAmountActivity" />
         <activity

@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -29,12 +31,25 @@ import e.investo.common.CommonConversions;
 import e.investo.conection.Connection;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
-import e.investo.lender.LoanApplicationDetailActivity;
-import e.investo.lender.adapter.SelfLoanApplicationAdapter;
 
 public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
+
+    @Override
+    public void OnCreate(final Context context, ViewGroup rootContainer) {
+        FloatingActionButton fab = rootContainer.findViewById(R.id.floatingActionButton);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CreateLoanApplication.class);
+                context.startActivity(intent);
+            }
+        });
+
+        fab.show();
+    }
 
     @Override
     public void SetPrefixMessage(TextView textView, Context context) {
@@ -71,7 +86,7 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<LoanApplication> list = new ArrayList<>();
-                for(DataSnapshot objSnapshot: dataSnapshot.getChildren()){
+                for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                     LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
                     if (loanApplication.EstablishmentName != null) // TODO: remover
                         list.add(loanApplication);

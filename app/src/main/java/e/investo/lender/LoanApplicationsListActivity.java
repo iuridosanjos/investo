@@ -1,10 +1,13 @@
 package e.investo.lender;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,7 +40,12 @@ public class LoanApplicationsListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loan_applications_list);
 
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        fab.hide();
+
         mListSpecifier = (ILoanApplicationListSpecifier) getIntent().getSerializableExtra(EXTRA_LIST_SPECIFIER);
+
+        mListSpecifier.OnCreate(getBaseContext(), (ViewGroup) findViewById(R.id.loan_application_list_root_container));
 
         mListSpecifier.SetPrefixMessage((TextView) findViewById(R.id.listLoans_prefix_message), getBaseContext());
 

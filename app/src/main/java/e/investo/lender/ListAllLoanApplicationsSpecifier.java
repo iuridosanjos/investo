@@ -3,6 +3,7 @@ package e.investo.lender;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,11 @@ import e.investo.lender.adapter.LoanApplicationAdapter;
 public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
+
+    @Override
+    public void OnCreate(Context context, ViewGroup rootContainer) {
+
+    }
 
     @Override
     public void SetPrefixMessage(TextView textView, Context context) {

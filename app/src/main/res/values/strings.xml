@@ -55,5 +55,7 @@
     <string name="prompt_total_value_after_taxes">Valor final:</string>
     <string name="borrower_loan_applications_list_prefix">MEUS PEDIDOS DE EMPRÉSTIMOS</string>
     <string name="error_requested_value_required">O valor do empréstimo não foi informado</string>
+    <string name="title_activity_remove_me">RemoveMe</string>
+    <string name="title_activity_remover">remover</string>
 
 </resources>

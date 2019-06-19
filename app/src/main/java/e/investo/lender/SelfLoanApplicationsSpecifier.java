@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -31,6 +32,11 @@ import e.investo.lender.adapter.SelfLoanApplicationAdapter;
 public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
+
+    @Override
+    public void OnCreate(Context context, ViewGroup rootContainer) {
+
+    }
 
     @Override
     public void SetPrefixMessage(TextView textView, Context context) {

@@ -2,6 +2,8 @@ package e.investo;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -12,6 +14,8 @@ import e.investo.data.LoanApplication;
 public interface ILoanApplicationListSpecifier {
 
     void SetPrefixMessage(TextView textView, Context context);
+
+    void OnCreate(final Context context, ViewGroup rootContainer);
 
     void BeginGetLoanApplications(final Context context);
 
