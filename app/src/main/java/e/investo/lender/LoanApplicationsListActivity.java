@@ -38,7 +38,7 @@ public class LoanApplicationsListActivity extends BaseActivity {
 
         mListSpecifier = (ILoanApplicationListSpecifier) getIntent().getSerializableExtra(EXTRA_LIST_SPECIFIER);
 
-       // mListSpecifier.SetPrefixMessage((TextView) findViewById(R.id.listLoans_prefix_message), getBaseContext());
+        mListSpecifier.SetPrefixMessage((TextView) findViewById(R.id.listLoans_prefix_message), getBaseContext());
 
         mListSpecifier.SetOnLoadCompletedEventListener(new OnLoadCompletedEventListener() {
             @Override

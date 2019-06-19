@@ -23,7 +23,7 @@ import e.investo.data.User;
 
 public class CreateLoanApplication extends BaseActivity {
 
-    private static final int MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE = 50;
+    private static final int MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE = 100;
 
     EditText editTextEstablishmentName;
     EditText editTextCNPJ;
@@ -59,16 +59,14 @@ public class CreateLoanApplication extends BaseActivity {
         updateFinalValueAfterTaxes();
 
         Button btnSubmit = (Button) findViewById(R.id.btnSubmit);
-        btnSubmit.setOnClickListener(new View.OnClickListener()
-        {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 submit(v);
             }
         });
 
-        seekBarRequestedValue.setMax((int)CommonConstants.MAX_POSSIBLE_LOAN_VALUE / MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE);
+        seekBarRequestedValue.setMax((int) CommonConstants.MAX_POSSIBLE_LOAN_VALUE / MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE);
         seekBarRequestedValue.setOnSeekBarChangeListener(seekBarRequestedValueChangeListener);
         TextView txtMaxRequestedValue = (TextView) findViewById(R.id.txtMaxAmount);
         txtMaxRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(CommonConstants.MAX_POSSIBLE_LOAN_VALUE));
@@ -81,52 +79,56 @@ public class CreateLoanApplication extends BaseActivity {
         updateParcelsAmount(seekBarParcelsAmount.getProgress());
     }
 
-    private void updateMonthlyInterests()
-    {
+    private void updateMonthlyInterests() {
         // TODO: realizar regra simples para modificação dos juros
-        double interests = 0.0055;
+        double interests = getMonthlyInterests();
         txtMontlyInterests.setText(String.format("%s a.m.", CommonFormats.PERCENTAGE_FORMAT.format(interests * 100)));
     }
-    private double getMonthlyInterests()
-    {
-        return 0.0055;
+
+    private double getMonthlyInterests() {
+        int parcels = getParcelsAmount();
+
+        if (parcels <= 6)
+            return 0.0084;
+        else if (parcels <= 18)
+            return 0.0105;
+        else if (parcels <= 36)
+            return 0.0124;
+        else
+            return 0.0148;
     }
 
-    private void updateFinalValueAfterTaxes()
-    {
+    private void updateFinalValueAfterTaxes() {
         txtFinalValueAfterTaxes.setText(CommonFormats.CURRENCY_FORMAT.format(getFinalValueAfterTaxes()));
     }
-    private double getFinalValueAfterTaxes()
-    {
+
+    private double getFinalValueAfterTaxes() {
         double requestedValue = getRequestedValue();
         return requestedValue * (1 + getMonthlyInterests() * getParcelsAmount());
     }
 
-    private void updateRequestedValue(int progress)
-    {
-        double value = (double)progress * MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE;
+    private void updateRequestedValue(int progress) {
+        double value = (double) progress * MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE;
         txtRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(value));
     }
-    private double getRequestedValue()
-    {
-        return (double)seekBarRequestedValue.getProgress() * MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE;
+
+    private double getRequestedValue() {
+        return (double) seekBarRequestedValue.getProgress() * MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE;
     }
 
-    private void updateParcelsAmount(int progress)
-    {
+    private void updateParcelsAmount(int progress) {
         // Formato: 12x de R% 120,00
         int parcelsCount = progress + 1; // +1 para restaurar o -1 inicial
         double parcelsValue = getFinalValueAfterTaxes() / parcelsCount;
 
         txtParcelsInfo.setText(String.format("%sx de %s", parcelsCount, CommonFormats.CURRENCY_FORMAT.format(parcelsValue)));
     }
-    private int getParcelsAmount()
-    {
+
+    private int getParcelsAmount() {
         return seekBarParcelsAmount.getProgress() + 1; // +1 para restaurar o -1 inicial
     }
 
-    public void submit(View view)
-    {
+    public void submit(View view) {
         if (!validateFields())
             return;
 
@@ -135,7 +137,7 @@ public class CreateLoanApplication extends BaseActivity {
         loanApplication.Owner = new User();
         loanApplication.Owner.id = SystemInfo.Instance.LoggedUserID;
         loanApplication.Owner.name = SystemInfo.Instance.LoggedUserName;
-        loanApplication.MonthlyInterests = 0.55; // Em tese esse valor será dito apenas depois que a análise for concluída
+        loanApplication.MonthlyInterests = getMonthlyInterests(); // Em tese esse valor será dito apenas depois que a análise for concluída
 
         // Informações da empresa
         loanApplication.EstablishmentName = editTextEstablishmentName.getText().toString().trim();
@@ -151,13 +153,12 @@ public class CreateLoanApplication extends BaseActivity {
         Toast.makeText(getBaseContext(), "Pedido de empréstimo criado!", Toast.LENGTH_LONG).show();
     }
 
-    private boolean validateFields()
-    {
+    private boolean validateFields() {
         boolean valid =
-                notIsEmpty(editTextEstablishmentName) &&
-                notIsEmpty(editTextCNPJ) &&
-                notIsEmpty(editTextEstablishmentType) &&
-                notIsEmpty(editTextAddress);
+                notIsEmpty(editTextEstablishmentName) &
+                        notIsEmpty(editTextCNPJ) &
+                        notIsEmpty(editTextEstablishmentType) &
+                        notIsEmpty(editTextAddress);
 
         if (!valid)
             Toast.makeText(getBaseContext(), getString(R.string.error_unfilled_fields), Toast.LENGTH_SHORT).show();
@@ -171,8 +172,8 @@ public class CreateLoanApplication extends BaseActivity {
 
         return valid;
     }
-    private boolean notIsEmpty(EditText editText)
-    {
+
+    private boolean notIsEmpty(EditText editText) {
         String str = editText.getText().toString();
         if (str == null || str.trim().length() == 0) {
             editText.setError(getString(R.string.error_field_required));
