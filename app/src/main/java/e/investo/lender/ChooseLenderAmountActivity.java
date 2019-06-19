@@ -11,24 +11,28 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.conection.Connection;
+import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 import e.investo.data.PaymentInfo;
+import e.investo.data.SystemInfo;
 
 public class ChooseLenderAmountActivity extends BaseActivity {
 
     public static final String EXTRA_LOAN_APPLICATION_ITEM = "LoanApplication";
 
-    private static final int MINIMUM_VALUE_INCREMENT = 50;
+    private static final int MINIMUM_VALUE_INCREMENT = 100;
 
     TextView txtLoanAmount;
     LoanApplication mLoan;
     SeekBar seekBar;
+    Date currentTime = Calendar.getInstance().getTime();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,7 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, 30);
 
+        /*
         mLoan.PaymentInfo = new PaymentInfo();
         mLoan.PaymentInfo.setIdPayment(UUID.randomUUID().toString());
         mLoan.PaymentInfo.TotalValue = getLendAmount();
@@ -82,10 +87,17 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         mLoan.PaymentInfo.NextDueDate = c.getTime();
         mLoan.PaymentInfo.NextParcelNumber = 1;
         mLoan.PaymentInfo.NextParcelValue = mLoan.PaymentInfo.TotalValue / mLoan.PaymentInfo.ParcelsCount;
+*/
+        mLoan.DataPayment = new DataPayment();
+        mLoan.DataPayment.setIdUser(SystemInfo.Instance.LoggedUserID);
+        mLoan.DataPayment.setIdAplication(mLoan.getIdAplication());
+        mLoan.DataPayment.setDataCriacao(currentTime);
+        mLoan.DataPayment.setValorEmprestimo(getLendAmount());
 
-        DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimentos");
-        databaseReference.setValue(mLoan);
-        databaseReference.child(mLoan.PaymentInfo.getIdPayment()).setValue(mLoan.PaymentInfo);
+
+        DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimento");
+      //  databaseReference.setValue(mLoan.DataPayment);
+        databaseReference.child(mLoan.DataPayment.getIdUser()).setValue(mLoan.DataPayment);
 
         Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
 

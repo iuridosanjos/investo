@@ -27,6 +27,9 @@ public class LoanApplication implements Serializable {
     // Informações de pagamento do pedido de empréstimo.
     public PaymentInfo PaymentInfo;
 
+    //Informações realizadas com os dados sincronizados.
+    public DataPayment DataPayment;
+
     // Status do pedido de empréstimo
     public LoanApplicationStatus Status;
 

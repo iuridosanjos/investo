@@ -63,7 +63,7 @@ public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpe
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
+                Toast.makeText(context, "ERRO de conexão", Toast.LENGTH_SHORT);
             }
         });
     }
