@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -18,15 +17,12 @@ import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.common.CommonIntents;
 import e.investo.data.LoanApplication;
-import e.investo.data.User;
 
 public class LoanApplicationDetailActivity extends BaseActivity {
 
     public static final String EXTRA_LOAN_APPLICATION_ITEM = "LoanApplication";
 
     private LoanApplication mLoan;
-    private User user;
-    private FirebaseAuth auth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
@@ -36,6 +32,7 @@ public class LoanApplicationDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_loan_application_detail);
 
         mLoan = (LoanApplication) getIntent().getSerializableExtra(EXTRA_LOAN_APPLICATION_ITEM);
+
         updateLayout();
     }
 
@@ -49,7 +46,7 @@ public class LoanApplicationDetailActivity extends BaseActivity {
         if (mLoan != null){
             textEstablishmentName.setText(mLoan.EstablishmentName);
             textAddress.setText(mLoan.Address);
-            //textOwner.setText(user.getName());
+            textOwner.setText(mLoan.OwnerName);
             textRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(mLoan.RequestedValue));
         }else{
 

@@ -18,13 +18,8 @@
         <activity android:name=".borrower.CreateLoanApplication"></activity>
         <activity android:name=".lender.SelfLoanApplicationsListActivity" />
         <activity android:name=".lender.ChooseLenderAmountActivity" />
-        <activity android:name=".borrower.ChooseBorrowerAmountActivity" />
         <activity
-            android:name=".login.Profile"
-            android:label="@string/title_activity_perfil"
-            android:theme="@style/DefaultTheme.NoActionBar" />
-        <activity
-            android:name=".login.Register"
+            android:name=".login.RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/DefaultTheme.NoActionBar" />
         <activity

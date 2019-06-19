@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+
 import e.investo.conection.Connection;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -39,18 +41,19 @@ import java.util.UUID;
 import e.investo.R;
 import e.investo.data.MaskType;
 import e.investo.data.MaskUtil;
+import e.investo.data.SystemInfo;
 import e.investo.data.User;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
-    static  int REQUESCODE = 1;
-    private EditText editEmail, editNome,  editCpf, editSenha, editConfSenha;
+    static int REQUESCODE = 1;
+    private EditText editEmail, editNome, editCpf, editSenha, editConfSenha;
     private ProgressBar loadingprogress;
     private ImageView imguserPhoto;
     private Button btnRegistrar;
     private FirebaseAuth auth;
     Uri prickedImg;
-    static  int PReqCode = 1;
+    static int PReqCode = 1;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
@@ -75,7 +78,6 @@ public class Register extends AppCompatActivity {
     }
 
 
-
     private void eventoClicks() {
        /* btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,19 +87,18 @@ public class Register extends AppCompatActivity {
         }); */
 
 
+        imguserPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-       imguserPhoto.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 22) {
 
-               if(Build.VERSION.SDK_INT >=22){
-
-                   checkAndRequestPorPermission();
-               }else{
+                    checkAndRequestPorPermission();
+                } else {
                     openGallery();
-               }
-           }
-       });
+                }
+            }
+        });
 
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,25 +107,26 @@ public class Register extends AppCompatActivity {
                 loadingprogress.setVisibility(View.VISIBLE);
                 btnRegistrar.setVisibility(View.INVISIBLE);
 
-               String email = editEmail.getText().toString().trim();
-               String nome = editNome.getText().toString().trim();
-               String cpf = editCpf.getText().toString().trim();
-               String senha = editSenha.getText().toString().trim();
-               String confirmaSenha = editConfSenha.getText().toString().trim();
+                String email = editEmail.getText().toString().trim();
+                String nome = editNome.getText().toString().trim();
+                String cpf = editCpf.getText().toString().trim();
+                String senha = editSenha.getText().toString().trim();
+                String confirmaSenha = editConfSenha.getText().toString().trim();
 
 
-               if(email.isEmpty() || cpf.isEmpty()|| nome.isEmpty() || senha.isEmpty() || confirmaSenha.isEmpty()){
+                if (email.isEmpty() || cpf.isEmpty() || nome.isEmpty() || senha.isEmpty() || confirmaSenha.isEmpty()) {
                     showMessage("Por favor Verifique todos os campos");
                     btnRegistrar.setVisibility(View.VISIBLE);
                     loadingprogress.setVisibility(View.INVISIBLE);
-               }else {
-                   User user = new User();
-                   user.setId(UUID.randomUUID().toString());
-                   user.setName(nome);
-                   user.setCpfUser(cpf);
-                   Connection.GetDatabaseReference().child("Usuario").child(auth.getCurrentUser().getUid()).setValue(user);
-                   criarUser(nome, email, senha, confirmaSenha);
-               }
+                } else {
+                    criarUser(nome, email, senha, confirmaSenha);
+
+                    User user = new User();
+                    user.setId(UUID.randomUUID().toString());
+                    user.setName(nome);
+                    user.setCpfUser(cpf);
+                    Connection.GetDatabaseReference().child("Usuario").child(auth.getCurrentUser().getUid()).setValue(user);
+                }
             }
         });
     }
@@ -137,26 +139,24 @@ public class Register extends AppCompatActivity {
 
         Intent galleryItent = new Intent(Intent.ACTION_GET_CONTENT);
         galleryItent.setType("image/*");
-        startActivityForResult(galleryItent,REQUESCODE);
-
+        startActivityForResult(galleryItent, REQUESCODE);
 
 
     }
 
     private void checkAndRequestPorPermission() {
 
-        if(ContextCompat.checkSelfPermission(Register.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-        != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(Register.this, Manifest.permission.READ_EXTERNAL_STORAGE)){
+        if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-                Toast.makeText(Register.this,"Por favor Aceite a Permissão", Toast.LENGTH_SHORT).show();
-            }else{
-                ActivityCompat.requestPermissions(Register.this,
-                                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                                    PReqCode);
+                Toast.makeText(RegisterActivity.this, "Por favor Aceite a Permissão", Toast.LENGTH_SHORT).show();
+            } else {
+                ActivityCompat.requestPermissions(RegisterActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PReqCode);
             }
-        }
-        else{
+        } else {
             openGallery();
         }
     }
@@ -164,25 +164,24 @@ public class Register extends AppCompatActivity {
     private void criarUser(final String nome, String email, String senha, String confirmaSenha) {
 
 
-        auth.createUserWithEmailAndPassword(email,senha)
+        auth.createUserWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                       if(task.isSuccessful()){
-                          // updateUserInfo(nome, prickedImg, auth.getCurrentUser());
+                        if (task.isSuccessful()) {
+                            // updateUserInfo(nome, prickedImg, auth.getCurrentUser());
 
+                            SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
 
-                          // SystemInfo.Instance.Update(Connection.getFirebaseUser(), getContentResolver());
-
-                           //Intent i = new Intent(Register.this, Profile.class);
-                           Intent i = new Intent(Register.this, SelectProfileViewActivity.class);
-                           startActivity(i);
-                           finish();
-                       }else{
-                           alert("Erro de Cadastro" + task.getException().getMessage());
-                           btnRegistrar.setVisibility(View.VISIBLE);
-                           loadingprogress.setVisibility(View.INVISIBLE);
-                       }
+                            //Intent i = new Intent(RegisterActivity.this, Profile.class);
+                            Intent i = new Intent(RegisterActivity.this, SelectProfileViewActivity.class);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            alert("Erro de Cadastro" + task.getException().getMessage());
+                            btnRegistrar.setVisibility(View.VISIBLE);
+                            loadingprogress.setVisibility(View.INVISIBLE);
+                        }
                     }
                 });
     }
@@ -199,9 +198,9 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                                                                            .setDisplayName(nome)
-                                                                            .setPhotoUri(prickedImg)
-                                                                            .build();
+                                .setDisplayName(nome)
+                                .setPhotoUri(prickedImg)
+                                .build();
 
                         currentUser.updateProfile(profileChangeRequest)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -217,7 +216,7 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    private void alert(String msg){
+    private void alert(String msg) {
 
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -226,7 +225,7 @@ public class Register extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK && requestCode == REQUESCODE && data != null){
+        if (resultCode == RESULT_OK && requestCode == REQUESCODE && data != null) {
             prickedImg = data.getData();
             imguserPhoto.setImageURI(prickedImg);
 
@@ -236,7 +235,7 @@ public class Register extends AppCompatActivity {
     private void inicializarCmp() {
 
         editEmail = (EditText) findViewById(R.id.emailRegister);
-       //
+        //
         editNome = (EditText) findViewById(R.id.nome);
         editCpf = (EditText) findViewById(R.id.cpf);
         editCpf.addTextChangedListener(MaskUtil.insert(editCpf, MaskType.CPF));

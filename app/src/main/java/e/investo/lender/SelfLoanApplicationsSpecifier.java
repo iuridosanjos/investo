@@ -67,8 +67,7 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
                 List<LoanApplication> list = new ArrayList<>();
                 for(DataSnapshot objSnapshot: dataSnapshot.getChildren()){
                     LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
-                    if (loanApplication.EstablishmentName != null) // TODO: remover
-                        list.add(loanApplication);
+                    list.add(loanApplication);
                 }
 
                 mListener.OnLoadCompleted(list);

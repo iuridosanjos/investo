@@ -1,12 +1,14 @@
 package e.investo.data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 // Representa um pedido de empréstimo
 public class LoanApplication implements Serializable {
     public String idAplication;
 
-    public User Owner;
+    public String OwnerId;
+    public String OwnerName;
 
     public String EstablishmentName;
     public String CNPJ;
@@ -30,8 +32,7 @@ public class LoanApplication implements Serializable {
     //Informações realizadas com os dados sincronizados.
     public DataPayment DataPayment;
 
-    // Status do pedido de empréstimo
-    public LoanApplicationStatus Status;
+    public Date CreationDate;
 
     public String getIdAplication() {
         return idAplication;

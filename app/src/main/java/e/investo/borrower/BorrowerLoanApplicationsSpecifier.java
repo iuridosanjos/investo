@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
@@ -27,6 +28,7 @@ import e.investo.borrower.adapter.BorrowerLoanApplicationsAdapter;
 import e.investo.common.CommonConversions;
 import e.investo.conection.Connection;
 import e.investo.data.LoanApplication;
+import e.investo.data.SystemInfo;
 import e.investo.lender.LoanApplicationDetailActivity;
 import e.investo.lender.adapter.SelfLoanApplicationAdapter;
 
@@ -37,7 +39,7 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
     @Override
     public void SetPrefixMessage(TextView textView, Context context) {
         textView.setText(R.string.borrower_loan_applications_list_prefix);
-        textView.setTextAppearance(R.style.TextAppearance_AppCompat_Large);
+        textView.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         textView.setBackgroundColor(ContextCompat.getColor(context, R.color.itemListViewBackground));
@@ -63,8 +65,9 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
     public void BeginGetLoanApplications(final Context context) {
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
-        // TODO: carregar do banco
-        /*databaseReference.child("Investimentos").addValueEventListener(new ValueEventListener() {
+        Query query = databaseReference.child("Aplicacoes").orderByChild("OwnerId").equalTo(SystemInfo.Instance.LoggedUserID);
+
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<LoanApplication> list = new ArrayList<>();
@@ -81,9 +84,7 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
             }
-        });*/
-
-        mListener.OnLoadCompleted(null);
+        });
     }
 
     @Override

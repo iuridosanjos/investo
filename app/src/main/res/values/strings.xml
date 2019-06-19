@@ -8,6 +8,7 @@
     <!-- Strings related to menu -->
     <string name="menu_self_investiments">Meus investimentos</string>
     <string name="menu_logout">Sair da conta</string>
+    <string name="menu_self_loan_applications">Meus pedidos de empréstimo</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -38,7 +39,7 @@
 
     <!-- Strings related to lend from a BORROWER VIEW -->
     <string name="how_much_want_to_borrow">Quanto você precisa?</string>
-    <string name="send_to_credit_analysis">Enviar para análise</string>
+    <string name="send_to_credit_analysis">Realizar pedido</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_perfil">Perfil</string>
     <string name="create_loan_application_title">CADASTRO DE PEDIDO DE EMPRÉSTIMO</string>

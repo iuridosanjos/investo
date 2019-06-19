@@ -81,7 +81,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         if (loan.PaymentInfo == null)
             return "Sem registros de pagamento";
 
-        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.PaymentInfo.TotalValue), loan.PaymentInfo.ParcelsCount, loan.MonthlyInterests);
+        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.PaymentInfo.TotalValue), loan.PaymentInfo.ParcelsCount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
     private String getPaymentStatus(PaymentInfo paymentInfo)

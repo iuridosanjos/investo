@@ -1,5 +1,6 @@
 package e.investo.borrower;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 import e.investo.BaseActivity;
@@ -20,6 +22,7 @@ import e.investo.data.MaskType;
 import e.investo.data.MaskUtil;
 import e.investo.data.SystemInfo;
 import e.investo.data.User;
+import e.investo.lender.LoanApplicationsListActivity;
 
 public class CreateLoanApplication extends BaseActivity {
 
@@ -134,9 +137,9 @@ public class CreateLoanApplication extends BaseActivity {
 
         LoanApplication loanApplication = new LoanApplication();
         loanApplication.setIdAplication(UUID.randomUUID().toString());
-        loanApplication.Owner = new User();
-        loanApplication.Owner.id = SystemInfo.Instance.LoggedUserID;
-        loanApplication.Owner.name = SystemInfo.Instance.LoggedUserName;
+        loanApplication.CreationDate = Calendar.getInstance().getTime();
+        loanApplication.OwnerId = SystemInfo.Instance.LoggedUserID;
+        loanApplication.OwnerName = SystemInfo.Instance.LoggedUserName;
         loanApplication.MonthlyInterests = getMonthlyInterests(); // Em tese esse valor será dito apenas depois que a análise for concluída
 
         // Informações da empresa
@@ -151,6 +154,11 @@ public class CreateLoanApplication extends BaseActivity {
 
         Connection.GetDatabaseReference().child("Aplicacoes").child(loanApplication.getIdAplication()).setValue(loanApplication);
         Toast.makeText(getBaseContext(), "Pedido de empréstimo criado!", Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(getBaseContext(), LoanApplicationsListActivity.class);
+        intent.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new BorrowerLoanApplicationsSpecifier());
+        startActivity(intent);
+        finish();
     }
 
     private boolean validateFields() {

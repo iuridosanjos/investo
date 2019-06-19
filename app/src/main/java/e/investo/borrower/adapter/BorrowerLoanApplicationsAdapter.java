@@ -12,8 +12,6 @@ import java.util.List;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.data.LoanApplication;
-import e.investo.data.LoanApplicationStatus;
-import e.investo.data.PaymentInfo;
 
 public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
 
@@ -47,7 +45,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.loan_application_item_view_self, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.loan_application_item_view_borrower, null);
 
             holder = new ViewHolder();
             //holder.imgLogo = (ImageView) convertView.findViewById(R.id.imgEstablishmentLogo);
@@ -55,7 +53,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
             holder.txtEstablishmentType = (TextView) convertView.findViewById(R.id.txtEstablishmentType);
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
-            holder.txtStatus = (TextView) convertView.findViewById(R.id.txtStatus);
+            holder.txtLoanReached = (TextView) convertView.findViewById(R.id.txtLoanReached);
 
             convertView.setTag(holder);
 
@@ -68,21 +66,18 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
         holder.txtValueInfo.setText(getValueInfo(loan));
-        holder.txtStatus.setText(getStatus(loan).toUpperCase());
+        holder.txtLoanReached.setText(getLoanReached(loan).toUpperCase());
 
         return convertView;
     }
 
     private String getValueInfo(LoanApplication loan) {
-
-        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue), loan.ParcelsAmount, loan.MonthlyInterests);
+        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
-    private String getStatus(LoanApplication loan) {
-        if (loan.Status == null)
-            return LoanApplicationStatus.VALID.Description;
-
-        return loan.Status.Description;
+    private String getLoanReached(LoanApplication loan) {
+        // TODO: ajustar quando tiver as informações dos empréstimos realizados
+        return String.format("Adquirido até então: %s", CommonFormats.CURRENCY_FORMAT.format(0));
     }
 
     static class ViewHolder {
@@ -90,6 +85,6 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
         TextView txtEstablishmentType;
         TextView txtAddress;
         TextView txtValueInfo;
-        TextView txtStatus;
+        TextView txtLoanReached;
     }
 }
