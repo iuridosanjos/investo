@@ -34,6 +34,8 @@
     <string name="address">Endereço</string>
     <string name="owner">Proprietário</string>
     <string name="lend">Emprestar</string>
+    <string name="parcels">Parcelas</string>
+    <string name="monthly_interests">Juros</string>
     <string name="loan_applications_list_prefix">Baseado em suas informações, selecionamos os seguintes empreendimentos:</string>
     <string name="how_much_want_to_loan">Quanto você quer emprestar?</string>
     <string name="self_loan_applications_list_prefix">MEUS INVESTIMENTOS</string>
@@ -53,7 +55,7 @@
     <string name="prompt_requested_value">Valor:</string>
     <string name="prompt_parcels_amount">Parcelamento:</string>
     <string name="prompt_monthly_interests">Taxa de juros:</string>
-    <string name="prompt_total_value_after_taxes">Valor final:</string>
+    <string name="prompt_total_value_after_taxes">Valor total a pagar:</string>
     <string name="borrower_loan_applications_list_prefix">MEUS PEDIDOS DE EMPRÉSTIMOS</string>
     <string name="error_requested_value_required">O valor do empréstimo não foi informado</string>
     <string name="title_activity_remove_me">RemoveMe</string>

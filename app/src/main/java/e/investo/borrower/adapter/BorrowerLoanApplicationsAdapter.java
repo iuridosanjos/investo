@@ -81,7 +81,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
     }
 
     private String getValueInfo(LoanApplication loan) {
-        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
+        return String.format("%s em %sx (%s a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
     private String getLoanReached(LoanApplication loan) {

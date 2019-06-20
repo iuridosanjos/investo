@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +24,6 @@ public class LoanApplicationDetailActivity extends BaseActivity {
     public static final String EXTRA_LOAN_APPLICATION_ITEM = "LoanApplication";
 
     private LoanApplication mLoan;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +38,26 @@ public class LoanApplicationDetailActivity extends BaseActivity {
     private void updateLayout()
     {
         TextView textEstablishmentName = (TextView) findViewById(R.id.txtEstablishmentName);
+        TextView textEstablishmentType = findViewById(R.id.txtEstablishmentType);
         TextView textAddress = (TextView) findViewById(R.id.txtAddress);
         TextView textOwner = (TextView) findViewById(R.id.txtOwner);
         TextView textRequestedValue = (TextView) findViewById(R.id.txtRequestedValue);
+        TextView textParcelsInfo = findViewById(R.id.txtParcelsInfo);
+        TextView textMonthlyInterests = findViewById(R.id.txtMonthlyInterests);
 
         if (mLoan != null){
-            textEstablishmentName.setText(mLoan.EstablishmentName);
+            textEstablishmentName.setText(mLoan.EstablishmentName.toUpperCase());
+            textEstablishmentType.setText(mLoan.EstablishmentType.toUpperCase());
             textAddress.setText(mLoan.Address);
             textOwner.setText(mLoan.OwnerName);
             textRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(mLoan.getRemainingValue()));
+            textParcelsInfo.setText(String.format("%sx", mLoan.ParcelsAmount));
+            textMonthlyInterests.setText(String.format("%s a.m.", CommonFormats.PERCENTAGE_FORMAT.format(mLoan.MonthlyInterests * 100)));
         }else{
-
-            Toast.makeText(this, "Erro ao Carregar o mLoan", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Erro ao carregar o empreendimento", Toast.LENGTH_SHORT).show();
         }
 
-        Button btnGoToMap = (Button) findViewById(R.id.btnSeeAddressOnMap);
+        ImageButton btnGoToMap = findViewById(R.id.btnSeeAddressOnMap);
         btnGoToMap.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -63,7 +67,7 @@ public class LoanApplicationDetailActivity extends BaseActivity {
             }
         });
 
-        Button btnLendMoney = (Button) findViewById(R.id.btnLendMoney);
+        Button btnLendMoney = findViewById(R.id.btnLendMoney);
         btnLendMoney.setOnClickListener(new View.OnClickListener()
         {
             @Override

@@ -74,7 +74,7 @@ public class LoanApplicationAdapter extends BaseAdapter {
     private String getValueInfo(LoanApplication loan)
     {
         double remainingValue = loan.getRemainingValue();
-        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(remainingValue), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
+        return String.format("%s em %sx (%s a.m.)", CommonFormats.CURRENCY_FORMAT.format(remainingValue), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
     static class ViewHolder {
