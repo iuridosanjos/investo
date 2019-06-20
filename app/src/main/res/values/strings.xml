@@ -9,6 +9,7 @@
     <string name="menu_self_investiments">Meus investimentos</string>
     <string name="menu_logout">Sair da conta</string>
     <string name="menu_self_loan_applications">Meus pedidos de empréstimo</string>
+    <string name="menu_list_all_loan_applications">Ver empreendimentos</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

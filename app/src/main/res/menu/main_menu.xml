@@ -2,12 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_user_profile" app:showAsAction="ifRoom|withText" android:title="Usuário" />
+    <item
+        android:id="@+id/menu_user_profile"
+        android:title="Usuário"
+        app:showAsAction="ifRoom|withText" />
 
-    <item android:id="@+id/menu_self_investiments" android:title="@string/menu_self_investiments" app:showAsAction="never" />
+    <group android:id="@+id/menu_group_lender">
+        <item
+            android:id="@+id/menu_self_investiments"
+            android:title="@string/menu_self_investiments"
+            app:showAsAction="never" />
 
-    <item android:id="@+id/menu_self_loan_applications" android:title="@string/menu_self_loan_applications" app:showAsAction="never" />
+        <item
+            android:id="@+id/menu_list_all_loan_applications"
+            android:title="@string/menu_list_all_loan_applications"
+            app:showAsAction="never" />
+    </group>
 
-    <item android:id="@+id/menu_logout" android:title="@string/menu_logout" app:showAsAction="never"/>
+    <group android:id="@+id/menu_group_borrower">
+        <item
+            android:id="@+id/menu_self_loan_applications"
+            android:title="@string/menu_self_loan_applications"
+            app:showAsAction="never" />
+    </group>
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="@string/menu_logout"
+        app:showAsAction="never" />
 
 </menu>
