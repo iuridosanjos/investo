@@ -42,12 +42,14 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         mLoan = (LoanApplication) getIntent().getSerializableExtra(EXTRA_LOAN_APPLICATION_ITEM);
         txtLoanAmount = findViewById(R.id.txtAmount);
 
+        double remainingValue = mLoan.getRemainingValue();
+
         TextView txtMaxLoanAmount = findViewById(R.id.txtMaxAmount);
-        txtMaxLoanAmount.setText(CommonFormats.CURRENCY_FORMAT.format(mLoan.RequestedValue));
+        txtMaxLoanAmount.setText(CommonFormats.CURRENCY_FORMAT.format(remainingValue));
 
         seekBar = findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
-        seekBar.setMax((int) (mLoan.RequestedValue / MINIMUM_VALUE_INCREMENT));
+        seekBar.setMax((int) (remainingValue / MINIMUM_VALUE_INCREMENT));
 
         int progress = seekBar.getProgress();
         updateLendAmount(progress);

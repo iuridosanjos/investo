@@ -1,8 +1,9 @@
 package e.investo.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DataPayment {
+public class DataPayment implements Serializable {
 
     public String id;
 

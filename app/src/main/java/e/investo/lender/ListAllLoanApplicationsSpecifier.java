@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ import e.investo.ILoanApplicationListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.conection.Connection;
+import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
 import e.investo.lender.adapter.LoanApplicationAdapter;
@@ -28,6 +30,8 @@ import e.investo.lender.adapter.LoanApplicationAdapter;
 public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
+
+    private List<LoanApplication> loadedLoanApplications = new ArrayList<>();
 
     @Override
     public void OnCreate(Context context, ViewGroup rootContainer) {
@@ -66,7 +70,7 @@ public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpe
                         list.add(loanApplication);
                 }
 
-                mListener.OnLoadCompleted(list);
+                loadDataPayments(context, list);
             }
 
             @Override
@@ -74,6 +78,45 @@ public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpe
                 Toast.makeText(context, "ERRO de conexão", Toast.LENGTH_SHORT);
             }
         });
+    }
+
+    private void loadDataPayments(final Context context, final List<LoanApplication> loanApplications) {
+        if (loanApplications == null || loanApplications.size() == 0) {
+            mListener.OnLoadCompleted(null);
+            return;
+        }
+
+        DatabaseReference databaseReference = Connection.GetDatabaseReference();
+
+        for (final LoanApplication loanApplication : loanApplications) {
+            loanApplication.DataPayments = new ArrayList<>();
+
+            Query query = databaseReference.child("Investimento").orderByChild("idApplication").equalTo(loanApplication.getIdAplication());
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
+                        DataPayment dataPayment = objSnapshot.getValue(DataPayment.class);
+                        loanApplication.DataPayments.add(dataPayment);
+                    }
+
+                    synchronized (loadedLoanApplications) {
+                        loadedLoanApplications.add(loanApplication);
+
+                        if (loadedLoanApplications.size() == loanApplications.size()) {
+                            mListener.OnLoadCompleted(loanApplications);
+                            loadedLoanApplications = new ArrayList<>();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
+                }
+            });
+        }
     }
 
     @Override

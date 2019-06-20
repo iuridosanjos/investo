@@ -43,4 +43,12 @@ public class LoanApplication implements Serializable {
         this.idAplication = idAplication;
     }
 
+    public double getRemainingValue() {
+        double remainingValue = RequestedValue;
+        if (DataPayments != null)
+            for (DataPayment dataPayment : DataPayments)
+                remainingValue -= dataPayment.valorEmprestimo;
+
+        return remainingValue;
+    }
 }

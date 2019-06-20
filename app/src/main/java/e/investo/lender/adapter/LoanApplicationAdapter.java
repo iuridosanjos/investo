@@ -12,6 +12,7 @@ import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
+import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 
 public class LoanApplicationAdapter extends BaseAdapter {
@@ -65,9 +66,15 @@ public class LoanApplicationAdapter extends BaseAdapter {
         holder.txtEstablishmentName.setText(loan.EstablishmentName.toUpperCase());
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
-        holder.txtValueInfo.setText(String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.RequestedValue), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100)));
+        holder.txtValueInfo.setText(getValueInfo(loan));
 
         return convertView;
+    }
+
+    private String getValueInfo(LoanApplication loan)
+    {
+        double remainingValue = loan.getRemainingValue();
+        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(remainingValue), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
     static class ViewHolder {

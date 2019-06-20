@@ -47,7 +47,7 @@ public class LoanApplicationDetailActivity extends BaseActivity {
             textEstablishmentName.setText(mLoan.EstablishmentName);
             textAddress.setText(mLoan.Address);
             textOwner.setText(mLoan.OwnerName);
-            textRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(mLoan.RequestedValue));
+            textRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(mLoan.getRemainingValue()));
         }else{
 
             Toast.makeText(this, "Erro ao Carregar o mLoan", Toast.LENGTH_SHORT).show();
