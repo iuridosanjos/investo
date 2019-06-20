@@ -22,6 +22,7 @@ import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.conection.Connection;
 import e.investo.data.LoanApplication;
+import e.investo.data.SystemInfo;
 import e.investo.lender.adapter.LoanApplicationAdapter;
 
 public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
@@ -61,7 +62,8 @@ public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpe
                 List<LoanApplication> list = new ArrayList<>();
                 for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                     LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
-                    list.add(loanApplication);
+                    if (loanApplication.OwnerId == null || !loanApplication.OwnerId.equals(SystemInfo.Instance.LoggedUserID))
+                        list.add(loanApplication);
                 }
 
                 mListener.OnLoadCompleted(list);
