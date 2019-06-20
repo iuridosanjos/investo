@@ -45,6 +45,6 @@
         android:scaleType="center"
         app:fabSize="normal"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@drawable/add" />
 
 </FrameLayout>

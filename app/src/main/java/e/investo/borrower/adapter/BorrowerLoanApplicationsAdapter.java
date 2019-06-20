@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        LoanApplication loan = mLoans.get(i);
+        final LoanApplication loan = mLoans.get(i);
 
         ViewHolder holder = null;
 
@@ -49,12 +51,12 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.loan_application_item_view_borrower, null);
 
             holder = new ViewHolder();
-            //holder.imgLogo = (ImageView) convertView.findViewById(R.id.imgEstablishmentLogo);
             holder.txtEstablishmentName = (TextView) convertView.findViewById(R.id.txtEstablishmentName);
             holder.txtEstablishmentType = (TextView) convertView.findViewById(R.id.txtEstablishmentType);
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
             holder.txtLoanReached = (TextView) convertView.findViewById(R.id.txtLoanReached);
+            holder.btnDelete = convertView.findViewById(R.id.btnDelete);
 
             convertView.setTag(holder);
 
@@ -62,12 +64,18 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        //holder.imgLogo.setImageResource(R.drawable.icon);
         holder.txtEstablishmentName.setText(loan.EstablishmentName.toUpperCase());
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
         holder.txtValueInfo.setText(getValueInfo(loan));
         holder.txtLoanReached.setText(getLoanReached(loan).toUpperCase());
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO: remover o "loan"
+                Toast.makeText(mContext, String.format("%s removido (fake)", loan.EstablishmentName), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return convertView;
     }
@@ -91,5 +99,6 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
         TextView txtAddress;
         TextView txtValueInfo;
         TextView txtLoanReached;
+        ImageButton btnDelete;
     }
 }

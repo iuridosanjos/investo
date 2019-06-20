@@ -45,7 +45,7 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
     @Override
     public void SetPrefixMessage(TextView textView, Context context) {
         textView.setText(R.string.self_loan_applications_list_prefix);
-        textView.setTextAppearance(R.style.TextAppearance_AppCompat_Large);
+        textView.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
         textView.setBackgroundColor(ContextCompat.getColor(context, R.color.itemListViewBackground));
