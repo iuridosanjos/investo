@@ -28,6 +28,7 @@ import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.borrower.adapter.BorrowerLoanApplicationsAdapter;
 import e.investo.common.CommonConversions;
+import e.investo.common.ErrorHandler;
 import e.investo.conection.Connection;
 import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
@@ -99,7 +100,7 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
+                ErrorHandler.Handle(context, databaseError);
             }
         });
     }
@@ -137,7 +138,7 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
+                    ErrorHandler.Handle(context, databaseError);
                 }
             });
         }

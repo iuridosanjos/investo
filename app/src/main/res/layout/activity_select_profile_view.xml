@@ -33,7 +33,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginBottom="50dp"
-        android:background="@drawable/user" />
+        android:background="@mipmap/ic_launcher" />
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

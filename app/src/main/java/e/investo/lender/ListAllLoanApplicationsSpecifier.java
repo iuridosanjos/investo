@@ -21,6 +21,7 @@ import java.util.List;
 import e.investo.ILoanApplicationListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
+import e.investo.common.ErrorHandler;
 import e.investo.conection.Connection;
 import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
@@ -113,7 +114,7 @@ public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpe
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
+                    ErrorHandler.Handle(context, databaseError);
                 }
             });
         }

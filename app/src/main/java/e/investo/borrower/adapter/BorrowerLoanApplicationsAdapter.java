@@ -1,6 +1,8 @@
 package e.investo.borrower.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +11,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
+import e.investo.common.ErrorHandler;
+import e.investo.conection.Connection;
 import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 
@@ -72,8 +83,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // TODO: remover o "loan"
-                Toast.makeText(mContext, String.format("%s removido (fake)", loan.EstablishmentName), Toast.LENGTH_SHORT).show();
+                removeLoanApplication(loan);
             }
         });
 
@@ -91,6 +101,41 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
                 totalValue += dataPayment.valorEmprestimo;
 
         return String.format("Adquirido até então: %s", CommonFormats.CURRENCY_FORMAT.format(totalValue));
+    }
+
+    private void removeLoanApplication(LoanApplication loanApplication)
+    {
+        final DatabaseReference databaseReference = Connection.GetDatabaseReference();
+        final String idApplication = loanApplication.getIdAplication();
+
+        // Remove os investimentos primeiro
+        Query query = databaseReference.child("Investimento").orderByChild("idApplication").equalTo(idApplication);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<DataPayment> list = new ArrayList<>();
+                for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
+                    objSnapshot.getRef().removeValue();
+                }
+
+                // Remove a aplicação em si
+                databaseReference.child("Aplicacoes").child(idApplication).removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        if (databaseError != null) // Erro
+                            ErrorHandler.Handle(mContext, databaseError);
+                        else
+                            Toast.makeText(mContext, mContext.getResources().getString(R.string.loan_application_removed), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                ErrorHandler.Handle(mContext, databaseError);
+            }
+        });
     }
 
     static class ViewHolder {

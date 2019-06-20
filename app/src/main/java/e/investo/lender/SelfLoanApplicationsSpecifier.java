@@ -25,6 +25,7 @@ import e.investo.ILoanApplicationListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.common.CommonConversions;
+import e.investo.common.ErrorHandler;
 import e.investo.conection.Connection;
 import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
@@ -90,7 +91,7 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
+                ErrorHandler.Handle(context, databaseError);
             }
         });
     }
@@ -110,23 +111,24 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     LoanApplication loan = dataSnapshot.getValue(LoanApplication.class);
-                    loan.DataPayments = new ArrayList<>();
-                    loan.DataPayments.add(dataPayment);
+                    if (loan != null) {
+                        loan.DataPayments = new ArrayList<>();
+                        loan.DataPayments.add(dataPayment);
 
-                    synchronized (loadedLoanApplications) {
-                        loadedLoanApplications.add(loan);
+                        synchronized (loadedLoanApplications) {
+                            loadedLoanApplications.add(loan);
 
-                        if (loadedLoanApplications.size() == dataPayments.size()) {
-                            mListener.OnLoadCompleted(loadedLoanApplications);
-                            loadedLoanApplications = new ArrayList<>();
+                            if (loadedLoanApplications.size() == dataPayments.size()) {
+                                mListener.OnLoadCompleted(loadedLoanApplications);
+                                loadedLoanApplications = new ArrayList<>();
+                            }
                         }
                     }
-
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
+                    ErrorHandler.Handle(context, databaseError);
                 }
             });
         }

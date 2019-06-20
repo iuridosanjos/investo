@@ -73,6 +73,8 @@ public class LoanApplicationsListActivity extends BaseActivity {
     public void onStart() {
         super.onStart();
 
+        txtLoading.setText(getString(R.string.loading));
+        txtLoading.setVisibility(View.VISIBLE);
         mListSpecifier.BeginGetLoanApplications(getBaseContext());
     }
 
@@ -80,12 +82,15 @@ public class LoanApplicationsListActivity extends BaseActivity {
 
         if (loanApplications == null || loanApplications.size() == 0) {
             txtLoading.setText(getString(R.string.no_loan_applications_found));
+            mListView.setVisibility(View.GONE);
+            txtLoading.setVisibility(View.VISIBLE);
         } else {
 
             BaseAdapter adapter = mListSpecifier.GetAdapter(getBaseContext(), loanApplications);
             mListView.setAdapter(adapter);
 
             txtLoading.setVisibility(View.GONE);
+            mListView.setVisibility(View.VISIBLE);
         }
     }
 }
