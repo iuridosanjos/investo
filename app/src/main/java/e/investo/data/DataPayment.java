@@ -4,11 +4,10 @@ import java.util.Date;
 
 public class DataPayment {
 
+    public String id;
+
     public String idUser;
-
-
-    public String idAplication;
-
+    public String idApplication;
 
     public Date dataCriacao;
     public Double valorEmprestimo;
@@ -37,11 +36,11 @@ public class DataPayment {
         this.valorEmprestimo = valorEmprestimo;
     }
 
-    public String getIdAplication() {
-        return idAplication;
+    public String getIdApplication() {
+        return idApplication;
     }
 
-    public void setIdAplication(String idAplication) {
-        this.idAplication = idAplication;
+    public void setIdApplication(String idApplication) {
+        this.idApplication = idApplication;
     }
 }

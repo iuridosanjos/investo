@@ -22,7 +22,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
     private Context mContext;
     private List<LoanApplication> mLoans;
 
-    public SelfLoanApplicationAdapter(Context c, List<LoanApplication> loans){
+    public SelfLoanApplicationAdapter(Context c, List<LoanApplication> loans) {
         mContext = c;
         mLoans = loans;
     }
@@ -61,8 +61,8 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
 
             convertView.setTag(holder);
 
-        }else{
-            holder = (ViewHolder)convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         //holder.imgLogo.setImageResource(R.drawable.icon);
@@ -70,36 +70,31 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
         holder.txtValueInfo.setText(getValueInfo(loan));
-        holder.txtStatus.setText(String.format("Realizado em %s", CommonFormats.DATETIME_FORMAT.format(loan.DataPayment.dataCriacao)));
+        holder.txtStatus.setText(String.format("Realizado em %s", CommonFormats.DATETIME_FORMAT.format(loan.DataPayments.get(0).dataCriacao)));
 
         return convertView;
     }
 
     private String getValueInfo(LoanApplication loan) {
-        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.DataPayment.valorEmprestimo), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
+        return String.format("%s em %sx (%s%% a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.DataPayments.get(0).valorEmprestimo), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
-    private String getPaymentStatus(PaymentInfo paymentInfo)
-    {
+
+    private String getPaymentStatus(PaymentInfo paymentInfo) {
         Date currentTime = Calendar.getInstance().getTime();
 
         if (paymentInfo == null)
             return "Sem registros de pagamento";
-        else if (paymentInfo.NextDueDate.compareTo(currentTime) < 0)
-        { // Pagamento atrasado
+        else if (paymentInfo.NextDueDate.compareTo(currentTime) < 0) { // Pagamento atrasado
             return String.format("Atraso de %s parcelas", Math.max(0, paymentInfo.NextParcelNumber - paymentInfo.ParcelsAlreadyPayed - 1), CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
-        }
-        else if (paymentInfo.ParcelsAlreadyPayed > 0)
-        { // Esperando próximo pagamento, mas algumas parcelas já foram pagas
+        } else if (paymentInfo.ParcelsAlreadyPayed > 0) { // Esperando próximo pagamento, mas algumas parcelas já foram pagas
             return String.format("Pagamento em situação normal", paymentInfo.ParcelsAlreadyPayed);
-        }
-        else
-        { // Esperando primeiro pagamento
+        } else { // Esperando primeiro pagamento
             return String.format("Aguardando pagamento", CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
         }
     }
-    private String getPaymentParcelsInfo(PaymentInfo paymentInfo)
-    {
+
+    private String getPaymentParcelsInfo(PaymentInfo paymentInfo) {
         if (paymentInfo == null)
             return "";
 

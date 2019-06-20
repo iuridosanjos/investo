@@ -29,12 +29,15 @@ import e.investo.R;
 import e.investo.borrower.adapter.BorrowerLoanApplicationsAdapter;
 import e.investo.common.CommonConversions;
 import e.investo.conection.Connection;
+import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
 
 public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
+
+    private List<LoanApplication> loadedLoanApplications = new ArrayList<>();
 
     @Override
     public void OnCreate(final Context context, ViewGroup rootContainer) {
@@ -88,11 +91,10 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
                 List<LoanApplication> list = new ArrayList<>();
                 for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                     LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
-                    if (loanApplication.EstablishmentName != null) // TODO: remover
-                        list.add(loanApplication);
+                    list.add(loanApplication);
                 }
 
-                mListener.OnLoadCompleted(list);
+                loadDataPayments(context, list);
             }
 
             @Override
@@ -100,6 +102,45 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
                 Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
             }
         });
+    }
+
+    private void loadDataPayments(final Context context, final List<LoanApplication> loanApplications) {
+        if (loanApplications == null || loanApplications.size() == 0) {
+            mListener.OnLoadCompleted(null);
+            return;
+        }
+
+        DatabaseReference databaseReference = Connection.GetDatabaseReference();
+
+        for (final LoanApplication loanApplication : loanApplications) {
+            loanApplication.DataPayments = new ArrayList<>();
+
+            Query query = databaseReference.child("Investimento").orderByChild("idApplication").equalTo(loanApplication.getIdAplication());
+
+            query.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
+                        DataPayment dataPayment = objSnapshot.getValue(DataPayment.class);
+                        loanApplication.DataPayments.add(dataPayment);
+                    }
+
+                    synchronized (loadedLoanApplications) {
+                        loadedLoanApplications.add(loanApplication);
+
+                        if (loadedLoanApplications.size() == loanApplications.size()) {
+                            mListener.OnLoadCompleted(loanApplications);
+                            loadedLoanApplications = new ArrayList<>();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(context, R.string.error_generic_text, Toast.LENGTH_SHORT);
+                }
+            });
+        }
     }
 
     @Override

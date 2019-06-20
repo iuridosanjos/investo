@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -20,7 +21,6 @@ import e.investo.common.CommonFormats;
 import e.investo.conection.Connection;
 import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
-import e.investo.data.PaymentInfo;
 import e.investo.data.SystemInfo;
 
 public class ChooseLenderAmountActivity extends BaseActivity {
@@ -47,34 +47,30 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
         seekBar = findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
-        seekBar.setMax((int)(mLoan.RequestedValue / MINIMUM_VALUE_INCREMENT));
+        seekBar.setMax((int) (mLoan.RequestedValue / MINIMUM_VALUE_INCREMENT));
 
         int progress = seekBar.getProgress();
         updateLendAmount(progress);
 
         Button btnLendMoney = (Button) findViewById(R.id.btnLendMoney);
-        btnLendMoney.setOnClickListener(new View.OnClickListener()
-        {
+        btnLendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 onLendMoneyClick(v);
             }
         });
     }
 
-    private void updateLendAmount(int progress)
-    {
-        double value = (double)progress * MINIMUM_VALUE_INCREMENT;
+    private void updateLendAmount(int progress) {
+        double value = (double) progress * MINIMUM_VALUE_INCREMENT;
         txtLoanAmount.setText(CommonFormats.CURRENCY_FORMAT.format(value));
     }
-    private double getLendAmount()
-    {
-        return (double)seekBar.getProgress() * MINIMUM_VALUE_INCREMENT;
+
+    private double getLendAmount() {
+        return (double) seekBar.getProgress() * MINIMUM_VALUE_INCREMENT;
     }
 
-    public void onLendMoneyClick(View view)
-    {
+    public void onLendMoneyClick(View view) {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, 30);
 
@@ -88,20 +84,26 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         mLoan.PaymentInfo.NextParcelNumber = 1;
         mLoan.PaymentInfo.NextParcelValue = mLoan.PaymentInfo.TotalValue / mLoan.PaymentInfo.ParcelsCount;
 */
-        mLoan.DataPayment = new DataPayment();
-        mLoan.DataPayment.setIdUser(SystemInfo.Instance.LoggedUserID);
-        mLoan.DataPayment.setIdAplication(mLoan.getIdAplication());
-        mLoan.DataPayment.setDataCriacao(currentTime);
-        mLoan.DataPayment.setValorEmprestimo(getLendAmount());
 
+        DataPayment dataPayment = new DataPayment();
+        dataPayment.id = UUID.randomUUID().toString();
+        dataPayment.setIdUser(SystemInfo.Instance.LoggedUserID);
+        dataPayment.setIdApplication(mLoan.getIdAplication());
+        dataPayment.setDataCriacao(currentTime);
+        dataPayment.setValorEmprestimo(getLendAmount());
+
+        if (mLoan.DataPayments == null)
+            mLoan.DataPayments = new ArrayList<>();
+        mLoan.DataPayments.add(dataPayment);
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimento");
-        databaseReference.child(mLoan.DataPayment.getIdUser()).child(mLoan.getIdAplication()).setValue(mLoan.DataPayment);
+        databaseReference.child(dataPayment.id).setValue(dataPayment);
 
         Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
 
         Intent it = new Intent(getBaseContext(), LoanApplicationsListActivity.class);
         it.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new SelfLoanApplicationsSpecifier());
+        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
     }
 

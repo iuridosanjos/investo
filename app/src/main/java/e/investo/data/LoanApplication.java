@@ -2,6 +2,7 @@ package e.investo.data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 // Representa um pedido de empréstimo
 public class LoanApplication implements Serializable {
@@ -30,7 +31,7 @@ public class LoanApplication implements Serializable {
     public PaymentInfo PaymentInfo;
 
     //Informações realizadas com os dados sincronizados.
-    public DataPayment DataPayment;
+    public List<DataPayment> DataPayments;
 
     public Date CreationDate;
 

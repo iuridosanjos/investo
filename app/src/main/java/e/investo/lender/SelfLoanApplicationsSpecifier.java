@@ -1,7 +1,6 @@
 package e.investo.lender;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -74,14 +73,14 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
-        Query query = databaseReference.child("Investimento").child(userId);
+        Query query = databaseReference.child("Investimento").orderByChild("idUser").equalTo(userId);
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 List<DataPayment> list = new ArrayList<>();
-                for(DataSnapshot objSnapshot: dataSnapshot.getChildren()){
+                for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                     DataPayment data = objSnapshot.getValue(DataPayment.class);
                     list.add(data);
                 }
@@ -96,10 +95,8 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
         });
     }
 
-    private void loadLoanApplications(final Context context, final List<DataPayment> dataPayments)
-    {
-        if (dataPayments == null || dataPayments.size() == 0)
-        {
+    private void loadLoanApplications(final Context context, final List<DataPayment> dataPayments) {
+        if (dataPayments == null || dataPayments.size() == 0) {
             mListener.OnLoadCompleted(null);
             return;
         }
@@ -107,20 +104,24 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
         for (final DataPayment dataPayment : dataPayments) {
-            Query query = databaseReference.child("Aplicacoes").child(dataPayment.idAplication);
+            Query query = databaseReference.child("Aplicacoes").child(dataPayment.idApplication);
 
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
+            query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     LoanApplication loan = dataSnapshot.getValue(LoanApplication.class);
-                    loan.DataPayment = dataPayment;
+                    loan.DataPayments = new ArrayList<>();
+                    loan.DataPayments.add(dataPayment);
 
                     synchronized (loadedLoanApplications) {
                         loadedLoanApplications.add(loan);
+
+                        if (loadedLoanApplications.size() == dataPayments.size()) {
+                            mListener.OnLoadCompleted(loadedLoanApplications);
+                            loadedLoanApplications = new ArrayList<>();
+                        }
                     }
 
-                    if (loadedLoanApplications.size() == dataPayments.size())
-                        mListener.OnLoadCompleted(loadedLoanApplications);
                 }
 
                 @Override

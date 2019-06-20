@@ -11,6 +11,7 @@ import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
+import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 
 public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
@@ -76,8 +77,12 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
     }
 
     private String getLoanReached(LoanApplication loan) {
-        // TODO: ajustar quando tiver as informações dos empréstimos realizados
-        return String.format("Adquirido até então: %s", CommonFormats.CURRENCY_FORMAT.format(0));
+        double totalValue = 0;
+        if (loan.DataPayments != null)
+            for (DataPayment dataPayment : loan.DataPayments)
+                totalValue += dataPayment.valorEmprestimo;
+
+        return String.format("Adquirido até então: %s", CommonFormats.CURRENCY_FORMAT.format(totalValue));
     }
 
     static class ViewHolder {
