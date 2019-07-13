@@ -13,7 +13,6 @@ import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
-import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 import e.investo.data.PaymentInfo;
 
@@ -70,13 +69,13 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
         holder.txtValueInfo.setText(getValueInfo(loan));
-        holder.txtStatus.setText(String.format("Realizado em %s", CommonFormats.DATETIME_FORMAT.format(loan.DataPayments.get(0).dataCriacao)));
+        holder.txtStatus.setText(String.format("Realizado em %s", CommonFormats.DATETIME_FORMAT.format(loan.loanData.get(0).dataCriacao)));
 
         return convertView;
     }
 
     private String getValueInfo(LoanApplication loan) {
-        return String.format("%s em %sx (%s a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.DataPayments.get(0).valorEmprestimo), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
+        return String.format("%s em %sx (%s a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.loanData.get(0).valorEmprestimo), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
 

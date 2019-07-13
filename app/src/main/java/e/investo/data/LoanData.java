@@ -3,7 +3,7 @@ package e.investo.data;
 import java.io.Serializable;
 import java.util.Date;
 
-public class DataPayment implements Serializable {
+public class LoanData implements Serializable {
 
     public String id;
 

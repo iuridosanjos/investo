@@ -29,5 +29,6 @@ public class SystemInfo {
     {
         LoggedUserName = null;
         LoggedUserPhoto = null;
+        LoggedUserID = null;
     }
 }

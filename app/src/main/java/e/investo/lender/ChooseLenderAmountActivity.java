@@ -19,7 +19,7 @@ import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.conection.Connection;
-import e.investo.data.DataPayment;
+import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
 
@@ -87,19 +87,19 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         mLoan.PaymentInfo.NextParcelValue = mLoan.PaymentInfo.TotalValue / mLoan.PaymentInfo.ParcelsCount;
 */
 
-        DataPayment dataPayment = new DataPayment();
-        dataPayment.id = UUID.randomUUID().toString();
-        dataPayment.setIdUser(SystemInfo.Instance.LoggedUserID);
-        dataPayment.setIdApplication(mLoan.getIdAplication());
-        dataPayment.setDataCriacao(currentTime);
-        dataPayment.setValorEmprestimo(getLendAmount());
+        LoanData loanData = new LoanData();
+        loanData.id = UUID.randomUUID().toString();
+        loanData.setIdUser(SystemInfo.Instance.LoggedUserID);
+        loanData.setIdApplication(mLoan.getIdAplication());
+        loanData.setDataCriacao(currentTime);
+        loanData.setValorEmprestimo(getLendAmount());
 
-        if (mLoan.DataPayments == null)
-            mLoan.DataPayments = new ArrayList<>();
-        mLoan.DataPayments.add(dataPayment);
+        if (mLoan.loanData == null)
+            mLoan.loanData = new ArrayList<>();
+        mLoan.loanData.add(loanData);
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimento");
-        databaseReference.child(dataPayment.id).setValue(dataPayment);
+        databaseReference.child(loanData.id).setValue(loanData);
 
         Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
 

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,8 +25,9 @@ import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.common.CommonConversions;
 import e.investo.common.ErrorHandler;
+import e.investo.common.LoadingSemaphore;
 import e.investo.conection.Connection;
-import e.investo.data.DataPayment;
+import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
 import e.investo.lender.adapter.SelfLoanApplicationAdapter;
@@ -80,13 +80,15 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                List<DataPayment> list = new ArrayList<>();
+                List<LoanData> list = new ArrayList<>();
                 for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
-                    DataPayment data = objSnapshot.getValue(DataPayment.class);
+                    LoanData data = objSnapshot.getValue(LoanData.class);
                     list.add(data);
                 }
 
-                loadLoanApplications(context, list);
+                LoadingSemaphore loadingSemaphore = new LoadingSemaphore(list.size(), createListener());
+
+                loadLoanApplicationsAsync(context, list, loadingSemaphore);
             }
 
             @Override
@@ -96,33 +98,33 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
         });
     }
 
-    private void loadLoanApplications(final Context context, final List<DataPayment> dataPayments) {
-        if (dataPayments == null || dataPayments.size() == 0) {
-            mListener.OnLoadCompleted(null);
+    private void loadLoanApplicationsAsync(final Context context, final List<LoanData> loanDataList, final LoadingSemaphore loadingSemaphore) {
+        if (loanDataList == null || loanDataList.size() == 0)
             return;
-        }
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
-        for (final DataPayment dataPayment : dataPayments) {
-            Query query = databaseReference.child("Aplicacoes").child(dataPayment.idApplication);
+        for (final LoanData loanData : loanDataList) {
+            Query query = databaseReference.child("Aplicacoes").child(loanData.idApplication);
 
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     LoanApplication loan = dataSnapshot.getValue(LoanApplication.class);
                     if (loan != null) {
-                        loan.DataPayments = new ArrayList<>();
-                        loan.DataPayments.add(dataPayment);
+                        loan.loanData = new ArrayList<>();
+                        loan.loanData.add(loanData);
 
-                        synchronized (loadedLoanApplications) {
-                            loadedLoanApplications.add(loan);
-
-                            if (loadedLoanApplications.size() == dataPayments.size()) {
-                                mListener.OnLoadCompleted(loadedLoanApplications);
-                                loadedLoanApplications = new ArrayList<>();
-                            }
+                        // Registra o resultado antes de registrar ao semáforo que o dado foi carregado. Queremos que o resultado seja uma List<LoanApplication>.
+                        synchronized (loadingSemaphore)
+                        {
+                            List<LoanApplication> list = (List<LoanApplication>)loadingSemaphore.result;
+                            if (list == null)
+                                loadingSemaphore.result = list = new ArrayList<>();
+                            list.add(loan);
                         }
+
+                        loadingSemaphore.registerLoaded();
                     }
                 }
 
@@ -132,6 +134,20 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
                 }
             });
         }
+    }
+
+    private OnLoadCompletedEventListener createListener()
+    {
+        return new OnLoadCompletedEventListener() {
+            @Override
+            public void OnLoadCompleted(Object result) {
+                List<LoanApplication> list = null;
+                if (result != null && result instanceof List)
+                    list = (List<LoanApplication>)result;
+
+                mListener.OnLoadCompleted(list);
+            }
+        };
     }
 
     @Override

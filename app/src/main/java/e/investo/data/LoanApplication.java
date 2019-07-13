@@ -31,7 +31,7 @@ public class LoanApplication implements Serializable {
     public PaymentInfo PaymentInfo;
 
     //Informações realizadas com os dados sincronizados.
-    public List<DataPayment> DataPayments;
+    public List<LoanData> loanData;
 
     public Date CreationDate;
 
@@ -45,9 +45,9 @@ public class LoanApplication implements Serializable {
 
     public double getRemainingValue() {
         double remainingValue = RequestedValue;
-        if (DataPayments != null)
-            for (DataPayment dataPayment : DataPayments)
-                remainingValue -= dataPayment.valorEmprestimo;
+        if (loanData != null)
+            for (LoanData loanData : this.loanData)
+                remainingValue -= loanData.valorEmprestimo;
 
         return remainingValue;
     }

@@ -24,7 +24,7 @@ import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.common.ErrorHandler;
 import e.investo.conection.Connection;
-import e.investo.data.DataPayment;
+import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 
 public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
@@ -96,9 +96,9 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
 
     private String getLoanReached(LoanApplication loan) {
         double totalValue = 0;
-        if (loan.DataPayments != null)
-            for (DataPayment dataPayment : loan.DataPayments)
-                totalValue += dataPayment.valorEmprestimo;
+        if (loan.loanData != null)
+            for (LoanData loanData : loan.loanData)
+                totalValue += loanData.valorEmprestimo;
 
         return String.format("Adquirido até então: %s", CommonFormats.CURRENCY_FORMAT.format(totalValue));
     }
@@ -114,7 +114,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<DataPayment> list = new ArrayList<>();
+                List<LoanData> list = new ArrayList<>();
                 for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                     objSnapshot.getRef().removeValue();
                 }

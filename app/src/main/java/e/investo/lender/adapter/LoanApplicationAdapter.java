@@ -12,7 +12,6 @@ import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
-import e.investo.data.DataPayment;
 import e.investo.data.LoanApplication;
 
 public class LoanApplicationAdapter extends BaseAdapter {

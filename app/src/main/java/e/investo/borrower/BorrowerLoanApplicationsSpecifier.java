@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,16 +28,15 @@ import e.investo.R;
 import e.investo.borrower.adapter.BorrowerLoanApplicationsAdapter;
 import e.investo.common.CommonConversions;
 import e.investo.common.ErrorHandler;
+import e.investo.common.LoadingSemaphore;
 import e.investo.conection.Connection;
-import e.investo.data.DataPayment;
+import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
 
 public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
-
-    private List<LoanApplication> loadedLoanApplications = new ArrayList<>();
 
     @Override
     public void OnCreate(final Context context, ViewGroup rootContainer) {
@@ -95,7 +93,11 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
                     list.add(loanApplication);
                 }
 
-                loadDataPayments(context, list);
+                LoadingSemaphore loadingSemaphore = new LoadingSemaphore(list.size(), createListener());
+                // Fixa o resultado, pois os próximos carregamentos serão apenas detalhamentos do que já foi carregado.
+                loadingSemaphore.result = list;
+
+                loadDataPayments(context, list, loadingSemaphore);
             }
 
             @Override
@@ -105,16 +107,14 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
         });
     }
 
-    private void loadDataPayments(final Context context, final List<LoanApplication> loanApplications) {
-        if (loanApplications == null || loanApplications.size() == 0) {
-            mListener.OnLoadCompleted(null);
+    private void loadDataPayments(final Context context, final List<LoanApplication> loanApplications, final LoadingSemaphore loadingSemaphore) {
+        if (loanApplications == null || loanApplications.size() == 0)
             return;
-        }
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
         for (final LoanApplication loanApplication : loanApplications) {
-            loanApplication.DataPayments = new ArrayList<>();
+            loanApplication.loanData = new ArrayList<>();
 
             Query query = databaseReference.child("Investimento").orderByChild("idApplication").equalTo(loanApplication.getIdAplication());
 
@@ -122,18 +122,11 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
-                        DataPayment dataPayment = objSnapshot.getValue(DataPayment.class);
-                        loanApplication.DataPayments.add(dataPayment);
+                        LoanData loanData = objSnapshot.getValue(LoanData.class);
+                        loanApplication.loanData.add(loanData);
                     }
 
-                    synchronized (loadedLoanApplications) {
-                        loadedLoanApplications.add(loanApplication);
-
-                        if (loadedLoanApplications.size() == loanApplications.size()) {
-                            mListener.OnLoadCompleted(loanApplications);
-                            loadedLoanApplications = new ArrayList<>();
-                        }
-                    }
+                    loadingSemaphore.registerLoaded();
                 }
 
                 @Override
@@ -142,6 +135,20 @@ public class BorrowerLoanApplicationsSpecifier implements ILoanApplicationListSp
                 }
             });
         }
+    }
+
+    private OnLoadCompletedEventListener createListener()
+    {
+        return new OnLoadCompletedEventListener() {
+            @Override
+            public void OnLoadCompleted(Object result) {
+                List<LoanApplication> list = null;
+                if (result != null && result instanceof List)
+                    list = (List<LoanApplication>)result;
+
+                mListener.OnLoadCompleted(list);
+            }
+        };
     }
 
     @Override
