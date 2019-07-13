@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,18 +17,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import e.investo.ILoanApplicationListSpecifier;
+import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.common.ErrorHandler;
 import e.investo.common.LoadingSemaphore;
-import e.investo.conection.Connection;
+import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
-import e.investo.data.SystemInfo;
 import e.investo.lender.adapter.LoanApplicationAdapter;
 
-public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
+public class ListAllLoanApplicationsSpecifier implements IGenericListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
 
@@ -45,8 +43,8 @@ public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpe
     }
 
     @Override
-    public BaseAdapter GetAdapter(Context context, List<LoanApplication> loanApplicationList) {
-        return new LoanApplicationAdapter(context, loanApplicationList);
+    public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
+        return new LoanApplicationAdapter(context, (List<LoanApplication>)(Object)itemList);
     }
 
     @Override
@@ -55,7 +53,7 @@ public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpe
     }
 
     @Override
-    public void BeginGetLoanApplications(final Context context) {
+    public void LoadDataAsync(final Context context) {
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
@@ -129,9 +127,9 @@ public class ListAllLoanApplicationsSpecifier implements ILoanApplicationListSpe
     }
 
     @Override
-    public void OnClick(Context context, LoanApplication loanApplication) {
+    public void OnClick(Context context, Object item) {
         Intent it = new Intent(context, LoanApplicationDetailActivity.class);
-        it.putExtra(LoanApplicationDetailActivity.EXTRA_LOAN_APPLICATION_ITEM, loanApplication);
+        it.putExtra(LoanApplicationDetailActivity.EXTRA_LOAN_APPLICATION_ITEM, (LoanApplication)item);
         context.startActivity(it);
     }
 }

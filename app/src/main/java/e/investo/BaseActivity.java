@@ -8,11 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import e.investo.borrower.BorrowerLoanApplicationsSpecifier;
-import e.investo.conection.Connection;
+import e.investo.connection.Connection;
 import e.investo.data.SystemInfo;
 import e.investo.lender.ListAllLoanApplicationsSpecifier;
-import e.investo.lender.LoanApplicationsListActivity;
-import e.investo.lender.SelfLoanApplicationsSpecifier;
+import e.investo.lender.SelfLoanDataSpecifier;
 import e.investo.login.LoginActivity;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -43,20 +42,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.menu_self_investiments:
-                intent = new Intent(getBaseContext(), LoanApplicationsListActivity.class);
-                intent.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new SelfLoanApplicationsSpecifier());
+                intent = new Intent(getBaseContext(), GenericListActivity.class);
+                intent.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new SelfLoanDataSpecifier());
                 startActivity(intent);
                 return true;
 
             case R.id.menu_self_loan_applications:
-                intent = new Intent(getBaseContext(), LoanApplicationsListActivity.class);
-                intent.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new BorrowerLoanApplicationsSpecifier());
+                intent = new Intent(getBaseContext(), GenericListActivity.class);
+                intent.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new BorrowerLoanApplicationsSpecifier());
                 startActivity(intent);
                 return true;
 
             case R.id.menu_list_all_loan_applications:
-                intent = new Intent(getBaseContext(), LoanApplicationsListActivity.class);
-                intent.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new ListAllLoanApplicationsSpecifier());
+                intent = new Intent(getBaseContext(), GenericListActivity.class);
+                intent.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new ListAllLoanApplicationsSpecifier());
                 startActivity(intent);
                 return true;
 

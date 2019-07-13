@@ -115,7 +115,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
-                    android:text="@string/prompt_requested_value"
+                    android:text="@string/prompt_value"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textStyle="bold" />
 

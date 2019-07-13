@@ -5,4 +5,5 @@
     <color name="colorAccent">#2ecc71</color>
     <color name="itemListViewBackground">#EEEEEE</color>
     <color name="colorBackground">#FFFFFF</color>
+    <color name="colorForegroundInsidePrimaryDark">#FFFFFF</color>
 </resources>

@@ -28,7 +28,7 @@ public class LoanApplication implements Serializable {
     public String Description;
 
     // Informações de pagamento do pedido de empréstimo.
-    public PaymentInfo PaymentInfo;
+    public PaymentData PaymentData;
 
     //Informações realizadas com os dados sincronizados.
     public List<LoanData> loanData;

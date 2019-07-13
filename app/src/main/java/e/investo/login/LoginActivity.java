@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import e.investo.R;
-import e.investo.conection.Connection;
+import e.investo.connection.Connection;
 import e.investo.data.SystemInfo;
 
 import static android.Manifest.permission.READ_CONTACTS;

@@ -9,4 +9,7 @@ public class PaymentParcel {
     public Date dueDate;
     // Valor da parcela
     public double value;
+
+    // Data em que foi pago, se foi
+    public Date payday;
 }

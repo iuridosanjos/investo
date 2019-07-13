@@ -13,10 +13,9 @@ import com.google.firebase.auth.FirebaseUser;
 import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.borrower.BorrowerLoanApplicationsSpecifier;
-import e.investo.borrower.CreateLoanApplication;
-import e.investo.conection.Connection;
+import e.investo.connection.Connection;
 import e.investo.lender.ListAllLoanApplicationsSpecifier;
-import e.investo.lender.LoanApplicationsListActivity;
+import e.investo.GenericListActivity;
 
 public class SelectProfileViewActivity extends BaseActivity {
 
@@ -45,14 +44,14 @@ public class SelectProfileViewActivity extends BaseActivity {
     }
 
     public void onClickLenderProfile(View v){
-        Intent intent = new Intent(this, LoanApplicationsListActivity.class);
-        intent.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new ListAllLoanApplicationsSpecifier());
+        Intent intent = new Intent(this, GenericListActivity.class);
+        intent.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new ListAllLoanApplicationsSpecifier());
         startActivity(intent);
     }
 
     public void onClickBorrowerProfile(View v){
-        Intent intent = new Intent(this, LoanApplicationsListActivity.class);
-        intent.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new BorrowerLoanApplicationsSpecifier());
+        Intent intent = new Intent(this, GenericListActivity.class);
+        intent.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new BorrowerLoanApplicationsSpecifier());
         startActivity(intent);
     }
 

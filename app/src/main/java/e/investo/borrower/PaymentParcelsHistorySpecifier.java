@@ -20,24 +20,32 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import e.investo.GenericListActivity;
 import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.borrower.adapter.BorrowerLoanApplicationsAdapter;
+import e.investo.borrower.adapter.PaymentParcelAdapter;
 import e.investo.common.CommonConversions;
 import e.investo.common.ErrorHandler;
 import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
-import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
+import e.investo.data.LoanData;
+import e.investo.data.PaymentParcel;
 import e.investo.data.SystemInfo;
 
-public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier, Serializable {
+public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
+    private String mEstablishmentName;
+
+    public PaymentParcelsHistorySpecifier(String establishmentName)
+    {
+        mEstablishmentName = establishmentName;
+    }
 
     @Override
     public void OnCreate(final Context context, ViewGroup rootContainer) {
@@ -56,7 +64,10 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
 
     @Override
     public void SetPrefixMessage(TextView textView, Context context) {
-        textView.setText(R.string.borrower_loan_applications_list_prefix);
+
+        String text = context.getString(R.string.borrower_payment_data_history_list_prefix);
+
+        textView.setText(String.format(text, mEstablishmentName));
         textView.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
@@ -71,7 +82,7 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
 
     @Override
     public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
-        return new BorrowerLoanApplicationsAdapter(context, (List<LoanApplication>)(Object)itemList);
+        return new PaymentParcelAdapter(context, (List<PaymentParcel>)(Object) itemList);
     }
 
     @Override
@@ -81,61 +92,30 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
 
     @Override
     public void LoadDataAsync(final Context context) {
-        DatabaseReference databaseReference = Connection.GetDatabaseReference();
+        // TODO: fazer o carregamento
 
-        Query query = databaseReference.child("Aplicacoes").orderByChild("OwnerId").equalTo(SystemInfo.Instance.LoggedUserID);
+        List<PaymentParcel> parcels = new ArrayList<>();
 
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<LoanApplication> list = new ArrayList<>();
-                for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
-                    LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
-                    list.add(loanApplication);
-                }
+        PaymentParcel parcel = new PaymentParcel();
+        parcel.dueDate = new Date(2019, 10, 15);
+        parcel.number = 01;
+        parcel.value = 1000;
+        parcel.payday = new Date(2019, 10, 10);
+        parcels.add(parcel);
 
-                LoadingSemaphore loadingSemaphore = new LoadingSemaphore(list.size(), createListener());
-                // Fixa o resultado, pois os próximos carregamentos serão apenas detalhamentos do que já foi carregado.
-                loadingSemaphore.result = list;
+        parcel = new PaymentParcel();
+        parcel.dueDate = new Date(2019, 11, 15);
+        parcel.number = 02;
+        parcel.value = 1000;
+        parcels.add(parcel);
 
-                loadDataPayments(context, list, loadingSemaphore);
-            }
+        parcel = new PaymentParcel();
+        parcel.dueDate = new Date(2019, 12, 15);
+        parcel.number = 03;
+        parcel.value = 1000;
+        parcels.add(parcel);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                ErrorHandler.Handle(context, databaseError);
-            }
-        });
-    }
-
-    private void loadDataPayments(final Context context, final List<LoanApplication> loanApplications, final LoadingSemaphore loadingSemaphore) {
-        if (loanApplications == null || loanApplications.size() == 0)
-            return;
-
-        DatabaseReference databaseReference = Connection.GetDatabaseReference();
-
-        for (final LoanApplication loanApplication : loanApplications) {
-            loanApplication.loanData = new ArrayList<>();
-
-            Query query = databaseReference.child("Investimento").orderByChild("idApplication").equalTo(loanApplication.getIdAplication());
-
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
-                        LoanData loanData = objSnapshot.getValue(LoanData.class);
-                        loanApplication.loanData.add(loanData);
-                    }
-
-                    loadingSemaphore.registerLoaded();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    ErrorHandler.Handle(context, databaseError);
-                }
-            });
-        }
+        mListener.OnLoadCompleted(parcels);
     }
 
     private OnLoadCompletedEventListener createListener()
@@ -154,10 +134,10 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
 
     @Override
     public void OnClick(Context context, Object item) {
-        LoanApplication loanApplication = (LoanApplication)item;
+        // TODO: abrir oq?
 
-        Intent it = new Intent(context, GenericListActivity.class);
-        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.EstablishmentName));
-        context.startActivity(it);
+        /*Intent it = new Intent(context, LoanApplicationDetailActivity.class);
+        it.putExtra(LoanApplicationDetailActivity.EXTRA_LOAN_APPLICATION_ITEM, loanApplication);
+        context.startActivity(it);*/
     }
 }

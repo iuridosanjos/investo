@@ -14,7 +14,6 @@ import java.util.List;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.data.LoanApplication;
-import e.investo.data.PaymentInfo;
 
 public class SelfLoanApplicationAdapter extends BaseAdapter {
 
@@ -79,7 +78,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
     }
 
 
-    private String getPaymentStatus(PaymentInfo paymentInfo) {
+    /*private String getPaymentStatus(PaymentInfo paymentInfo) {
         Date currentTime = Calendar.getInstance().getTime();
 
         if (paymentInfo == null)
@@ -91,14 +90,14 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         } else { // Esperando primeiro pagamento
             return String.format("Aguardando pagamento", CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
         }
-    }
+    }*/
 
-    private String getPaymentParcelsInfo(PaymentInfo paymentInfo) {
+    /*private String getPaymentParcelsInfo(PaymentInfo paymentInfo) {
         if (paymentInfo == null)
             return "";
 
         return String.format("Parcela %s/%s de %s com venc. %s", paymentInfo.NextParcelNumber, paymentInfo.ParcelsCount, CommonFormats.CURRENCY_FORMAT.format(paymentInfo.NextParcelValue), CommonFormats.DATE_FORMAT.format(paymentInfo.NextDueDate));
-    }
+    }*/
 
     static class ViewHolder {
         TextView txtEstablishmentName;

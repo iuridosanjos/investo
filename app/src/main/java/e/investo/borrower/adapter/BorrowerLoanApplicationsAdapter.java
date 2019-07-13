@@ -23,7 +23,7 @@ import java.util.List;
 import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.common.ErrorHandler;
-import e.investo.conection.Connection;
+import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 

@@ -16,9 +16,10 @@ import java.util.Date;
 import java.util.UUID;
 
 import e.investo.BaseActivity;
+import e.investo.GenericListActivity;
 import e.investo.R;
 import e.investo.common.CommonFormats;
-import e.investo.conection.Connection;
+import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
@@ -103,8 +104,8 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
         Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
 
-        Intent it = new Intent(getBaseContext(), LoanApplicationsListActivity.class);
-        it.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new SelfLoanApplicationsSpecifier());
+        Intent it = new Intent(getBaseContext(), GenericListActivity.class);
+        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new SelfLoanDataSpecifier());
         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
     }

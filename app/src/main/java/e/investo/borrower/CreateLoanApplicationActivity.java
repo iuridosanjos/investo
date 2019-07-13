@@ -16,15 +16,14 @@ import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.common.CommonConstants;
 import e.investo.common.CommonFormats;
-import e.investo.conection.Connection;
+import e.investo.connection.Connection;
 import e.investo.data.LoanApplication;
 import e.investo.data.MaskType;
 import e.investo.data.MaskUtil;
 import e.investo.data.SystemInfo;
-import e.investo.data.User;
-import e.investo.lender.LoanApplicationsListActivity;
+import e.investo.GenericListActivity;
 
-public class CreateLoanApplication extends BaseActivity {
+public class CreateLoanApplicationActivity extends BaseActivity {
 
     private static final int MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE = 100;
 
@@ -155,8 +154,8 @@ public class CreateLoanApplication extends BaseActivity {
         Connection.GetDatabaseReference().child("Aplicacoes").child(loanApplication.getIdAplication()).setValue(loanApplication);
         Toast.makeText(getBaseContext(), "Pedido de empréstimo criado!", Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(getBaseContext(), LoanApplicationsListActivity.class);
-        intent.putExtra(LoanApplicationsListActivity.EXTRA_LIST_SPECIFIER, new BorrowerLoanApplicationsSpecifier());
+        Intent intent = new Intent(getBaseContext(), GenericListActivity.class);
+        intent.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new BorrowerLoanApplicationsSpecifier());
         startActivity(intent);
         finish();
     }

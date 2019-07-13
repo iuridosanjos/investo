@@ -43,8 +43,6 @@
     <!-- Strings related to lend from a BORROWER VIEW -->
     <string name="how_much_want_to_borrow">Quanto você precisa?</string>
     <string name="send_to_credit_analysis">Realizar pedido</string>
-    <string name="title_activity_register">Register</string>
-    <string name="title_activity_perfil">Perfil</string>
     <string name="create_loan_application_title">CADASTRO DE PEDIDO DE EMPRÉSTIMO</string>
     <string name="company_info_section_subtitle">INFORMAÇÕES DA EMPRESA</string>
     <string name="loan_application_section_subtitle">INFORMAÇÕES DO EMPRÉSTIMO</string>
@@ -52,12 +50,16 @@
     <string name="prompt_cnpj">CNPJ</string>
     <string name="prompt_establishment_type">Tipo do empreendimento</string>
     <string name="prompt_address">Endereço</string>
-    <string name="prompt_requested_value">Valor:</string>
+    <string name="prompt_value">Valor:</string>
     <string name="prompt_parcels_amount">Parcelamento:</string>
     <string name="prompt_monthly_interests">Taxa de juros:</string>
     <string name="prompt_total_value_after_taxes">Valor total a pagar:</string>
+    <string name="prompt_parcel_number">Parcela:</string>
+    <string name="prompt_due_date">Vencimento:</string>
     <string name="borrower_loan_applications_list_prefix">MEUS PEDIDOS DE EMPRÉSTIMOS</string>
+    <string name="borrower_payment_data_history_list_prefix">PARCELAS DE %s</string>
     <string name="error_requested_value_required">O valor do empréstimo não foi informado</string>
     <string name="loan_application_removed">Pedido de empréstimo removido</string>
+    <string name="pay">Pagar</string>
 
 </resources>

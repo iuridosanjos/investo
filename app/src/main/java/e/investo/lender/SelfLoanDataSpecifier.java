@@ -1,6 +1,7 @@
 package e.investo.lender;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -20,19 +21,22 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import e.investo.ILoanApplicationListSpecifier;
+import e.investo.GenericListActivity;
+import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
+import e.investo.borrower.BorrowerLoanApplicationsSpecifier;
+import e.investo.borrower.PaymentParcelsHistorySpecifier;
 import e.investo.common.CommonConversions;
 import e.investo.common.ErrorHandler;
 import e.investo.common.LoadingSemaphore;
-import e.investo.conection.Connection;
+import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
 import e.investo.lender.adapter.SelfLoanApplicationAdapter;
 
-public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecifier, Serializable {
+public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
 
@@ -59,8 +63,8 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
     }
 
     @Override
-    public BaseAdapter GetAdapter(Context context, List<LoanApplication> loanApplicationList) {
-        return new SelfLoanApplicationAdapter(context, loanApplicationList);
+    public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
+        return new SelfLoanApplicationAdapter(context, (List<LoanApplication>)(Object)itemList);
     }
 
     @Override
@@ -69,7 +73,7 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
     }
 
     @Override
-    public void BeginGetLoanApplications(final Context context) {
+    public void LoadDataAsync(final Context context) {
         String userId = SystemInfo.Instance.LoggedUserID;
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
@@ -151,11 +155,11 @@ public class SelfLoanApplicationsSpecifier implements ILoanApplicationListSpecif
     }
 
     @Override
-    public void OnClick(Context context, LoanApplication loanApplication) {
-        // TODO: abrir oq?
+    public void OnClick(Context context, Object item) {
+        LoanApplication loanApplication = (LoanApplication)item;
 
-        /*Intent it = new Intent(context, LoanApplicationDetailActivity.class);
-        it.putExtra(LoanApplicationDetailActivity.EXTRA_LOAN_APPLICATION_ITEM, loanApplication);
-        context.startActivity(it);*/
+        Intent it = new Intent(context, GenericListActivity.class);
+        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.EstablishmentName));
+        context.startActivity(it);
     }
 }

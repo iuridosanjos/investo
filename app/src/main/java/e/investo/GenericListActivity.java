@@ -1,39 +1,25 @@
-package e.investo.lender;
+package e.investo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import e.investo.BaseActivity;
-import e.investo.ILoanApplicationListSpecifier;
-import e.investo.OnLoadCompletedEventListener;
-import e.investo.R;
 import e.investo.data.LoanApplication;
 
-public class LoanApplicationsListActivity extends BaseActivity {
+public class GenericListActivity extends BaseActivity {
 
     public static final String EXTRA_LIST_SPECIFIER = "ListSpecifier";
 
-    private LoanApplication[] mLoans;
     private ListView mListView;
     TextView txtLoading;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-    List<LoanApplication> ltLoanApplications = new ArrayList<LoanApplication>();
-    ILoanApplicationListSpecifier mListSpecifier;
+    IGenericListSpecifier mListSpecifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +29,16 @@ public class LoanApplicationsListActivity extends BaseActivity {
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.hide();
 
-        mListSpecifier = (ILoanApplicationListSpecifier) getIntent().getSerializableExtra(EXTRA_LIST_SPECIFIER);
+        mListSpecifier = (IGenericListSpecifier) getIntent().getSerializableExtra(EXTRA_LIST_SPECIFIER);
 
-        mListSpecifier.OnCreate(getBaseContext(), (ViewGroup) findViewById(R.id.loan_application_list_root_container));
+        mListSpecifier.OnCreate(getBaseContext(), (ViewGroup) findViewById(R.id.list_root_container));
 
-        mListSpecifier.SetPrefixMessage((TextView) findViewById(R.id.listLoans_prefix_message), getBaseContext());
+        mListSpecifier.SetPrefixMessage((TextView) findViewById(R.id.list_prefix_message), getBaseContext());
 
         mListSpecifier.SetOnLoadCompletedEventListener(new OnLoadCompletedEventListener() {
             @Override
             public void OnLoadCompleted(Object result) {
-                setupListView((List<LoanApplication>)result);
+                setupListView((List<Object>) result);
             }
         });
 
@@ -75,18 +61,18 @@ public class LoanApplicationsListActivity extends BaseActivity {
 
         txtLoading.setText(getString(R.string.loading));
         txtLoading.setVisibility(View.VISIBLE);
-        mListSpecifier.BeginGetLoanApplications(getBaseContext());
+        mListSpecifier.LoadDataAsync(getBaseContext());
     }
 
-    private void setupListView(List<LoanApplication> loanApplications) {
+    private void setupListView(List<Object> itemList) {
 
-        if (loanApplications == null || loanApplications.size() == 0) {
+        if (itemList == null || itemList.size() == 0) {
             txtLoading.setText(getString(R.string.no_loan_applications_found));
             mListView.setVisibility(View.GONE);
             txtLoading.setVisibility(View.VISIBLE);
         } else {
 
-            BaseAdapter adapter = mListSpecifier.GetAdapter(getBaseContext(), loanApplications);
+            BaseAdapter adapter = mListSpecifier.GetAdapter(getBaseContext(), itemList);
             mListView.setAdapter(adapter);
 
             txtLoading.setVisibility(View.GONE);
