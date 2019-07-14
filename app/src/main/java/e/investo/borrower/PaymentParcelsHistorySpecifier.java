@@ -41,33 +41,21 @@ public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Se
 
     private OnLoadCompletedEventListener mListener;
     private String mEstablishmentName;
+    private boolean mIsBorrower;
 
-    public PaymentParcelsHistorySpecifier(String establishmentName)
+    public PaymentParcelsHistorySpecifier(String establishmentName, boolean isBorrower)
     {
         mEstablishmentName = establishmentName;
+        mIsBorrower = isBorrower;
     }
 
     @Override
     public void OnCreate(final Context context, ViewGroup rootContainer) {
-        FloatingActionButton fab = rootContainer.findViewById(R.id.floatingActionButton);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CreateLoanApplicationActivity.class);
-                context.startActivity(intent);
-            }
-        });
-
-        fab.show();
     }
 
     @Override
     public void SetPrefixMessage(TextView textView, Context context) {
-
-        String text = context.getString(R.string.borrower_payment_data_history_list_prefix);
-
-        textView.setText(String.format(text, mEstablishmentName));
+        textView.setText(getTitle(context));
         textView.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
@@ -80,8 +68,20 @@ public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Se
         textView.setLayoutParams(llp);
     }
 
+    private String getTitle(Context context)
+    {
+        String text;
+        if (mIsBorrower)
+            text = context.getString(R.string.borrower_payment_data_history_list_prefix);
+        else
+            text = context.getString(R.string.lender_payment_data_history_list_prefix);
+
+        return String.format(text, mEstablishmentName.toUpperCase());
+    }
+
     @Override
     public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
+        // TODO: terá diferenças entre investidor e empreendedor? Fazer aqui.
         return new PaymentParcelAdapter(context, (List<PaymentParcel>)(Object) itemList);
     }
 
