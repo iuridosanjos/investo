@@ -56,10 +56,14 @@
     <string name="prompt_total_value_after_taxes">Valor total a pagar:</string>
     <string name="prompt_parcel_number">Parcela:</string>
     <string name="prompt_due_date">Vencimento:</string>
+    <string name="prompt_due_date_day">Dia do vencimento:</string>
     <string name="borrower_loan_applications_list_prefix">MEUS PEDIDOS DE EMPRÉSTIMOS</string>
-    <string name="borrower_payment_data_history_list_prefix">PARCELAS DE %s</string>
     <string name="error_requested_value_required">O valor do empréstimo não foi informado</string>
     <string name="loan_application_removed">Pedido de empréstimo removido</string>
     <string name="pay">Pagar</string>
+
+    <!-- Strings related to parcels -->
+    <string name="borrower_payment_data_history_list_prefix">PARCELAS DE %s</string>
+    <string name="lender_payment_data_history_list_prefix">PARCELAS DE %s</string>
 
 </resources>

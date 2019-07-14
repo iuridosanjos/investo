@@ -25,7 +25,7 @@ import e.investo.GenericListActivity;
 
 public class CreateLoanApplicationActivity extends BaseActivity {
 
-    private static final int MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE = 100;
+
 
     EditText editTextEstablishmentName;
     EditText editTextCNPJ;
@@ -37,6 +37,8 @@ public class CreateLoanApplicationActivity extends BaseActivity {
     TextView txtParcelsInfo;
     TextView txtMontlyInterests;
     TextView txtFinalValueAfterTaxes;
+    SeekBar seekBarDueDay;
+    TextView txtDueDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class CreateLoanApplicationActivity extends BaseActivity {
         txtParcelsInfo = (TextView) findViewById(R.id.txtParcelsInfo);
         txtMontlyInterests = (TextView) findViewById(R.id.txtMonthlyInterests);
         txtFinalValueAfterTaxes = (TextView) findViewById(R.id.txtFinalValueAfterTaxes);
+        seekBarDueDay = (SeekBar) findViewById(R.id.seekBarDueDay);
+        txtDueDay = (TextView) findViewById(R.id.txtDueDay);
 
         // Aplica a máscara de CNPJ
         editTextCNPJ.addTextChangedListener(MaskUtil.insert(editTextCNPJ, MaskType.CNPJ));
@@ -68,17 +72,25 @@ public class CreateLoanApplicationActivity extends BaseActivity {
             }
         });
 
-        seekBarRequestedValue.setMax((int) CommonConstants.MAX_POSSIBLE_LOAN_VALUE / MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE);
+        seekBarRequestedValue.setMax((int) CommonConstants.REQUESTED_VALUE_MAX_VALUE / CommonConstants.REQUESTED_VALUE_INCREMENT_VALUE);
         seekBarRequestedValue.setOnSeekBarChangeListener(seekBarRequestedValueChangeListener);
         TextView txtMaxRequestedValue = (TextView) findViewById(R.id.txtMaxAmount);
-        txtMaxRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(CommonConstants.MAX_POSSIBLE_LOAN_VALUE));
+        txtMaxRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(CommonConstants.REQUESTED_VALUE_MAX_VALUE));
         updateRequestedValue(seekBarRequestedValue.getProgress());
 
-        seekBarParcelsAmount.setMax(CommonConstants.MAX_POSSIBLE_PARCELS_AMOUNT - 1); // -1 porque o setMin(1) não pode ser usado
+        seekBarParcelsAmount.setMax(CommonConstants.PARCELS_AMOUNT_MAX_VALUE - 1); // -1 porque o setMin(1) não pode ser usado
         seekBarParcelsAmount.setOnSeekBarChangeListener(seekBarParcelsAmountChangeListener);
         TextView txtMaxParcelsAmount = (TextView) findViewById(R.id.txtMaxParcelsAmount);
-        txtMaxParcelsAmount.setText(String.format("%sx", CommonConstants.MAX_POSSIBLE_PARCELS_AMOUNT));
+        txtMaxParcelsAmount.setText(String.format("%sx", CommonConstants.PARCELS_AMOUNT_MAX_VALUE));
         updateParcelsAmount(seekBarParcelsAmount.getProgress());
+
+        seekBarDueDay.setMax(((int) CommonConstants.DUE_DAY_MAX_VALUE / CommonConstants.DUE_DAY_INCREMENT_VALUE) - 1);
+        seekBarDueDay.setOnSeekBarChangeListener(seekBarDueDayValueChangeListener);
+        TextView txtMaxDueDay = (TextView) findViewById(R.id.txtMaxDueDay);
+        txtMaxDueDay.setText(String.valueOf(CommonConstants.DUE_DAY_MAX_VALUE));
+        TextView txtMinDueDay = (TextView) findViewById(R.id.txtMinDueDay);
+        txtMinDueDay.setText(String.valueOf(CommonConstants.DUE_DAY_MIN_VALUE));
+        updateDueDay(seekBarDueDay.getProgress());
     }
 
     private void updateMonthlyInterests() {
@@ -110,12 +122,12 @@ public class CreateLoanApplicationActivity extends BaseActivity {
     }
 
     private void updateRequestedValue(int progress) {
-        double value = (double) progress * MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE;
+        double value = (double) progress * CommonConstants.REQUESTED_VALUE_INCREMENT_VALUE;
         txtRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(value));
     }
 
     private double getRequestedValue() {
-        return (double) seekBarRequestedValue.getProgress() * MINIMUM_VALUE_INCREMENT_REQUESTED_VALUE;
+        return (double) seekBarRequestedValue.getProgress() * CommonConstants.REQUESTED_VALUE_INCREMENT_VALUE;
     }
 
     private void updateParcelsAmount(int progress) {
@@ -130,10 +142,31 @@ public class CreateLoanApplicationActivity extends BaseActivity {
         return seekBarParcelsAmount.getProgress() + 1; // +1 para restaurar o -1 inicial
     }
 
+    private int getDueDay()
+    {
+        return seekBarDueDay.getProgress();
+    }
+
+    private void updateDueDay(int progress)
+    {
+        int value = (progress + 1) * CommonConstants.DUE_DAY_INCREMENT_VALUE;
+        txtDueDay.setText(String.valueOf(value));
+    }
+
     public void submit(View view) {
         if (!validateFields())
             return;
 
+        saveLoanApplication();
+        saveParcels();
+
+        Toast.makeText(getBaseContext(), "Pedido de empréstimo criado!", Toast.LENGTH_LONG).show();
+
+        openListLoanApplicationsIntentAndFinish();
+    }
+
+    private void saveLoanApplication()
+    {
         LoanApplication loanApplication = new LoanApplication();
         loanApplication.setIdAplication(UUID.randomUUID().toString());
         loanApplication.CreationDate = Calendar.getInstance().getTime();
@@ -150,10 +183,17 @@ public class CreateLoanApplicationActivity extends BaseActivity {
         // Informações do empréstimo
         loanApplication.RequestedValue = getRequestedValue();
         loanApplication.ParcelsAmount = getParcelsAmount();
+        loanApplication.DueDay = getDueDay();
 
         Connection.GetDatabaseReference().child("Aplicacoes").child(loanApplication.getIdAplication()).setValue(loanApplication);
-        Toast.makeText(getBaseContext(), "Pedido de empréstimo criado!", Toast.LENGTH_LONG).show();
+    }
 
+    private void saveParcels()
+    {
+        // TODO: salvar as parcelas
+    }
+
+    private void openListLoanApplicationsIntentAndFinish() {
         Intent intent = new Intent(getBaseContext(), GenericListActivity.class);
         intent.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new BorrowerLoanApplicationsSpecifier());
         startActivity(intent);
@@ -223,6 +263,24 @@ public class CreateLoanApplicationActivity extends BaseActivity {
             // Atualiza as informações que dependem dela
             updateMonthlyInterests();
             updateFinalValueAfterTaxes();
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // called when the user first touches the SeekBar
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // called after the user finishes moving the SeekBar
+        }
+    };
+
+    SeekBar.OnSeekBarChangeListener seekBarDueDayValueChangeListener = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            updateDueDay(progress);
         }
 
         @Override

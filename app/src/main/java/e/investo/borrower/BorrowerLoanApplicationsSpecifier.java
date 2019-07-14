@@ -157,7 +157,7 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
         LoanApplication loanApplication = (LoanApplication)item;
 
         Intent it = new Intent(context, GenericListActivity.class);
-        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.EstablishmentName));
+        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.EstablishmentName, true));
         context.startActivity(it);
     }
 }

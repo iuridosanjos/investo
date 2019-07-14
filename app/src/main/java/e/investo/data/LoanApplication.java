@@ -21,6 +21,8 @@ public class LoanApplication implements Serializable {
     public int ParcelsAmount;
     // Juros ao mês
     public double MonthlyInterests;
+    // Dia do vencimento
+    public int DueDay;
 
     public String Address;
 

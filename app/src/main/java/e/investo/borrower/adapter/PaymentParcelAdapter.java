@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,7 @@ public class PaymentParcelAdapter extends BaseAdapter {
             holder.txtDueDate = (TextView) convertView.findViewById(R.id.txtDueDate);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
             holder.txtPaymentStatus = (TextView) convertView.findViewById(R.id.txtPaymentStatus);
+            holder.llRoot = (LinearLayout) convertView.findViewById(R.id.linear_layout_root);
 
             convertView.setTag(holder);
 
@@ -78,6 +80,7 @@ public class PaymentParcelAdapter extends BaseAdapter {
         holder.txtDueDate.setText(String.format("Vencimento: %s", CommonFormats.DATE_FORMAT.format(parcel.dueDate)));
         holder.txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(parcel.value));
         holder.txtPaymentStatus.setText(getPaymentStatus(parcel));
+        holder.llRoot.setAlpha(getAlpha(parcel));
 
         return convertView;
     }
@@ -90,10 +93,16 @@ public class PaymentParcelAdapter extends BaseAdapter {
             return String.format("Pago em %s", CommonFormats.DATE_FORMAT.format(parcel.payday));
     }
 
+    private float getAlpha(PaymentParcel parcel)
+    {
+        return parcel.payday == null ? 1f : 0.4f;
+    }
+
     static class ViewHolder {
         TextView txtParcelNumber;
         TextView txtDueDate;
         TextView txtValueInfo;
         TextView txtPaymentStatus;
+        LinearLayout llRoot;
     }
 }
