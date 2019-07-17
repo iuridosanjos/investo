@@ -85,7 +85,7 @@ public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Se
     @Override
     public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
         // TODO: terá diferenças entre investidor e empreendedor? Fazer aqui.
-        return new PaymentParcelAdapter(context, (List<PaymentParcel>)(Object) itemList);
+        return new PaymentParcelAdapter(context, (List<PaymentParcel>)(Object) itemList, mIsBorrower);
     }
 
     @Override

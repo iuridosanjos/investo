@@ -33,10 +33,12 @@ public class PaymentParcelAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<PaymentParcel> mParcels;
+    private boolean mIsBorrower;
 
-    public PaymentParcelAdapter(Context c, List<PaymentParcel> parcels){
+    public PaymentParcelAdapter(Context c, List<PaymentParcel> parcels, boolean isBorrower){
         mContext = c;
         mParcels = parcels;
+        mIsBorrower = isBorrower;
     }
 
     @Override
@@ -88,9 +90,9 @@ public class PaymentParcelAdapter extends BaseAdapter {
     private String getPaymentStatus(PaymentParcel parcel)
     {
         if (parcel.getPayday() == null)
-            return "Pagamento pendente";
+            return mIsBorrower ? "Pagamento pendente" : "Recebimento pendente";
         else
-            return String.format("Pago em %s", CommonFormats.DATE_FORMAT.format(parcel.getPayday()));
+            return String.format(mIsBorrower ? "Pago em %s" : "Recebido em %s", CommonFormats.DATE_FORMAT.format(parcel.getPayday()));
     }
 
     private float getAlpha(PaymentParcel parcel)
