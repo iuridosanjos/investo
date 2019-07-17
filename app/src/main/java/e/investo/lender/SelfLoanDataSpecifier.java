@@ -159,7 +159,7 @@ public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializabl
         LoanApplication loanApplication = (LoanApplication)item;
 
         Intent it = new Intent(context, GenericListActivity.class);
-        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.EstablishmentName, false));
+        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.loanData.get(0), loanApplication.EstablishmentName, false));
         context.startActivity(it);
     }
 }

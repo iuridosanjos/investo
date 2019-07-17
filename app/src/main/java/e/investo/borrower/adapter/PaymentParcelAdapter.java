@@ -76,7 +76,7 @@ public class PaymentParcelAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        holder.txtParcelNumber.setText(String.format("%02d", parcel.number));
+        holder.txtParcelNumber.setText(String.format("%02d", parcel.number + 1));
         holder.txtDueDate.setText(String.format("Vencimento: %s", CommonFormats.DATE_FORMAT.format(parcel.getDueDate())));
         holder.txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(parcel.value));
         holder.txtPaymentStatus.setText(getPaymentStatus(parcel));

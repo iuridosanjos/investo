@@ -154,10 +154,10 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
 
     @Override
     public void OnClick(Context context, Object item) {
-        LoanApplication loanApplication = (LoanApplication)item;
+        /*LoanApplication loanApplication = (LoanApplication)item;
 
         Intent it = new Intent(context, GenericListActivity.class);
-        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.EstablishmentName, true));
-        context.startActivity(it);
+        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.loanData[0], loanApplication.EstablishmentName, true));
+        context.startActivity(it);*/
     }
 }

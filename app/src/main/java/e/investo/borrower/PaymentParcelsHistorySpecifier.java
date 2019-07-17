@@ -34,17 +34,20 @@ import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
 import e.investo.data.LoanApplication;
 import e.investo.data.LoanData;
+import e.investo.data.PaymentData;
 import e.investo.data.PaymentParcel;
 import e.investo.data.SystemInfo;
 
 public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
+    private LoanData mLoanData;
     private String mEstablishmentName;
     private boolean mIsBorrower;
 
-    public PaymentParcelsHistorySpecifier(String establishmentName, boolean isBorrower)
+    public PaymentParcelsHistorySpecifier(LoanData loanData, String establishmentName, boolean isBorrower)
     {
+        mLoanData = loanData;
         mEstablishmentName = establishmentName;
         mIsBorrower = isBorrower;
     }
@@ -92,30 +95,27 @@ public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Se
 
     @Override
     public void LoadDataAsync(final Context context) {
-        // TODO: fazer o carregamento
+        DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
-        List<PaymentParcel> parcels = new ArrayList<>();
+        Query query = databaseReference.child("Parcelas").orderByChild("loanDataId").equalTo(mLoanData.id);
 
-        PaymentParcel parcel = new PaymentParcel();
-        parcel.dueDateLong = new Date(2019, 10, 15).getTime();
-        parcel.number = 01;
-        parcel.value = 1000;
-        parcel.paydayLong = new Date(2019, 10, 10).getTime();
-        parcels.add(parcel);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                PaymentData paymentData = null;
+                for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
+                    paymentData = objSnapshot.getValue(PaymentData.class);
+                    break;
+                }
 
-        parcel = new PaymentParcel();
-        parcel.dueDateLong = new Date(2019, 11, 15).getTime();
-        parcel.number = 02;
-        parcel.value = 1000;
-        parcels.add(parcel);
+                mListener.OnLoadCompleted(paymentData.parcels);
+            }
 
-        parcel = new PaymentParcel();
-        parcel.dueDateLong = new Date(2019, 12, 15).getTime();
-        parcel.number = 03;
-        parcel.value = 1000;
-        parcels.add(parcel);
-
-        mListener.OnLoadCompleted(parcels);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                ErrorHandler.Handle(context, databaseError);
+            }
+        });
     }
 
     private OnLoadCompletedEventListener createListener()
