@@ -3,6 +3,8 @@ package e.investo.data;
 import java.util.List;
 
 public class PaymentData {
+    public String id;
+
     // Id do pedido de empréstimo
     public String loanAplicationId;
     // Id do investimento

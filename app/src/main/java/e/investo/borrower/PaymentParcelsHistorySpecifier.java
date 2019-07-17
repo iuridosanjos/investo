@@ -97,20 +97,20 @@ public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Se
         List<PaymentParcel> parcels = new ArrayList<>();
 
         PaymentParcel parcel = new PaymentParcel();
-        parcel.dueDate = new Date(2019, 10, 15);
+        parcel.dueDateLong = new Date(2019, 10, 15).getTime();
         parcel.number = 01;
         parcel.value = 1000;
-        parcel.payday = new Date(2019, 10, 10);
+        parcel.paydayLong = new Date(2019, 10, 10).getTime();
         parcels.add(parcel);
 
         parcel = new PaymentParcel();
-        parcel.dueDate = new Date(2019, 11, 15);
+        parcel.dueDateLong = new Date(2019, 11, 15).getTime();
         parcel.number = 02;
         parcel.value = 1000;
         parcels.add(parcel);
 
         parcel = new PaymentParcel();
-        parcel.dueDate = new Date(2019, 12, 15);
+        parcel.dueDateLong = new Date(2019, 12, 15).getTime();
         parcel.number = 03;
         parcel.value = 1000;
         parcels.add(parcel);

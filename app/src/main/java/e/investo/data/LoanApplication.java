@@ -29,9 +29,6 @@ public class LoanApplication implements Serializable {
     // Descrição escrita pelo usuário para justificar o pedido de empréstimo. Opcional.
     public String Description;
 
-    // Informações de pagamento do pedido de empréstimo.
-    public PaymentData PaymentData;
-
     //Informações realizadas com os dados sincronizados.
     public List<LoanData> loanData;
 

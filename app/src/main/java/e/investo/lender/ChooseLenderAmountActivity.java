@@ -18,10 +18,14 @@ import java.util.UUID;
 import e.investo.BaseActivity;
 import e.investo.GenericListActivity;
 import e.investo.R;
+import e.investo.common.CommonConversions;
 import e.investo.common.CommonFormats;
+import e.investo.common.DateUtils;
 import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
+import e.investo.data.PaymentData;
+import e.investo.data.PaymentParcel;
 import e.investo.data.SystemInfo;
 
 public class ChooseLenderAmountActivity extends BaseActivity {
@@ -74,20 +78,18 @@ public class ChooseLenderAmountActivity extends BaseActivity {
     }
 
     public void onLendMoneyClick(View view) {
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, 30);
+        LoanData loanData = saveLoanData();
 
-        /*
-        mLoan.PaymentInfo = new PaymentInfo();
-        mLoan.PaymentInfo.setIdPayment(UUID.randomUUID().toString());
-        mLoan.PaymentInfo.TotalValue = getLendAmount();
-        mLoan.PaymentInfo.ParcelsAlreadyPayed = 0;
-        mLoan.PaymentInfo.ParcelsCount = mLoan.ParcelsAmount;
-        mLoan.PaymentInfo.NextDueDate = c.getTime();
-        mLoan.PaymentInfo.NextParcelNumber = 1;
-        mLoan.PaymentInfo.NextParcelValue = mLoan.PaymentInfo.TotalValue / mLoan.PaymentInfo.ParcelsCount;
-*/
+        if (mLoan.loanData == null)
+            mLoan.loanData = new ArrayList<>();
+        mLoan.loanData.add(loanData);
 
+        Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
+
+        openSelfLoanDataAndFinish();
+    }
+
+    private LoanData saveLoanData() {
         LoanData loanData = new LoanData();
         loanData.id = UUID.randomUUID().toString();
         loanData.setIdUser(SystemInfo.Instance.LoggedUserID);
@@ -95,19 +97,88 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         loanData.setDataCriacao(currentTime);
         loanData.setValorEmprestimo(getLendAmount());
 
-        if (mLoan.loanData == null)
-            mLoan.loanData = new ArrayList<>();
-        mLoan.loanData.add(loanData);
-
         DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimento");
         databaseReference.child(loanData.id).setValue(loanData);
 
-        Toast.makeText(getBaseContext(), "Empréstimo realizado!", Toast.LENGTH_LONG).show();
+        savePaymentData(loanData);
 
+        return loanData;
+    }
+
+    private void savePaymentData(LoanData loanData)
+    {
+        PaymentData paymentData = new PaymentData();
+        paymentData.id = UUID.randomUUID().toString();
+        paymentData.loanAplicationId = loanData.idApplication;
+        paymentData.loanDataId = loanData.id;
+        paymentData.payerUserId = loanData.idUser;
+        paymentData.parcels = new ArrayList<>();
+
+        Date firstDueDate = getFirstParcelDueDate(mLoan.DueDay);
+        double parcelValue = CommonConversions.roundFloor(loanData.valorEmprestimo / mLoan.ParcelsAmount, 2);
+        double lastParcelValue = CommonConversions.roundFloor(loanData.valorEmprestimo - ((mLoan.ParcelsAmount - 1) * parcelValue), 2);
+
+        for (int number = 0; number < mLoan.ParcelsAmount; number++)
+        {
+            PaymentParcel parcel = new PaymentParcel();
+            parcel.number = number;
+            parcel.setDueDate(addMonthTo(firstDueDate, number));
+            parcel.setPayday(null);
+
+            if (number == mLoan.ParcelsAmount - 1) // Última parcela deve ter o valor restante
+                parcel.value = lastParcelValue;
+            else
+                parcel.value = parcelValue;
+
+            paymentData.parcels.add(parcel);
+        }
+
+        DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Parcelas");
+        databaseReference.child(paymentData.id).setValue(paymentData);
+    }
+
+    private Date getFirstParcelDueDate(int day)
+    {
+        if (day <= 0)
+            day = 5;
+
+        Date todayDate = Calendar.getInstance().getTime();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(todayDate);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        // Limpa todos os valores de hora, pois estamos interessados apenas na data
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        // Se o dia desejado já passou do dia de hoje, então será considerado 2 meses à frente. Caso contrário, 1 mês.
+        if (DateUtils.getDay(todayDate) >= day)
+            calendar.add(Calendar.MONTH, 2);
+        else
+            calendar.add(Calendar.MONTH, 1);
+
+        return calendar.getTime();
+    }
+
+    private Date addMonthTo(Date date, int month)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MONTH, month);
+
+        return calendar.getTime();
+    }
+
+    private void openSelfLoanDataAndFinish()
+    {
         Intent it = new Intent(getBaseContext(), GenericListActivity.class);
         it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new SelfLoanDataSpecifier());
         it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
+
+        finish();
     }
 
     SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {

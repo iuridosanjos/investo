@@ -158,7 +158,6 @@ public class CreateLoanApplicationActivity extends BaseActivity {
             return;
 
         saveLoanApplication();
-        saveParcels();
 
         Toast.makeText(getBaseContext(), "Pedido de empréstimo criado!", Toast.LENGTH_LONG).show();
 
@@ -186,11 +185,6 @@ public class CreateLoanApplicationActivity extends BaseActivity {
         loanApplication.DueDay = getDueDay();
 
         Connection.GetDatabaseReference().child("Aplicacoes").child(loanApplication.getIdAplication()).setValue(loanApplication);
-    }
-
-    private void saveParcels()
-    {
-        // TODO: salvar as parcelas
     }
 
     private void openListLoanApplicationsIntentAndFinish() {

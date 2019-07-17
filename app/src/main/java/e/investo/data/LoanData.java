@@ -13,6 +13,9 @@ public class LoanData implements Serializable {
     public Date dataCriacao;
     public Double valorEmprestimo;
 
+    // Dados de pagamento. Dados das parcelas.
+    public PaymentData paymentData;
+
     public String getIdUser() {
         return idUser;
     }

@@ -77,7 +77,7 @@ public class PaymentParcelAdapter extends BaseAdapter {
         }
 
         holder.txtParcelNumber.setText(String.format("%02d", parcel.number));
-        holder.txtDueDate.setText(String.format("Vencimento: %s", CommonFormats.DATE_FORMAT.format(parcel.dueDate)));
+        holder.txtDueDate.setText(String.format("Vencimento: %s", CommonFormats.DATE_FORMAT.format(parcel.getDueDate())));
         holder.txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(parcel.value));
         holder.txtPaymentStatus.setText(getPaymentStatus(parcel));
         holder.llRoot.setAlpha(getAlpha(parcel));
@@ -87,15 +87,15 @@ public class PaymentParcelAdapter extends BaseAdapter {
 
     private String getPaymentStatus(PaymentParcel parcel)
     {
-        if (parcel.payday == null)
+        if (parcel.getPayday() == null)
             return "Pagamento pendente";
         else
-            return String.format("Pago em %s", CommonFormats.DATE_FORMAT.format(parcel.payday));
+            return String.format("Pago em %s", CommonFormats.DATE_FORMAT.format(parcel.getPayday()));
     }
 
     private float getAlpha(PaymentParcel parcel)
     {
-        return parcel.payday == null ? 1f : 0.4f;
+        return parcel.getPayday() == null ? 1f : 0.4f;
     }
 
     static class ViewHolder {
