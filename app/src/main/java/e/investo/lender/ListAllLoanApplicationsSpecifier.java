@@ -15,17 +15,19 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
+import e.investo.common.DateUtils;
 import e.investo.common.ErrorHandler;
 import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
-import e.investo.lender.adapter.LoanApplicationAdapter;
+import e.investo.lender.adapter.ListAllLoanApplicationAdapter;
 
 public class ListAllLoanApplicationsSpecifier implements IGenericListSpecifier, Serializable {
 
@@ -44,7 +46,7 @@ public class ListAllLoanApplicationsSpecifier implements IGenericListSpecifier, 
 
     @Override
     public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
-        return new LoanApplicationAdapter(context, (List<LoanApplication>)(Object)itemList);
+        return new ListAllLoanApplicationAdapter(context, (List<LoanApplication>)(Object)itemList);
     }
 
     @Override
@@ -64,7 +66,7 @@ public class ListAllLoanApplicationsSpecifier implements IGenericListSpecifier, 
                 List<LoanApplication> list = new ArrayList<>();
                 for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                     LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
-                    //if (loanApplication.OwnerId == null || !loanApplication.OwnerId.equals(SystemInfo.Instance.LoggedUserID))
+                    if (checkLoanApplicationVisible(loanApplication))
                         list.add(loanApplication);
                 }
 
@@ -80,6 +82,16 @@ public class ListAllLoanApplicationsSpecifier implements IGenericListSpecifier, 
                 ErrorHandler.Handle(context, databaseError);
             }
         });
+    }
+
+    private boolean checkLoanApplicationVisible(LoanApplication loanApplication) {
+        // Nota: está comentado para que seja possível testar localmente com o mesmo usuário
+        Date expirationDate = loanApplication.getExpirationDate();
+        Date currentDate = DateUtils.getCurrentDate(false);
+        return
+            /*loanApplication.OwnerId == null || !loanApplication.OwnerId.equals(SystemInfo.Instance.LoggedUserID)
+            &&*/
+            expirationDate == null || expirationDate.compareTo(currentDate) >= 0;
     }
 
     private void loadDataPaymentsAsync(final Context context, final List<LoanApplication> loanApplications, final LoadingSemaphore loadingSemaphore) {

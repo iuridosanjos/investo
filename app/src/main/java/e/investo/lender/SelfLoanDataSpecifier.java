@@ -25,8 +25,7 @@ import e.investo.GenericListActivity;
 import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
-import e.investo.borrower.BorrowerLoanApplicationsSpecifier;
-import e.investo.borrower.PaymentParcelsHistorySpecifier;
+import e.investo.borrower.BorrowerPaymentParcelsHistorySpecifier;
 import e.investo.common.CommonConversions;
 import e.investo.common.ErrorHandler;
 import e.investo.common.LoadingSemaphore;
@@ -159,7 +158,7 @@ public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializabl
         LoanApplication loanApplication = (LoanApplication)item;
 
         Intent it = new Intent(context, GenericListActivity.class);
-        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new PaymentParcelsHistorySpecifier(loanApplication.loanData.get(0), loanApplication.EstablishmentName, false));
+        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new LenderPaymentParcelsHistorySpecifier(loanApplication.loanData.get(0), loanApplication.EstablishmentName));
         context.startActivity(it);
     }
 }

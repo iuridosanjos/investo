@@ -18,6 +18,7 @@ import java.util.UUID;
 import e.investo.BaseActivity;
 import e.investo.GenericListActivity;
 import e.investo.R;
+import e.investo.business.PaymentController;
 import e.investo.common.CommonConversions;
 import e.investo.common.CommonFormats;
 import e.investo.common.DateUtils;
@@ -94,8 +95,8 @@ public class ChooseLenderAmountActivity extends BaseActivity {
         loanData.id = UUID.randomUUID().toString();
         loanData.setIdUser(SystemInfo.Instance.LoggedUserID);
         loanData.setIdApplication(mLoan.getIdAplication());
-        loanData.setDataCriacao(currentTime);
-        loanData.setValorEmprestimo(getLendAmount());
+        loanData.setCreationDate(DateUtils.getCurrentDate(true));
+        loanData.value = getLendAmount();
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Investimento");
         databaseReference.child(loanData.id).setValue(loanData);
@@ -107,68 +108,10 @@ public class ChooseLenderAmountActivity extends BaseActivity {
 
     private void savePaymentData(LoanData loanData)
     {
-        PaymentData paymentData = new PaymentData();
-        paymentData.id = UUID.randomUUID().toString();
-        paymentData.loanAplicationId = loanData.idApplication;
-        paymentData.loanDataId = loanData.id;
-        paymentData.payerUserId = loanData.idUser;
-        paymentData.parcels = new ArrayList<>();
-
-        Date firstDueDate = getFirstParcelDueDate(mLoan.DueDay);
-        double parcelValue = CommonConversions.roundFloor(loanData.valorEmprestimo / mLoan.ParcelsAmount, 2);
-        double lastParcelValue = CommonConversions.roundFloor(loanData.valorEmprestimo - ((mLoan.ParcelsAmount - 1) * parcelValue), 2);
-
-        for (int number = 0; number < mLoan.ParcelsAmount; number++)
-        {
-            PaymentParcel parcel = new PaymentParcel();
-            parcel.number = number;
-            parcel.setDueDate(addMonthTo(firstDueDate, number));
-            parcel.setPayday(null);
-
-            if (number == mLoan.ParcelsAmount - 1) // Última parcela deve ter o valor restante
-                parcel.value = lastParcelValue;
-            else
-                parcel.value = parcelValue;
-
-            paymentData.parcels.add(parcel);
-        }
+        PaymentData paymentData = PaymentController.getPaymentData(mLoan, loanData);
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference().child("Parcelas");
         databaseReference.child(paymentData.id).setValue(paymentData);
-    }
-
-    private Date getFirstParcelDueDate(int day)
-    {
-        if (day <= 0)
-            day = 5;
-
-        Date todayDate = Calendar.getInstance().getTime();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(todayDate);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-        // Limpa todos os valores de hora, pois estamos interessados apenas na data
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        // Se o dia desejado já passou do dia de hoje, então será considerado 2 meses à frente. Caso contrário, 1 mês.
-        if (DateUtils.getDay(todayDate) >= day)
-            calendar.add(Calendar.MONTH, 2);
-        else
-            calendar.add(Calendar.MONTH, 1);
-
-        return calendar.getTime();
-    }
-
-    private Date addMonthTo(Date date, int month)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.MONTH, month);
-
-        return calendar.getTime();
     }
 
     private void openSelfLoanDataAndFinish()

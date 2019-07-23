@@ -39,13 +39,16 @@
     <string name="loan_applications_list_prefix">Baseado em suas informações, selecionamos os seguintes empreendimentos:</string>
     <string name="how_much_want_to_loan">Quanto você quer emprestar?</string>
     <string name="self_loan_applications_list_prefix">MEUS INVESTIMENTOS</string>
+    <string name="lender_payment_status_pending">Recebimento pendente</string>
+    <string name="lender_payment_status_payed">Recebido em %s</string>
 
     <!-- Strings related to lend from a BORROWER VIEW -->
     <string name="how_much_want_to_borrow">Quanto você precisa?</string>
     <string name="send_to_credit_analysis">Realizar pedido</string>
     <string name="create_loan_application_title">CADASTRO DE PEDIDO DE EMPRÉSTIMO</string>
-    <string name="company_info_section_subtitle">INFORMAÇÕES DA EMPRESA</string>
-    <string name="loan_application_section_subtitle">INFORMAÇÕES DO EMPRÉSTIMO</string>
+    <string name="create_loan_application_company_info_section">INFORMAÇÕES DA EMPRESA</string>
+    <string name="create_loan_application_money_section">INFORMAÇÕES DO EMPRÉSTIMO</string>
+    <string name="create_loan_application_parcels_section">INFORMAÇÕES DE PAGAMENTO</string>
     <string name="prompt_establishment_name">Nome do empreendimento</string>
     <string name="prompt_cnpj">CNPJ</string>
     <string name="prompt_establishment_type">Tipo do empreendimento</string>
@@ -56,11 +59,14 @@
     <string name="prompt_total_value_after_taxes">Valor total a pagar:</string>
     <string name="prompt_parcel_number">Parcela:</string>
     <string name="prompt_due_date">Vencimento:</string>
-    <string name="prompt_due_date_day">Dia do vencimento:</string>
+    <string name="prompt_due_date_day">Melhor dia de vencimento:</string>
+    <string name="prompt_expiration_date">Prazo de validade</string>
     <string name="borrower_loan_applications_list_prefix">MEUS PEDIDOS DE EMPRÉSTIMOS</string>
     <string name="error_requested_value_required">O valor do empréstimo não foi informado</string>
     <string name="loan_application_removed">Pedido de empréstimo removido</string>
     <string name="pay">Pagar</string>
+    <string name="borrower_payment_status_pending">Pagamento pendente</string>
+    <string name="borrower_payment_status_payed">Pagamento em %s</string>
 
     <!-- Strings related to parcels -->
     <string name="borrower_payment_data_history_list_prefix">PARCELAS DE %s</string>

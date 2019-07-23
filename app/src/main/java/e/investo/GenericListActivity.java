@@ -48,8 +48,8 @@ public class GenericListActivity extends BaseActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                LoanApplication loan = (LoanApplication) adapterView.getItemAtPosition(i);
-                mListSpecifier.OnClick(getBaseContext(), loan);
+                Object object =  adapterView.getItemAtPosition(i);
+                mListSpecifier.OnClick(getBaseContext(), object);
             }
         });
     }

@@ -1,44 +1,27 @@
-package e.investo.borrower.adapter;
+package e.investo.lender.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
-import e.investo.common.ErrorHandler;
-import e.investo.connection.Connection;
-import e.investo.data.LoanApplication;
-import e.investo.data.LoanData;
 import e.investo.data.PaymentParcel;
 
-public class PaymentParcelAdapter extends BaseAdapter {
+public class LenderPaymentParcelAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<PaymentParcel> mParcels;
-    private boolean mIsBorrower;
 
-    public PaymentParcelAdapter(Context c, List<PaymentParcel> parcels, boolean isBorrower){
+    public LenderPaymentParcelAdapter(Context c, List<PaymentParcel> parcels){
         mContext = c;
         mParcels = parcels;
-        mIsBorrower = isBorrower;
     }
 
     @Override
@@ -79,7 +62,7 @@ public class PaymentParcelAdapter extends BaseAdapter {
         }
 
         holder.txtParcelNumber.setText(String.format("%02d", parcel.number + 1));
-        holder.txtDueDate.setText(String.format("Vencimento: %s", CommonFormats.DATE_FORMAT.format(parcel.getDueDate())));
+        holder.txtDueDate.setText(String.format(mContext.getString(R.string.prompt_due_date) + " %s", CommonFormats.DATE_FORMAT.format(parcel.getDueDate())));
         holder.txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(parcel.value));
         holder.txtPaymentStatus.setText(getPaymentStatus(parcel));
         holder.llRoot.setAlpha(getAlpha(parcel));
@@ -90,9 +73,9 @@ public class PaymentParcelAdapter extends BaseAdapter {
     private String getPaymentStatus(PaymentParcel parcel)
     {
         if (parcel.getPayday() == null)
-            return mIsBorrower ? "Pagamento pendente" : "Recebimento pendente";
+            return mContext.getString(R.string.lender_payment_status_pending);
         else
-            return String.format(mIsBorrower ? "Pago em %s" : "Recebido em %s", CommonFormats.DATE_FORMAT.format(parcel.getPayday()));
+            return String.format(mContext.getString(R.string.lender_payment_status_payed), CommonFormats.DATE_FORMAT.format(parcel.getPayday()));
     }
 
     private float getAlpha(PaymentParcel parcel)

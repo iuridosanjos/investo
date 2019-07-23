@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import e.investo.R;
@@ -50,7 +48,6 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.loan_application_item_view_self, null);
 
             holder = new ViewHolder();
-            //holder.imgLogo = (ImageView) convertView.findViewById(R.id.imgEstablishmentLogo);
             holder.txtEstablishmentName = (TextView) convertView.findViewById(R.id.txtEstablishmentName);
             holder.txtEstablishmentType = (TextView) convertView.findViewById(R.id.txtEstablishmentType);
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
@@ -68,13 +65,13 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
         holder.txtValueInfo.setText(getValueInfo(loan));
-        holder.txtStatus.setText(String.format("Realizado em %s", CommonFormats.DATETIME_FORMAT.format(loan.loanData.get(0).dataCriacao)));
+        holder.txtStatus.setText(String.format("Realizado em %s", CommonFormats.DATETIME_FORMAT.format(loan.loanData.get(0).getCreationDate())));
 
         return convertView;
     }
 
     private String getValueInfo(LoanApplication loan) {
-        return String.format("%s em %sx (%s a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.loanData.get(0).valorEmprestimo), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
+        return String.format("%s em %sx (%s a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.loanData.get(0).value), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
 

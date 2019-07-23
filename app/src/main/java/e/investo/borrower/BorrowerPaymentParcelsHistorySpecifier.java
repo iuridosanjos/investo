@@ -1,10 +1,8 @@
 package e.investo.borrower;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,43 +20,36 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import e.investo.GenericListActivity;
 import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
-import e.investo.borrower.adapter.BorrowerLoanApplicationsAdapter;
+import e.investo.borrower.adapter.BorrowerPaymentParcelAdapter;
 import e.investo.business.PaymentController;
 import e.investo.common.CommonConversions;
 import e.investo.common.ErrorHandler;
-import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
-import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
+import e.investo.data.LoanData;
 import e.investo.data.PaymentData;
-import e.investo.data.SystemInfo;
+import e.investo.data.PaymentParcel;
 
-public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier, Serializable {
+public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
+    private LoanApplication mLoanApplication;
+
+    public BorrowerPaymentParcelsHistorySpecifier(LoanApplication loanApplication)
+    {
+        mLoanApplication = loanApplication;
+    }
 
     @Override
     public void OnCreate(final Context context, ViewGroup rootContainer) {
-        FloatingActionButton fab = rootContainer.findViewById(R.id.floatingActionButton);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, CreateLoanApplicationActivity.class);
-                context.startActivity(intent);
-            }
-        });
-
-        fab.show();
     }
 
     @Override
     public void SetPrefixMessage(TextView textView, Context context) {
-        textView.setText(R.string.borrower_loan_applications_list_prefix);
+        textView.setText(getTitle(context));
         textView.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         textView.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
@@ -71,9 +62,14 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
         textView.setLayoutParams(llp);
     }
 
+    private String getTitle(Context context)
+    {
+        return String.format(context.getString(R.string.borrower_payment_data_history_list_prefix), mLoanApplication.EstablishmentName.toUpperCase());
+    }
+
     @Override
     public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
-        return new BorrowerLoanApplicationsAdapter(context, (List<LoanApplication>)(Object)itemList);
+        return new BorrowerPaymentParcelAdapter(context, (List<PaymentParcel>)(Object) itemList);
     }
 
     @Override
@@ -85,22 +81,21 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
     public void LoadDataAsync(final Context context) {
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
-        Query query = databaseReference.child("Aplicacoes").orderByChild("OwnerId").equalTo(SystemInfo.Instance.LoggedUserID);
+        Query query = databaseReference.child("Parcelas").orderByChild("loanApplicationId").equalTo(mLoanApplication.idAplication);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<LoanApplication> list = new ArrayList<>();
+                List<PaymentData> paymentDataList = new ArrayList<>();
                 for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
-                    LoanApplication loanApplication = objSnapshot.getValue(LoanApplication.class);
-                    list.add(loanApplication);
+                    PaymentData paymentData = objSnapshot.getValue(PaymentData.class);
+                    paymentDataList.add(paymentData);
                 }
 
-                LoadingSemaphore loadingSemaphore = new LoadingSemaphore(list.size(), createListener());
-                // Fixa o resultado, pois os próximos carregamentos serão apenas detalhamentos do que já foi carregado.
-                loadingSemaphore.result = list;
+                // Une as parcelas de todos os investimentos em únicas parcelas para o empreendedor
+                List<PaymentParcel> paymentParcels = PaymentController.unionMultiplePayments(mLoanApplication.ParcelsAmount, paymentDataList);
 
-                loadDataPayments(context, list, loadingSemaphore);
+                mListener.OnLoadCompleted(paymentParcels);
             }
 
             @Override
@@ -108,36 +103,6 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
                 ErrorHandler.Handle(context, databaseError);
             }
         });
-    }
-
-    private void loadDataPayments(final Context context, final List<LoanApplication> loanApplications, final LoadingSemaphore loadingSemaphore) {
-        if (loanApplications == null || loanApplications.size() == 0)
-            return;
-
-        DatabaseReference databaseReference = Connection.GetDatabaseReference();
-
-        for (final LoanApplication loanApplication : loanApplications) {
-            loanApplication.loanData = new ArrayList<>();
-
-            Query query = databaseReference.child("Investimento").orderByChild("idApplication").equalTo(loanApplication.getIdAplication());
-
-            query.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
-                        LoanData loanData = objSnapshot.getValue(LoanData.class);
-                        loanApplication.loanData.add(loanData);
-                    }
-
-                    loadingSemaphore.registerLoaded();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    ErrorHandler.Handle(context, databaseError);
-                }
-            });
-        }
     }
 
     private OnLoadCompletedEventListener createListener()
@@ -156,10 +121,6 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
 
     @Override
     public void OnClick(Context context, Object item) {
-        LoanApplication loanApplication = (LoanApplication)item;
-
-        Intent it = new Intent(context, GenericListActivity.class);
-        it.putExtra(GenericListActivity.EXTRA_LIST_SPECIFIER, new BorrowerPaymentParcelsHistorySpecifier(loanApplication));
-        context.startActivity(it);
+        // TODO: abrir forma de pagamento
     }
 }

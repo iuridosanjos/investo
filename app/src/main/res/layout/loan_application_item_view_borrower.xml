@@ -48,14 +48,16 @@
 
             </LinearLayout>
 
-            <ImageButton
+           <!-- <ImageButton
                 android:id="@+id/btnDelete"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_weight="0"
                 android:layout_gravity="center"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:backgroundTint="@color/colorPrimaryDark"
-                android:background="@drawable/trash"/>
+                android:background="@drawable/trash"/>-->
 
         </LinearLayout>
 

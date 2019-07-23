@@ -1,5 +1,7 @@
 package e.investo.data;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -30,9 +32,14 @@ public class LoanApplication implements Serializable {
     public String Description;
 
     //Informações realizadas com os dados sincronizados.
+    @Exclude
     public List<LoanData> loanData;
 
-    public Date CreationDate;
+    // Data de criação. Em long porque o Firebase não armazena o campo do tipo Date do Java corretamente.
+    public long CreationDateLong;
+
+    // Data de expiração. Em long porque o Firebase não armazena o campo do tipo Date do Java corretamente.
+    public long ExpirationDateLong;
 
     public String getIdAplication() {
         return idAplication;
@@ -42,11 +49,28 @@ public class LoanApplication implements Serializable {
         this.idAplication = idAplication;
     }
 
+    @Exclude
+    public Date getCreationDate() {
+        return CreationDateLong <= 0 ? null : new Date(CreationDateLong);
+    }
+    public void setCreationDate(Date creationDate) {
+        CreationDateLong = creationDate == null ? 0 : creationDate.getTime();
+    }
+
+    @Exclude
+    public Date getExpirationDate() {
+        return ExpirationDateLong <= 0 ? null : new Date(ExpirationDateLong);
+    }
+    public void setExpirationDate(Date expirationDate) {
+        ExpirationDateLong = expirationDate == null ? 0 : expirationDate.getTime();
+    }
+
+    @Exclude
     public double getRemainingValue() {
         double remainingValue = RequestedValue;
         if (loanData != null)
             for (LoanData loanData : this.loanData)
-                remainingValue -= loanData.valorEmprestimo;
+                remainingValue -= loanData.value;
 
         return remainingValue;
     }

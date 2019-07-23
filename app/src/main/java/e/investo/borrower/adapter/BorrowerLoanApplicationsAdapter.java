@@ -67,7 +67,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
             holder.txtLoanReached = (TextView) convertView.findViewById(R.id.txtLoanReached);
-            holder.btnDelete = convertView.findViewById(R.id.btnDelete);
+            //holder.btnDelete = convertView.findViewById(R.id.btnDelete);
 
             convertView.setTag(holder);
 
@@ -81,11 +81,12 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
         holder.txtValueInfo.setText(getValueInfo(loan));
         holder.txtLoanReached.setText(getLoanReached(loan).toUpperCase());
 
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                removeLoanApplication(loan);
-            }
-        });
+        if (holder.btnDelete != null)
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    removeLoanApplication(loan);
+                }
+            });
 
         return convertView;
     }
@@ -98,7 +99,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
         double totalValue = 0;
         if (loan.loanData != null)
             for (LoanData loanData : loan.loanData)
-                totalValue += loanData.valorEmprestimo;
+                totalValue += loanData.value;
 
         return String.format("Adquirido até então: %s", CommonFormats.CURRENCY_FORMAT.format(totalValue));
     }

@@ -16,4 +16,8 @@ public class CommonConstants {
     public static final int DUE_DAY_MIN_VALUE = 5;
     // Incremento para o dia de vencimento
     public static final int DUE_DAY_INCREMENT_VALUE = 5;
+
+    public static final int EXPIRATION_DAYS_MIN_VALUE = 15;
+    public static final int EXPIRATION_DAYS_MAX_VALUE = 60;
+    public static final int EXPIRATION_DAYS_INCREMENT_VALUE = 15;
 }

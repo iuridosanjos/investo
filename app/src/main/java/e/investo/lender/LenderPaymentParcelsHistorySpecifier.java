@@ -1,10 +1,8 @@
-package e.investo.borrower;
+package e.investo.lender;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,37 +17,31 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
-import e.investo.borrower.adapter.BorrowerLoanApplicationsAdapter;
-import e.investo.borrower.adapter.PaymentParcelAdapter;
 import e.investo.common.CommonConversions;
 import e.investo.common.ErrorHandler;
-import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
 import e.investo.data.LoanApplication;
 import e.investo.data.LoanData;
 import e.investo.data.PaymentData;
 import e.investo.data.PaymentParcel;
-import e.investo.data.SystemInfo;
+import e.investo.lender.adapter.LenderPaymentParcelAdapter;
 
-public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Serializable {
+public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifier, Serializable {
 
     private OnLoadCompletedEventListener mListener;
     private LoanData mLoanData;
     private String mEstablishmentName;
     private boolean mIsBorrower;
 
-    public PaymentParcelsHistorySpecifier(LoanData loanData, String establishmentName, boolean isBorrower)
+    public LenderPaymentParcelsHistorySpecifier(LoanData loanData, String establishmentName)
     {
         mLoanData = loanData;
         mEstablishmentName = establishmentName;
-        mIsBorrower = isBorrower;
     }
 
     @Override
@@ -84,8 +76,7 @@ public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Se
 
     @Override
     public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
-        // TODO: terá diferenças entre investidor e empreendedor? Fazer aqui.
-        return new PaymentParcelAdapter(context, (List<PaymentParcel>)(Object) itemList, mIsBorrower);
+        return new LenderPaymentParcelAdapter(context, (List<PaymentParcel>)(Object) itemList);
     }
 
     @Override
@@ -108,7 +99,7 @@ public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Se
                     break;
                 }
 
-                mListener.OnLoadCompleted(paymentData.parcels);
+                mListener.OnLoadCompleted(paymentData == null ? null : paymentData.parcels);
             }
 
             @Override
@@ -134,10 +125,6 @@ public class PaymentParcelsHistorySpecifier implements IGenericListSpecifier, Se
 
     @Override
     public void OnClick(Context context, Object item) {
-        // TODO: abrir oq?
-
-        /*Intent it = new Intent(context, LoanApplicationDetailActivity.class);
-        it.putExtra(LoanApplicationDetailActivity.EXTRA_LOAN_APPLICATION_ITEM, loanApplication);
-        context.startActivity(it);*/
+        // Faz nada
     }
 }

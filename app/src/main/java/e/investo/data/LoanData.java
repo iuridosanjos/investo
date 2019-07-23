@@ -1,5 +1,7 @@
 package e.investo.data;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,8 +12,8 @@ public class LoanData implements Serializable {
     public String idUser;
     public String idApplication;
 
-    public Date dataCriacao;
-    public Double valorEmprestimo;
+    public long creationDateLong;
+    public double value;
 
     // Dados de pagamento. Dados das parcelas.
     public PaymentData paymentData;
@@ -24,20 +26,13 @@ public class LoanData implements Serializable {
         this.idUser = idUser;
     }
 
-    public Date getDataCriacao() {
-        return dataCriacao;
+    @Exclude
+    public Date getCreationDate() {
+        return new Date(creationDateLong);
     }
 
-    public void setDataCriacao(Date dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public Double getValorEmprestimo() {
-        return valorEmprestimo;
-    }
-
-    public void setValorEmprestimo(Double valorEmprestimo) {
-        this.valorEmprestimo = valorEmprestimo;
+    public void setCreationDate(Date creationDate) {
+        creationDateLong = creationDate.getTime();
     }
 
     public String getIdApplication() {

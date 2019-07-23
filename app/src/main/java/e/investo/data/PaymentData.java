@@ -6,7 +6,7 @@ public class PaymentData {
     public String id;
 
     // Id do pedido de empréstimo
-    public String loanAplicationId;
+    public String loanApplicationId;
     // Id do investimento
     public String loanDataId;
     // Id do usuário pagador

@@ -23,21 +23,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="@string/company_info_section_subtitle"
+                android:text="@string/create_loan_application_company_info_section"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <EditText
                     android:id="@+id/txtEstablishmentName"
@@ -53,7 +53,9 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <EditText
                     android:id="@+id/txtCNPJ"
@@ -69,7 +71,9 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <EditText
                     android:id="@+id/txtEstablishmentType"
@@ -85,7 +89,9 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <EditText
                     android:id="@+id/txtAddress"
@@ -103,13 +109,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="@string/loan_application_section_subtitle"
+                android:text="@string/create_loan_application_money_section"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <TextView
                     android:layout_width="50dp"
@@ -140,12 +148,16 @@
             <SeekBar
                 android:id="@+id/seekBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,7 +181,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -195,12 +209,16 @@
             <SeekBar
                 android:id="@+id/seekBarParcelsAmount"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <TextView
                     android:id="@+id/txtMinParcelsAmount"
@@ -225,7 +243,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -248,66 +268,13 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/prompt_due_date_day"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtDueDay"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center_vertical"
-                    android:text="15"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <SeekBar
-                android:id="@+id/seekBarDueDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txtMinDueDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:text="5" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/txtMaxDueDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:text="25" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:background="@color/itemListViewBackground">
 
                 <TextView
@@ -328,12 +295,133 @@
                     android:id="@+id/txtFinalValueAfterTaxes"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical"
                     android:text="R$ 15.500,00"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/prompt_expiration_date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtExpirationDays"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:text="15 dias"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekBarExpirationDays"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/txtMinExpirationDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="15" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txtMaxExpirationDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:text="90" />
+
+            </LinearLayout><LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="@string/prompt_due_date_day"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDueDay"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:text="15"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekBarDueDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/txtMinDueDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="5" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/txtMaxDueDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:text="25" />
 
             </LinearLayout>
 
