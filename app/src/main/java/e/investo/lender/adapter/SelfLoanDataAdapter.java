@@ -5,20 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import e.investo.R;
 import e.investo.common.CommonFormats;
+import e.investo.common.DateUtils;
 import e.investo.data.LoanApplication;
 
-public class SelfLoanApplicationAdapter extends BaseAdapter {
+public class SelfLoanDataAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<LoanApplication> mLoans;
 
-    public SelfLoanApplicationAdapter(Context c, List<LoanApplication> loans) {
+    public SelfLoanDataAdapter(Context c, List<LoanApplication> loans) {
         mContext = c;
         mLoans = loans;
     }
@@ -53,6 +55,7 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
             holder.txtStatus = (TextView) convertView.findViewById(R.id.txtStatus);
+            holder.llRoot = convertView.findViewById(R.id.linear_layout_root);
 
             convertView.setTag(holder);
 
@@ -60,12 +63,12 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        //holder.imgLogo.setImageResource(R.drawable.icon);
         holder.txtEstablishmentName.setText(loan.EstablishmentName.toUpperCase());
         holder.txtEstablishmentType.setText(loan.EstablishmentType.toUpperCase());
         holder.txtAddress.setText(loan.Address.toUpperCase());
         holder.txtValueInfo.setText(getValueInfo(loan));
         holder.txtStatus.setText(String.format("Realizado em %s", CommonFormats.DATETIME_FORMAT.format(loan.loanData.get(0).getCreationDate())));
+        holder.llRoot.setAlpha(getAlpha(loan));
 
         return convertView;
     }
@@ -74,6 +77,11 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         return String.format("%s em %sx (%s a.m.)", CommonFormats.CURRENCY_FORMAT.format(loan.loanData.get(0).value), loan.ParcelsAmount, CommonFormats.PERCENTAGE_FORMAT.format(loan.MonthlyInterests * 100));
     }
 
+    private float getAlpha(LoanApplication loanApplication)
+    {
+        boolean isExpired = loanApplication.isExpired();
+        return !isExpired ? 1f : 0.4f;
+    }
 
     /*private String getPaymentStatus(PaymentInfo paymentInfo) {
         Date currentTime = Calendar.getInstance().getTime();
@@ -102,5 +110,6 @@ public class SelfLoanApplicationAdapter extends BaseAdapter {
         TextView txtAddress;
         TextView txtValueInfo;
         TextView txtStatus;
+        LinearLayout llRoot;
     }
 }

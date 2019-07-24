@@ -4,7 +4,7 @@ import com.google.firebase.database.Exclude;
 
 import java.util.Date;
 
-public class PaymentParcel {
+public class PaymentParcel implements Comparable<PaymentParcel> {
     // Número da parcela. Deve ser considerado como PK (ID).
     public int number;
     // Data de vencimento
@@ -41,5 +41,10 @@ public class PaymentParcel {
             paydayLong = 0;
         else
             paydayLong = date.getTime();
+    }
+
+    @Override
+    public int compareTo(PaymentParcel o) {
+        return Integer.compare(number, o.number);
     }
 }

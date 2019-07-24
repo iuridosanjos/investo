@@ -17,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 import e.investo.IGenericListSpecifier;
@@ -99,6 +100,9 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
                     break;
                 }
 
+                if (paymentData != null && paymentData.parcels != null)
+                    Collections.sort(paymentData.parcels);
+
                 mListener.OnLoadCompleted(paymentData == null ? null : paymentData.parcels);
             }
 
@@ -107,20 +111,6 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
                 ErrorHandler.Handle(context, databaseError);
             }
         });
-    }
-
-    private OnLoadCompletedEventListener createListener()
-    {
-        return new OnLoadCompletedEventListener() {
-            @Override
-            public void OnLoadCompleted(Object result) {
-                List<LoanApplication> list = null;
-                if (result != null && result instanceof List)
-                    list = (List<LoanApplication>)result;
-
-                mListener.OnLoadCompleted(list);
-            }
-        };
     }
 
     @Override

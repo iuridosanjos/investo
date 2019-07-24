@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
             holder.txtLoanReached = (TextView) convertView.findViewById(R.id.txtLoanReached);
             //holder.btnDelete = convertView.findViewById(R.id.btnDelete);
+            holder.llRoot = convertView.findViewById(R.id.linear_layout_root);
 
             convertView.setTag(holder);
 
@@ -88,6 +90,8 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
                 }
             });
 
+        holder.llRoot.setAlpha(getAlpha(loan));
+
         return convertView;
     }
 
@@ -102,6 +106,12 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
                 totalValue += loanData.value;
 
         return String.format("Adquirido até então: %s", CommonFormats.CURRENCY_FORMAT.format(totalValue));
+    }
+
+    private float getAlpha(LoanApplication loanApplication)
+    {
+        boolean isExpired = loanApplication.isExpired();
+        return !isExpired ? 1f : 0.4f;
     }
 
     private void removeLoanApplication(LoanApplication loanApplication)
@@ -146,5 +156,6 @@ public class BorrowerLoanApplicationsAdapter extends BaseAdapter {
         TextView txtValueInfo;
         TextView txtLoanReached;
         ImageButton btnDelete;
+        LinearLayout llRoot;
     }
 }

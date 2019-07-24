@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import e.investo.IGenericListSpecifier;
@@ -90,6 +91,9 @@ public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpeci
                 for (DataSnapshot objSnapshot : dataSnapshot.getChildren()) {
                     PaymentData paymentData = objSnapshot.getValue(PaymentData.class);
                     paymentDataList.add(paymentData);
+
+                    if (paymentData != null && paymentData.parcels != null)
+                        Collections.sort(paymentData.parcels);
                 }
 
                 // Une as parcelas de todos os investimentos em únicas parcelas para o empreendedor
@@ -103,20 +107,6 @@ public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpeci
                 ErrorHandler.Handle(context, databaseError);
             }
         });
-    }
-
-    private OnLoadCompletedEventListener createListener()
-    {
-        return new OnLoadCompletedEventListener() {
-            @Override
-            public void OnLoadCompleted(Object result) {
-                List<LoanApplication> list = null;
-                if (result != null && result instanceof List)
-                    list = (List<LoanApplication>)result;
-
-                mListener.OnLoadCompleted(list);
-            }
-        };
     }
 
     @Override

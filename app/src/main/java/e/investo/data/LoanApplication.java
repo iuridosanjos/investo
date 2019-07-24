@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import e.investo.common.DateUtils;
+
 // Representa um pedido de empréstimo
 public class LoanApplication implements Serializable {
     public String idAplication;
@@ -73,5 +75,15 @@ public class LoanApplication implements Serializable {
                 remainingValue -= loanData.value;
 
         return remainingValue;
+    }
+
+    @Exclude
+    public boolean isExpired() {
+        return isExpired(DateUtils.getCurrentDate(false));
+    }
+    @Exclude
+    public boolean isExpired(Date currentDateWithoutTime) {
+        Date expirationDate = getExpirationDate();
+        return expirationDate != null && expirationDate.compareTo(currentDateWithoutTime) < 0;
     }
 }

@@ -59,6 +59,7 @@ public class GenericListActivity extends BaseActivity {
     public void onStart() {
         super.onStart();
 
+        mListView.setVisibility(View.INVISIBLE);
         txtLoading.setText(getString(R.string.loading));
         txtLoading.setVisibility(View.VISIBLE);
         mListSpecifier.LoadDataAsync(getBaseContext());

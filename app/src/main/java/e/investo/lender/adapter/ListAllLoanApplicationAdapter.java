@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Calendar;
@@ -56,6 +57,7 @@ public class ListAllLoanApplicationAdapter extends BaseAdapter {
             holder.txtAddress = (TextView) convertView.findViewById(R.id.txtAddress);
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
             holder.txtExpirationDate = convertView.findViewById(R.id.txtExpirationDate);
+            holder.llRoot = convertView.findViewById(R.id.linear_layout_root);
 
             convertView.setTag(holder);
 
@@ -68,6 +70,7 @@ public class ListAllLoanApplicationAdapter extends BaseAdapter {
         holder.txtAddress.setText(loan.Address.toUpperCase());
         holder.txtValueInfo.setText(getValueInfo(loan));
         holder.txtExpirationDate.setText(getExpirationDateDescription(loan.getExpirationDate()));
+        holder.llRoot.setAlpha(getAlpha(loan));
 
         return convertView;
     }
@@ -91,11 +94,18 @@ public class ListAllLoanApplicationAdapter extends BaseAdapter {
         }
     }
 
+    private float getAlpha(LoanApplication loanApplication)
+    {
+        boolean isExpired = loanApplication.isExpired();
+        return !isExpired ? 1f : 0.4f;
+    }
+
     static class ViewHolder {
         TextView txtEstablishmentName;
         TextView txtEstablishmentType;
         TextView txtAddress;
         TextView txtValueInfo;
         TextView txtExpirationDate;
+        LinearLayout llRoot;
     }
 }

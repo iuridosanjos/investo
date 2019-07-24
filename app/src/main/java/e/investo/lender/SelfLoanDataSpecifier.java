@@ -19,21 +19,25 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import e.investo.GenericListActivity;
 import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
-import e.investo.borrower.BorrowerPaymentParcelsHistorySpecifier;
 import e.investo.common.CommonConversions;
+import e.investo.common.DateUtils;
 import e.investo.common.ErrorHandler;
 import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
-import e.investo.lender.adapter.SelfLoanApplicationAdapter;
+import e.investo.data.comparators.LoanApplicationExpirationAndCreationDateComparator;
+import e.investo.lender.adapter.SelfLoanDataAdapter;
 
 public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializable {
 
@@ -63,7 +67,7 @@ public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializabl
 
     @Override
     public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
-        return new SelfLoanApplicationAdapter(context, (List<LoanApplication>)(Object)itemList);
+        return new SelfLoanDataAdapter(context, (List<LoanApplication>)(Object)itemList);
     }
 
     @Override
@@ -147,6 +151,9 @@ public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializabl
                 List<LoanApplication> list = null;
                 if (result != null && result instanceof List)
                     list = (List<LoanApplication>)result;
+
+                if (list != null)
+                    Collections.sort(list, new LoanApplicationExpirationAndCreationDateComparator(DateUtils.getCurrentDate(false)));
 
                 mListener.OnLoadCompleted(list);
             }
