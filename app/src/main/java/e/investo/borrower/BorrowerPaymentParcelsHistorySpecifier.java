@@ -1,7 +1,9 @@
 package e.investo.borrower;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -30,9 +32,9 @@ import e.investo.common.CommonConversions;
 import e.investo.common.ErrorHandler;
 import e.investo.connection.Connection;
 import e.investo.data.LoanApplication;
-import e.investo.data.LoanData;
 import e.investo.data.PaymentData;
 import e.investo.data.PaymentParcel;
+import e.investo.data.PaymentParcelUnion;
 
 public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpecifier, Serializable {
 
@@ -70,7 +72,7 @@ public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpeci
 
     @Override
     public BaseAdapter GetAdapter(Context context, List<Object> itemList) {
-        return new BorrowerPaymentParcelAdapter(context, (List<PaymentParcel>)(Object) itemList);
+        return new BorrowerPaymentParcelAdapter(context, (List<PaymentParcelUnion>)(Object) itemList);
     }
 
     @Override
@@ -97,7 +99,7 @@ public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpeci
                 }
 
                 // Une as parcelas de todos os investimentos em únicas parcelas para o empreendedor
-                List<PaymentParcel> paymentParcels = PaymentController.unionMultiplePayments(mLoanApplication.ParcelsAmount, paymentDataList);
+                List<PaymentParcelUnion> paymentParcels = PaymentController.unionMultiplePayments(mLoanApplication.ParcelsAmount, paymentDataList);
 
                 mListener.OnLoadCompleted(paymentParcels);
             }
@@ -111,6 +113,10 @@ public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpeci
 
     @Override
     public void OnClick(Context context, Object item) {
-        // TODO: abrir forma de pagamento
+        PaymentParcelUnion paymentParcelUnion = (PaymentParcelUnion)item;
+
+        PayLoanParcelDialog dialog = new PayLoanParcelDialog(context, paymentParcelUnion);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 }

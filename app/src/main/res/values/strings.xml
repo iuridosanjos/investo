@@ -4,6 +4,7 @@
     <string name="loading">Carregando...</string>
     <string name="error_generic_text">Ocorreu um erro</string>
     <string name="error_unfilled_fields">Há campos obrigatórios não informados</string>
+    <string name="cancel">Cancelar</string>
 
     <!-- Strings related to menu -->
     <string name="menu_self_investiments">Meus investimentos</string>
@@ -66,7 +67,8 @@
     <string name="loan_application_removed">Pedido de empréstimo removido</string>
     <string name="pay">Pagar</string>
     <string name="borrower_payment_status_pending">Pagamento pendente</string>
-    <string name="borrower_payment_status_payed">Pagamento em %s</string>
+    <string name="borrower_payment_status_payed">Pago em %s</string>
+    <string name="payment_made">Pagamento realizado!</string>
 
     <!-- Strings related to parcels -->
     <string name="borrower_payment_data_history_list_prefix">PARCELAS DE %s</string>

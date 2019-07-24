@@ -6,4 +6,6 @@
     <color name="itemListViewBackground">#EEEEEE</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorForegroundInsidePrimaryDark">#FFFFFF</color>
+    <color name="dialogBackground">#FFFFFF</color>
+    <color name="dialogBorder">#DDDDDD</color>
 </resources>

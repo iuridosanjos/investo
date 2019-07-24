@@ -14,6 +14,7 @@ import e.investo.data.LoanApplication;
 import e.investo.data.LoanData;
 import e.investo.data.PaymentData;
 import e.investo.data.PaymentParcel;
+import e.investo.data.PaymentParcelUnion;
 
 public class PaymentController {
     public static double getMonthlyInterests(int parcels) {
@@ -95,7 +96,7 @@ public class PaymentController {
         return calendar.getTime();
     }
 
-    public static List<PaymentParcel> unionMultiplePayments(int parcelsAmount, List<PaymentData> list) {
+    public static List<PaymentParcelUnion> unionMultiplePayments(int parcelsAmount, List<PaymentData> list) {
         if (list == null || list.size() == 0)
             return null;
         else {
@@ -105,22 +106,31 @@ public class PaymentController {
             }
         }
 
-        List<PaymentParcel> result = new ArrayList<>();
+        List<PaymentParcelUnion> result = new ArrayList<>();
 
         for (int number = 0; number < parcelsAmount; number++) {
 
             PaymentParcel targetParcel = list.get(0).parcels.get(number);
 
-            PaymentParcel paymentParcel = new PaymentParcel();
-            paymentParcel.dueDateLong = targetParcel.dueDateLong;
-            paymentParcel.paydayLong = targetParcel.paydayLong;
-            paymentParcel.number = targetParcel.number;
+            PaymentParcel unionParcel = new PaymentParcel();
+            unionParcel.dueDateLong = targetParcel.dueDateLong;
+            unionParcel.paydayLong = targetParcel.paydayLong;
+            unionParcel.number = targetParcel.number;
 
-            paymentParcel.value = 0;
-            for (PaymentData paymentData : list)
-                paymentParcel.value += paymentData.parcels.get(number).value;
+            List<PaymentParcel> originalParcels = new ArrayList<>();
 
-            result.add(paymentParcel);
+            unionParcel.value = 0;
+            for (PaymentData paymentData : list) {
+                PaymentParcel parcel = paymentData.parcels.get(number);
+                unionParcel.value += parcel.value;
+                originalParcels.add(parcel);
+            }
+
+            PaymentParcelUnion parcelUnion = new PaymentParcelUnion();
+            parcelUnion.uniqueParcel = unionParcel;
+            parcelUnion.originalParcels = originalParcels;
+
+            result.add(parcelUnion);
         }
 
         return result;

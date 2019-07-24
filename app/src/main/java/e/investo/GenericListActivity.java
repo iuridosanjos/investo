@@ -49,7 +49,7 @@ public class GenericListActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Object object =  adapterView.getItemAtPosition(i);
-                mListSpecifier.OnClick(getBaseContext(), object);
+                mListSpecifier.OnClick( GenericListActivity.this, object);
             }
         });
     }

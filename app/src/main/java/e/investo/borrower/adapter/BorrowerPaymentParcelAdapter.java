@@ -28,13 +28,14 @@ import e.investo.connection.Connection;
 import e.investo.data.LoanApplication;
 import e.investo.data.LoanData;
 import e.investo.data.PaymentParcel;
+import e.investo.data.PaymentParcelUnion;
 
 public class BorrowerPaymentParcelAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<PaymentParcel> mParcels;
+    private List<PaymentParcelUnion> mParcels;
 
-    public BorrowerPaymentParcelAdapter(Context c, List<PaymentParcel> parcels){
+    public BorrowerPaymentParcelAdapter(Context c, List<PaymentParcelUnion> parcels){
         mContext = c;
         mParcels = parcels;
     }
@@ -56,7 +57,8 @@ public class BorrowerPaymentParcelAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        PaymentParcel parcel = mParcels.get(i);
+        PaymentParcelUnion parcelUnion = mParcels.get(i);
+        PaymentParcel parcel = parcelUnion.uniqueParcel;
 
         ViewHolder holder = null;
 

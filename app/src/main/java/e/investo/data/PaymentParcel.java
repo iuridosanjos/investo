@@ -16,6 +16,9 @@ public class PaymentParcel implements Comparable<PaymentParcel> {
     public long paydayLong;
 
     @Exclude
+    public PaymentData paymentData;
+
+    @Exclude
     public Date getDueDate()
     {
         return new Date(dueDateLong);
