@@ -99,7 +99,12 @@ public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpeci
                 }
 
                 // Une as parcelas de todos os investimentos em únicas parcelas para o empreendedor
-                List<PaymentParcelUnion> paymentParcels = PaymentController.unionMultiplePayments(mLoanApplication.ParcelsAmount, paymentDataList);
+                List<PaymentParcelUnion> paymentParcels = null;
+                try {
+                    paymentParcels = PaymentController.unionMultiplePayments(mLoanApplication.ParcelsAmount, paymentDataList);
+                } catch (Exception e) {
+                    ErrorHandler.Handle(context, e);
+                }
 
                 mListener.OnLoadCompleted(paymentParcels);
             }
@@ -115,8 +120,11 @@ public class BorrowerPaymentParcelsHistorySpecifier implements IGenericListSpeci
     public void OnClick(Context context, Object item) {
         PaymentParcelUnion paymentParcelUnion = (PaymentParcelUnion)item;
 
-        PayLoanParcelDialog dialog = new PayLoanParcelDialog(context, paymentParcelUnion);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        // Apenas se as parcelas não estiverem pagas ainda
+        if (paymentParcelUnion.uniqueParcel.getPayday() == null) {
+            PayLoanParcelDialog dialog = new PayLoanParcelDialog(context, paymentParcelUnion);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+        }
     }
 }

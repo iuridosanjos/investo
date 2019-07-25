@@ -1,6 +1,8 @@
 package e.investo.common;
 
 public class CommonConstants {
+    public static String LOG_TAG = "investo";
+
     // Valor máximo que pode ser pedido por empréstimo P2P
     public static final double REQUESTED_VALUE_MAX_VALUE = 15000;
 

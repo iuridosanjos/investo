@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import e.investo.common.CommonConversions;
@@ -96,13 +98,13 @@ public class PaymentController {
         return calendar.getTime();
     }
 
-    public static List<PaymentParcelUnion> unionMultiplePayments(int parcelsAmount, List<PaymentData> list) {
+    public static List<PaymentParcelUnion> unionMultiplePayments(int parcelsAmount, List<PaymentData> list) throws Exception {
         if (list == null || list.size() == 0)
             return null;
         else {
             for (PaymentData paymentData : list) {
                 if (paymentData.parcels == null || paymentData.parcels.size() != parcelsAmount)
-                    return null; // Algum erro
+                    throw new Exception("Há quantidade de parcelas diferentes");
             }
         }
 
@@ -110,29 +112,73 @@ public class PaymentController {
 
         for (int number = 0; number < parcelsAmount; number++) {
 
-            PaymentParcel targetParcel = list.get(0).parcels.get(number);
+            Map<PaymentParcelKey, List<PaymentParcel>> parcelsMap = groupParcelsByDueDateAndPayday(list, number);
 
-            PaymentParcel unionParcel = new PaymentParcel();
-            unionParcel.dueDateLong = targetParcel.dueDateLong;
-            unionParcel.paydayLong = targetParcel.paydayLong;
-            unionParcel.number = targetParcel.number;
+            for (Map.Entry<PaymentParcelKey, List<PaymentParcel>> pair : parcelsMap.entrySet()) {
+                PaymentParcel unionParcel = new PaymentParcel();
+                unionParcel.dueDateLong = pair.getKey().dueDate;
+                unionParcel.paydayLong = pair.getKey().payDay;
+                unionParcel.number = number;
 
-            List<PaymentParcel> originalParcels = new ArrayList<>();
+                List<PaymentParcel> originalParcels = new ArrayList<>();
 
-            unionParcel.value = 0;
-            for (PaymentData paymentData : list) {
-                PaymentParcel parcel = paymentData.parcels.get(number);
-                unionParcel.value += parcel.value;
-                originalParcels.add(parcel);
+                unionParcel.value = 0;
+                for (PaymentParcel parcel : pair.getValue()) {
+                    unionParcel.value += parcel.value;
+                    originalParcels.add(parcel);
+                }
+
+                PaymentParcelUnion parcelUnion = new PaymentParcelUnion();
+                parcelUnion.uniqueParcel = unionParcel;
+                parcelUnion.originalParcels = originalParcels;
+
+                result.add(parcelUnion);
             }
-
-            PaymentParcelUnion parcelUnion = new PaymentParcelUnion();
-            parcelUnion.uniqueParcel = unionParcel;
-            parcelUnion.originalParcels = originalParcels;
-
-            result.add(parcelUnion);
         }
 
         return result;
+    }
+    private static Map<PaymentParcelKey, List<PaymentParcel>> groupParcelsByDueDateAndPayday(List<PaymentData> list, int parcelNumber) {
+        Map<PaymentParcelKey, List<PaymentParcel>> map = new HashMap<>();
+
+        for (PaymentData paymentData : list) {
+            PaymentParcel parcel = paymentData.parcels.get(parcelNumber);
+
+            PaymentParcelKey key = new PaymentParcelKey(parcel.dueDateLong, parcel.paydayLong);
+            if (!map.containsKey(key))
+                map.put(key, new ArrayList<PaymentParcel>());
+
+            map.get(key).add(parcel);
+        }
+
+        return map;
+    }
+
+    private static class PaymentParcelKey {
+        PaymentParcelKey(long dueDate, long payDay) {
+            this.dueDate = dueDate;
+            this.payDay = payDay;
+        }
+
+        public long dueDate;
+        public long payDay;
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof PaymentParcelKey) {
+                PaymentParcelKey other = (PaymentParcelKey)obj;
+                return dueDate == other.dueDate && payDay == other.payDay;
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            // Deveria usar Long.hashCode, porém a API 23 não suporta
+            return longToIntHashCode(dueDate) + 31 * longToIntHashCode(payDay);
+        }
+
+        private int longToIntHashCode(long value) {
+            return (int)(value^(value>>>32));        }
     }
 }

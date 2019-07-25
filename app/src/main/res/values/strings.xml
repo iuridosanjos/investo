@@ -2,7 +2,8 @@
     <string name="app_name">investo</string>
     <string name="title_activity_login">Login</string>
     <string name="loading">Carregando...</string>
-    <string name="error_generic_text">Ocorreu um erro</string>
+    <string name="error_database">Erro de comunicação com a base de dados</string>
+    <string name="error_default_message">Erro: %s</string>
     <string name="error_unfilled_fields">Há campos obrigatórios não informados</string>
     <string name="cancel">Cancelar</string>
 

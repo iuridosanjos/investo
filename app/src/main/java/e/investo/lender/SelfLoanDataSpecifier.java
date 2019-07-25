@@ -20,8 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import e.investo.GenericListActivity;
@@ -29,14 +27,13 @@ import e.investo.IGenericListSpecifier;
 import e.investo.OnLoadCompletedEventListener;
 import e.investo.R;
 import e.investo.common.CommonConversions;
-import e.investo.common.DateUtils;
 import e.investo.common.ErrorHandler;
 import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
 import e.investo.data.SystemInfo;
-import e.investo.data.comparators.LoanApplicationExpirationAndCreationDateComparator;
+import e.investo.data.comparators.SingleLoanDataCreationDateComparator;
 import e.investo.lender.adapter.SelfLoanDataAdapter;
 
 public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializable {
@@ -153,7 +150,7 @@ public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializabl
                     list = (List<LoanApplication>)result;
 
                 if (list != null)
-                    Collections.sort(list, new LoanApplicationExpirationAndCreationDateComparator(DateUtils.getCurrentDate(false)));
+                    Collections.sort(list, new SingleLoanDataCreationDateComparator());
 
                 mListener.OnLoadCompleted(list);
             }

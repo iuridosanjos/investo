@@ -18,10 +18,8 @@ import e.investo.R;
 import e.investo.common.CommonFormats;
 import e.investo.common.DateUtils;
 import e.investo.connection.Connection;
-import e.investo.data.PaymentData;
 import e.investo.data.PaymentParcel;
 import e.investo.data.PaymentParcelUnion;
-import e.investo.login.LoginActivity;
 
 public class PayLoanParcelDialog extends Dialog implements android.view.View.OnClickListener {
 
