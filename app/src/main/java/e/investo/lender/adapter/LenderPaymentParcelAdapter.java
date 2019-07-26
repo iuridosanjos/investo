@@ -8,10 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
 
 import e.investo.R;
+import e.investo.borrower.adapter.BorrowerPaymentParcelAdapter;
+import e.investo.common.CommonConstants;
 import e.investo.common.CommonFormats;
+import e.investo.common.DateUtils;
 import e.investo.data.PaymentParcel;
 
 public class LenderPaymentParcelAdapter extends BaseAdapter {
@@ -61,21 +65,76 @@ public class LenderPaymentParcelAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
+        int missingDueDateDays = getMissingDueDateDays(parcel);
+
         holder.txtParcelNumber.setText(String.format("%02d", parcel.number + 1));
-        holder.txtDueDate.setText(String.format(mContext.getString(R.string.prompt_due_date) + " %s", CommonFormats.DATE_FORMAT.format(parcel.getDueDate())));
+        holder.txtDueDate.setText(getdueDateInfo(parcel, missingDueDateDays));
         holder.txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(parcel.value));
-        holder.txtPaymentStatus.setText(getPaymentStatus(parcel));
+        holder.txtPaymentStatus.setText(getPaymentStatus(parcel, missingDueDateDays));
         holder.llRoot.setAlpha(getAlpha(parcel));
+
+        updateColor(parcel, missingDueDateDays, holder);
 
         return convertView;
     }
 
-    private String getPaymentStatus(PaymentParcel parcel)
+    private int getMissingDueDateDays(PaymentParcel parcel) {
+        Date dueDate = parcel.getDueDate();
+        Date currentDate = DateUtils.getCurrentDate(false);
+
+        return DateUtils.daysBetweenDates(dueDate, currentDate);
+    }
+
+    private String getdueDateInfo(PaymentParcel parcel, int missingDueDateDays) {
+        Date dueDate = parcel.getDueDate();
+        String str = String.format(mContext.getString(R.string.due_date_with_value), CommonFormats.DATE_FORMAT.format(dueDate));
+
+        String additionalString = null;
+        if (parcel.getPayday() == null) {
+            if (missingDueDateDays > 1 && missingDueDateDays <= 30)
+                additionalString = String.format(mContext.getString(R.string.missing_x_days), String.valueOf(missingDueDateDays));
+            else if (missingDueDateDays == 1)
+                additionalString = mContext.getString(R.string.missing_1_day);
+            else if (missingDueDateDays == 0)
+                additionalString = mContext.getString(R.string.today);
+            else if (missingDueDateDays == -1)
+                additionalString = mContext.getString(R.string.late_payment_1_day);
+            else if (missingDueDateDays < -1)
+                additionalString = String.format(mContext.getString(R.string.late_payment_x_days), String.valueOf(missingDueDateDays * (-1)));
+        }
+
+        if (additionalString != null)
+            str = str + " (" + additionalString + ")";
+
+        return str;
+    }
+
+    private String getPaymentStatus(PaymentParcel parcel, int missingDueDateDays)
     {
-        if (parcel.getPayday() == null)
+        if (parcel.getPayday() != null)
+            return String.format(mContext.getString(R.string.lender_payment_status_payed), CommonFormats.DATE_FORMAT.format(parcel.getPayday()));
+        else if (missingDueDateDays >= 0)
             return mContext.getString(R.string.lender_payment_status_pending);
         else
-            return String.format(mContext.getString(R.string.lender_payment_status_payed), CommonFormats.DATE_FORMAT.format(parcel.getPayday()));
+            return mContext.getString(R.string.lender_payment_status_late);
+    }
+
+    private void updateColor(PaymentParcel parcel, int missingDueDateDays, ViewHolder viewHolder) {
+        int color;
+
+        if (parcel.getPayday() != null)
+            color = mContext.getColor(R.color.parcelPaymentStatus_Payed);
+        else if (missingDueDateDays < 0)
+            color = mContext.getColor(R.color.parcelPaymentStatus_Late);
+        else
+            color = mContext.getColor(R.color.parcelPaymentStatus_Default);
+
+        setColor(viewHolder, color);
+    }
+
+    private void setColor(ViewHolder viewHolder, int color) {
+        viewHolder.txtParcelNumber.setBackgroundColor(color);
+        viewHolder.txtPaymentStatus.setBackgroundColor(color);
     }
 
     private float getAlpha(PaymentParcel parcel)

@@ -43,6 +43,7 @@
     <string name="self_loan_applications_list_prefix">MEUS INVESTIMENTOS</string>
     <string name="lender_payment_status_pending">Recebimento pendente</string>
     <string name="lender_payment_status_payed">Recebido em %s</string>
+    <string name="lender_payment_status_late">Recebimento atrasado</string>
 
     <!-- Strings related to lend from a BORROWER VIEW -->
     <string name="how_much_want_to_borrow">Quanto você precisa?</string>
@@ -69,6 +70,7 @@
     <string name="pay">Pagar</string>
     <string name="borrower_payment_status_pending">Pagamento pendente</string>
     <string name="borrower_payment_status_payed">Pago em %s</string>
+    <string name="borrower_payment_status_late">Pagamento atrasado</string>
     <string name="payment_made">Pagamento realizado!</string>
 
     <!-- Strings related to parcels -->

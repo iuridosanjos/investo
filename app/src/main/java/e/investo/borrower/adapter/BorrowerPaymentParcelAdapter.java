@@ -133,7 +133,7 @@ public class BorrowerPaymentParcelAdapter extends BaseAdapter {
         else if (missingDueDateDays >= 0)
             return mContext.getString(R.string.borrower_payment_status_pending);
         else
-            return "Pagamento atrasado";
+            return mContext.getString(R.string.borrower_payment_status_late);
     }
 
     private void updateColor(PaymentParcel parcel, int missingDueDateDays, ViewHolder viewHolder) {
