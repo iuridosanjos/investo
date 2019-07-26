@@ -8,4 +8,9 @@
     <color name="colorForegroundInsidePrimaryDark">#FFFFFF</color>
     <color name="dialogBackground">#FFFFFF</color>
     <color name="dialogBorder">#DDDDDD</color>
+
+    <color name="parcelPaymentStatus_Default">#008577</color>
+    <color name="parcelPaymentStatus_Alert">#edaf34</color>
+    <color name="parcelPaymentStatus_Late">#cf3d32</color>
+    <color name="parcelPaymentStatus_Payed">#008577</color>
 </resources>

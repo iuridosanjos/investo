@@ -29,7 +29,7 @@ public class DateUtils {
 
     public static int daysBetweenDates(Date higherDate, Date lesserDate) {
         long diff = higherDate.getTime() - lesserDate.getTime();
-        return (int) (diff / (24 * 60 * 60 * 1000));
+        return (int)(diff / (24 * 60 * 60 * 1000));
     }
 
     public static Date clearTime(Date date) {

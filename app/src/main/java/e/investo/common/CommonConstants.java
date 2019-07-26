@@ -22,4 +22,7 @@ public class CommonConstants {
     public static final int EXPIRATION_DAYS_MIN_VALUE = 15;
     public static final int EXPIRATION_DAYS_MAX_VALUE = 60;
     public static final int EXPIRATION_DAYS_INCREMENT_VALUE = 15;
+
+    // Dados de parcelas de pagamento
+    public static final int DUE_DATE_MISSING_DAYS_ALERT = 5;
 }

@@ -74,5 +74,11 @@
     <!-- Strings related to parcels -->
     <string name="borrower_payment_data_history_list_prefix">PARCELAS DE %s</string>
     <string name="lender_payment_data_history_list_prefix">PARCELAS DE %s</string>
+    <string name="due_date_with_value">Vencimento: %s</string>
+    <string name="missing_x_days">Faltam %s dias</string>
+    <string name="missing_1_day">Falta 1 dia</string>
+    <string name="today">Hoje</string>
+    <string name="late_payment_x_days">Atrasado há %s dias</string>
+    <string name="late_payment_1_day">Atrasado há 1 dia</string>
 
 </resources>
