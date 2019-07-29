@@ -44,6 +44,7 @@
     <string name="lender_payment_status_pending">Recebimento pendente</string>
     <string name="lender_payment_status_payed">Recebido em %s</string>
     <string name="lender_payment_status_late">Recebimento atrasado</string>
+    <string name="loan_application_detail_value_after_taxes">Valor final</string>
 
     <!-- Strings related to lend from a BORROWER VIEW -->
     <string name="how_much_want_to_borrow">Quanto você precisa?</string>

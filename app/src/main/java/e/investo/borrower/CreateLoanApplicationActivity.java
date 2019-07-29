@@ -17,7 +17,6 @@ import e.investo.BaseActivity;
 import e.investo.R;
 import e.investo.business.PaymentController;
 import e.investo.common.CommonConstants;
-import e.investo.common.CommonConversions;
 import e.investo.common.CommonFormats;
 import e.investo.common.DateUtils;
 import e.investo.connection.Connection;
@@ -129,7 +128,9 @@ public class CreateLoanApplicationActivity extends BaseActivity {
 
     private double getFinalValueAfterTaxes() {
         double requestedValue = getRequestedValue();
-        return requestedValue * (1 + getMonthlyInterests() * getParcelsAmount());
+        double monthlyInterests = getMonthlyInterests();
+        int parcelsAmount = getParcelsAmount();
+        return PaymentController.getPaymentAdjustedValue(requestedValue, monthlyInterests, parcelsAmount);
     }
 
     private void updateRequestedValue(int progress) {

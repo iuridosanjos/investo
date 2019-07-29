@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import e.investo.BaseActivity;
 import e.investo.R;
+import e.investo.business.PaymentController;
 import e.investo.common.CommonFormats;
 import e.investo.common.CommonIntents;
 import e.investo.data.LoanApplication;
@@ -37,6 +38,11 @@ public class LoanApplicationDetailActivity extends BaseActivity {
 
     private void updateLayout()
     {
+        if (mLoan == null) {
+            Toast.makeText(this, "Erro ao carregar o empreendimento", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         TextView textEstablishmentName = (TextView) findViewById(R.id.txtEstablishmentName);
         TextView textEstablishmentType = findViewById(R.id.txtEstablishmentType);
         TextView textAddress = (TextView) findViewById(R.id.txtAddress);
@@ -44,18 +50,22 @@ public class LoanApplicationDetailActivity extends BaseActivity {
         TextView textRequestedValue = (TextView) findViewById(R.id.txtRequestedValue);
         TextView textParcelsInfo = findViewById(R.id.txtParcelsInfo);
         TextView textMonthlyInterests = findViewById(R.id.txtMonthlyInterests);
+        TextView textFinalValueAfterTaxes = findViewById(R.id.txtFinalValueAfterTaxes);
+        TextView textAdditionalValue = findViewById(R.id.txtAdditionalValue);
 
-        if (mLoan != null){
-            textEstablishmentName.setText(mLoan.EstablishmentName.toUpperCase());
-            textEstablishmentType.setText(mLoan.EstablishmentType.toUpperCase());
-            textAddress.setText(mLoan.Address);
-            textOwner.setText(mLoan.OwnerName);
-            textRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(mLoan.getRemainingValue()));
-            textParcelsInfo.setText(String.format("%sx", mLoan.ParcelsAmount));
-            textMonthlyInterests.setText(String.format("%s a.m.", CommonFormats.PERCENTAGE_FORMAT.format(mLoan.MonthlyInterests * 100)));
-        }else{
-            Toast.makeText(this, "Erro ao carregar o empreendimento", Toast.LENGTH_SHORT).show();
-        }
+        textEstablishmentName.setText(mLoan.EstablishmentName.toUpperCase());
+        textEstablishmentType.setText(mLoan.EstablishmentType.toUpperCase());
+        textAddress.setText(mLoan.Address);
+        textOwner.setText(mLoan.OwnerName);
+
+        double remainingValue = mLoan.getRemainingValue();
+        textRequestedValue.setText(CommonFormats.CURRENCY_FORMAT.format(remainingValue));
+        textParcelsInfo.setText(String.format("%sx", mLoan.ParcelsAmount));
+        textMonthlyInterests.setText(String.format("%s a.m.", CommonFormats.PERCENTAGE_FORMAT.format(mLoan.MonthlyInterests * 100)));
+
+        double adjustedValue = PaymentController.getPaymentAdjustedValue(remainingValue, mLoan.MonthlyInterests, mLoan.ParcelsAmount);
+        textFinalValueAfterTaxes.setText(CommonFormats.CURRENCY_FORMAT.format(adjustedValue));
+        textAdditionalValue.setText(String.format("(+ %s)", CommonFormats.CURRENCY_FORMAT.format(adjustedValue - remainingValue)));
 
         ImageButton btnGoToMap = findViewById(R.id.btnSeeAddressOnMap);
         btnGoToMap.setOnClickListener(new View.OnClickListener()
@@ -77,7 +87,6 @@ public class LoanApplicationDetailActivity extends BaseActivity {
             }
         });
     }
-
 
     public void onGoToMapClick(View view)
     {

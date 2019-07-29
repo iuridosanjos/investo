@@ -13,6 +13,7 @@ public class LoanData implements Serializable {
     public String idApplication;
 
     public long creationDateLong;
+    // Valor emprestado. Nota: esse valor ainda deve ter as taxas adicionadas para as parcelas.
     public double value;
 
     // Dados de pagamento. Dados das parcelas.

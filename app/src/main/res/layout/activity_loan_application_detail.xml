@@ -45,17 +45,15 @@
         <TextView
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:text="@string/requested_value"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/txtRequestedValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:text="R$ 0,00"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20dp"
@@ -71,44 +69,16 @@
         <TextView
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:text="@string/parcels"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/txtParcelsInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:text="12x"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp">
-
-        <TextView
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@string/monthly_interests"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtMonthlyInterests"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="0,84% a.m."
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20dp"
             android:textStyle="bold" />
@@ -123,7 +93,70 @@
         <TextView
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/monthly_interests"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/txtMonthlyInterests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0,84% a.m."
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp">
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/loan_application_detail_value_after_taxes"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtFinalValueAfterTaxes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R$ 0,00"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtAdditionalValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(+ R$ 0,00)"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="12dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="@string/owner"
             android:textSize="20dp" />
 
@@ -131,7 +164,7 @@
             android:id="@+id/txtOwner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:text="Nome"
             android:textSize="20dp" />
 
@@ -145,7 +178,7 @@
             android:id="@+id/txtAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:text="@string/address"
             android:textSize="20dp" />
 

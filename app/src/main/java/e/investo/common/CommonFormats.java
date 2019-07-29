@@ -8,6 +8,8 @@ public class CommonFormats {
 
     public static DecimalFormat CURRENCY_FORMAT = new DecimalFormat("R$ #,##0.00");
 
+    public static DecimalFormat NUMBER_TWO_DECIMALS_PLACES_FORMAT = new DecimalFormat("#,##0.00");
+
     public static DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("#,##0.00'%'");
 
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");

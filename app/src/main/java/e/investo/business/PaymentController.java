@@ -30,6 +30,16 @@ public class PaymentController {
             return 0.0148;
     }
 
+    public static double getPaymentAdjustedTotalValue(LoanApplication loanApplication) {
+        double value = loanApplication.RequestedValue;
+        double interests = loanApplication.MonthlyInterests;
+        int parcelsAmount = loanApplication.ParcelsAmount;
+        return getPaymentAdjustedValue(value, interests, parcelsAmount);
+    }
+    public static double getPaymentAdjustedValue(double value, double interests, int parcelsAmount) {
+        return value * (1 + interests * parcelsAmount);
+    }
+
     public static PaymentData getPaymentData(@NonNull LoanApplication loanApplication, @NonNull LoanData loanData) {
         PaymentData paymentData = new PaymentData();
         paymentData.id = UUID.randomUUID().toString();
@@ -39,8 +49,9 @@ public class PaymentController {
         paymentData.parcels = new ArrayList<>();
 
         Date firstDueDate = getFirstParcelDueDate(loanApplication);
-        double parcelValue = CommonConversions.roundFloor(loanData.value / loanApplication.ParcelsAmount, 2);
-        double lastParcelValue = CommonConversions.roundFloor(loanData.value - ((loanApplication.ParcelsAmount - 1) * parcelValue), 2);
+        double loanDataAdjustedValue = getPaymentAdjustedValue(loanData.value, loanApplication.MonthlyInterests, loanApplication.ParcelsAmount);
+        double parcelValue = CommonConversions.roundFloor(loanDataAdjustedValue / loanApplication.ParcelsAmount, 2);
+        double lastParcelValue = CommonConversions.roundFloor(loanDataAdjustedValue - ((loanApplication.ParcelsAmount - 1) * parcelValue), 2);
 
         for (int number = 0; number < loanApplication.ParcelsAmount; number++)
         {
