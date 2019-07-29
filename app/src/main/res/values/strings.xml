@@ -83,5 +83,7 @@
     <string name="today">Hoje</string>
     <string name="late_payment_x_days">Atrasado há %s dias</string>
     <string name="late_payment_1_day">Atrasado há 1 dia</string>
+    <string name="late_payment_fine_info">Multa: + %s (%s)</string>
+    <string name="late_payment_interests_info">Juros: + %s (%s ao dia)</string>
 
 </resources>

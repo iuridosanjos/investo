@@ -15,9 +15,11 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.Date;
 
 import e.investo.R;
+import e.investo.business.PaymentController;
 import e.investo.common.CommonFormats;
 import e.investo.common.DateUtils;
 import e.investo.connection.Connection;
+import e.investo.data.InterestsAndFineResult;
 import e.investo.data.PaymentParcel;
 import e.investo.data.PaymentParcelUnion;
 
@@ -55,7 +57,17 @@ public class PayLoanParcelDialog extends Dialog implements android.view.View.OnC
 
         txtParcelNumber.setText(String.format("%02d", parcel.number + 1));
         txtDueDate.setText(CommonFormats.DATE_FORMAT.format(parcel.getDueDate()));
-        txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(parcel.value));
+
+        int missingDueDateDays = getMissingDueDateDays(parcel);
+        InterestsAndFineResult interestsAndFineResult = PaymentController.calculateInterestsAndFine(parcel.value, missingDueDateDays * (-1));
+        txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(interestsAndFineResult.adjustedValue));
+    }
+
+    private int getMissingDueDateDays(PaymentParcel parcel) {
+        Date dueDate = parcel.getDueDate();
+        Date currentDate = DateUtils.getCurrentDate(false);
+
+        return DateUtils.daysBetweenDates(dueDate, currentDate);
     }
 
     @Override

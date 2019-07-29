@@ -43,6 +43,28 @@
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
+            android:id="@+id/txtFineInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical|start"
+            android:text="Multa: + R$ 0,00 (2%)"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:visibility="gone"
+            android:textColor="@color/parcelPaymentStatus_Late" />
+
+        <TextView
+            android:id="@+id/txtInterestsInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical|start"
+            android:text="Juros: + R$ 0,00 (0.02% ao dia)"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:visibility="gone"
+            android:textColor="@color/parcelPaymentStatus_Late" />
+
+        <TextView
             android:id="@+id/txtPaymentStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

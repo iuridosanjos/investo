@@ -24,11 +24,13 @@ import java.util.Date;
 import java.util.List;
 
 import e.investo.R;
+import e.investo.business.PaymentController;
 import e.investo.common.CommonConstants;
 import e.investo.common.CommonFormats;
 import e.investo.common.DateUtils;
 import e.investo.common.ErrorHandler;
 import e.investo.connection.Connection;
+import e.investo.data.InterestsAndFineResult;
 import e.investo.data.LoanApplication;
 import e.investo.data.LoanData;
 import e.investo.data.PaymentParcel;
@@ -75,6 +77,8 @@ public class BorrowerPaymentParcelAdapter extends BaseAdapter {
             holder.txtValueInfo = (TextView) convertView.findViewById(R.id.txtValueInfo);
             holder.txtPaymentStatus = (TextView) convertView.findViewById(R.id.txtPaymentStatus);
             holder.llRoot = (LinearLayout) convertView.findViewById(R.id.linear_layout_root);
+            holder.txtFineInfo = convertView.findViewById(R.id.txtFineInfo);
+            holder.txtInterestsInfo = convertView.findViewById(R.id.txtInterestsInfo);
 
             convertView.setTag(holder);
 
@@ -86,13 +90,51 @@ public class BorrowerPaymentParcelAdapter extends BaseAdapter {
 
         holder.txtParcelNumber.setText(String.format("%02d", parcel.number + 1));
         holder.txtDueDate.setText(getdueDateInfo(parcel, missingDueDateDays));
-        holder.txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(parcel.value));
+
         holder.txtPaymentStatus.setText(getPaymentStatus(parcel, missingDueDateDays));
         holder.llRoot.setAlpha(getAlpha(parcel));
+
+        boolean isLatePayment = parcel.getPayday() == null && missingDueDateDays < 0;
+        if (isLatePayment) // Atrasado. Mostra informações de juros e multa.
+        {
+            InterestsAndFineResult interestsAndFineResult = PaymentController.calculateInterestsAndFine(parcel.value, missingDueDateDays * (-1));
+
+            holder.txtFineInfo.setVisibility(View.VISIBLE);
+            holder.txtInterestsInfo.setVisibility(View.VISIBLE);
+
+            holder.txtFineInfo.setText(getFineInfo(interestsAndFineResult));
+            holder.txtInterestsInfo.setText(getInterestsInfo(interestsAndFineResult));
+
+            holder.txtValueInfo.setText(getValueInfoOnLatePayment(interestsAndFineResult));
+        }
+        else {
+            holder.txtValueInfo.setText(CommonFormats.CURRENCY_FORMAT.format(parcel.value));
+
+            holder.txtFineInfo.setVisibility(View.GONE);
+            holder.txtInterestsInfo.setVisibility(View.GONE);
+        }
 
         updateColor(parcel, missingDueDateDays, holder);
 
         return convertView;
+    }
+
+    private String getFineInfo(InterestsAndFineResult interestsAndFineResult) {
+        return String.format(mContext.getString(R.string.late_payment_fine_info),
+                CommonFormats.CURRENCY_FORMAT.format(interestsAndFineResult.fineValue),
+                CommonFormats.PERCENTAGE_FORMAT.format(interestsAndFineResult.fineFactor * 100));
+    }
+
+    private String getInterestsInfo(InterestsAndFineResult interestsAndFineResult) {
+        return String.format(mContext.getString(R.string.late_payment_interests_info),
+                CommonFormats.CURRENCY_FORMAT.format(interestsAndFineResult.interestsValue),
+                CommonFormats.PERCENTAGE_FORMAT.format(interestsAndFineResult.interestsFactor * 100));
+    }
+
+    private String getValueInfoOnLatePayment(InterestsAndFineResult interestsAndFineResult) {
+        return String.format("%s (original: %s)",
+                CommonFormats.CURRENCY_FORMAT.format(interestsAndFineResult.adjustedValue),
+                CommonFormats.CURRENCY_FORMAT.format(interestsAndFineResult.originalValue));
     }
 
     private int getMissingDueDateDays(PaymentParcel parcel) {
@@ -166,6 +208,8 @@ public class BorrowerPaymentParcelAdapter extends BaseAdapter {
         TextView txtDueDate;
         TextView txtValueInfo;
         TextView txtPaymentStatus;
+        TextView txtFineInfo;
+        TextView txtInterestsInfo;
         LinearLayout llRoot;
     }
 }

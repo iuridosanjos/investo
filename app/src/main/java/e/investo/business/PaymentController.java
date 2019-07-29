@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import e.investo.common.CommonConversions;
 import e.investo.common.DateUtils;
+import e.investo.data.InterestsAndFineResult;
 import e.investo.data.LoanApplication;
 import e.investo.data.LoanData;
 import e.investo.data.PaymentData;
@@ -30,6 +31,14 @@ public class PaymentController {
             return 0.0148;
     }
 
+    public static double getFineFactorOnLatePayment() {
+        return 0.02; // 2%
+    }
+
+    public static double getInterestsFactorOnLatePayment() {
+        return 0.0002; // 0.02%
+    }
+
     public static double getPaymentAdjustedTotalValue(LoanApplication loanApplication) {
         double value = loanApplication.RequestedValue;
         double interests = loanApplication.MonthlyInterests;
@@ -38,6 +47,23 @@ public class PaymentController {
     }
     public static double getPaymentAdjustedValue(double value, double interests, int parcelsAmount) {
         return value * (1 + interests * parcelsAmount);
+    }
+
+    public static InterestsAndFineResult calculateInterestsAndFine(double value, int lateDays) {
+        double fineFactor = getFineFactorOnLatePayment();
+        double interestsFactor = getInterestsFactorOnLatePayment();
+
+        InterestsAndFineResult result = new InterestsAndFineResult();
+        result.originalValue = value;
+        result.lateDays = lateDays;
+        result.fineFactor = fineFactor;
+        result.interestsFactor = interestsFactor;
+
+        result.fineValue = lateDays > 0 ? CommonConversions.round(value * fineFactor, 2) : 0; // Multa
+        result.interestsValue = lateDays > 0 ? CommonConversions.round(value * interestsFactor * lateDays, 2) : 0; // Juros ao dia
+        result.adjustedValue = CommonConversions.round(value + result.fineValue + result.interestsValue, 2);
+
+        return result;
     }
 
     public static PaymentData getPaymentData(@NonNull LoanApplication loanApplication, @NonNull LoanData loanData) {
