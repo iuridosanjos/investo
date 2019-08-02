@@ -1,13 +1,16 @@
 package e.investo.lender;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -50,7 +53,7 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
     }
 
     @Override
-    public void SetPrefixMessage(TextView textView, Context context) {
+    public void SetPrefixMessage(TextView textView, TextView txtPrefixSubMessage, Context context) {
         textView.setText(getTitle(context));
         textView.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -58,10 +61,25 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
         textView.setBackgroundColor(ContextCompat.getColor(context, R.color.itemListViewBackground));
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
 
-        FrameLayout.LayoutParams llp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         int pixels = CommonConversions.ConvertDPValueToPixels(context.getResources(), 10);
         llp.setMargins(0, pixels, 0, pixels); // llp.setMargins(left, top, right, bottom);
         textView.setLayoutParams(llp);
+
+        if (mLoanData.autoChargeActivated) {
+            txtPrefixSubMessage.setText(getTitle(context));
+            txtPrefixSubMessage.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
+            txtPrefixSubMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            txtPrefixSubMessage.setTextColor(ContextCompat.getColor(context, R.color.colorForegroundInsidePrimaryDark));
+            txtPrefixSubMessage.setBackgroundColor(ContextCompat.getColor(context, R.color.parcelPaymentStatus_Alert));
+            txtPrefixSubMessage.setTypeface(textView.getTypeface(), Typeface.BOLD);
+
+            llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            pixels = CommonConversions.ConvertDPValueToPixels(context.getResources(), 10);
+            llp.setMargins(0, pixels, 0, pixels); // llp.setMargins(left, top, right, bottom);
+            txtPrefixSubMessage.setLayoutParams(llp);
+
+        }
     }
 
     private String getTitle(Context context)
@@ -115,6 +133,13 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
 
     @Override
     public void OnClick(Context context, Object item) {
-        // Faz nada
+        PaymentParcel parcel = (PaymentParcel)item;
+
+        /* Apenas se as parcelas não estiverem pagas ainda
+        if (parcel.isLatePayment() && !parcel.autoChargeActivated) {
+            LenderCheckLatePaymentDialog dialog = new LenderCheckLatePaymentDialog(context, parcel.paymentData);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+        }*/
     }
 }

@@ -16,6 +16,9 @@ public class LoanData implements Serializable {
     // Valor emprestado. Nota: esse valor ainda deve ter as taxas adicionadas para as parcelas.
     public double value;
 
+    // Cobrança automática foi ativada
+    public boolean autoChargeActivated;
+
     // Dados de pagamento. Dados das parcelas.
     public PaymentData paymentData;
 

@@ -45,6 +45,12 @@
     <string name="lender_payment_status_payed">Recebido em %s</string>
     <string name="lender_payment_status_late">Recebimento atrasado</string>
     <string name="loan_application_detail_value_after_taxes">Valor final</string>
+    <string name="agree">Concordo</string>
+    <string name="terms">Podemos efetivar cobrança ativa do seu crédito.
+Seu saldo a receber é %s. Clicando em \'concordo\', a Investo se responsabilizará por localizar e cobrar o devedor para que quite sua obrigação.
+Por esse serviço nós cobraremos %s do seu valor recebido</string>
+    <string name="auto_charge_activated_action">Cobrança automática ativada!</string>
+    <string name="auto_charge_title">Em situação de cobrança</string>
 
     <!-- Strings related to lend from a BORROWER VIEW -->
     <string name="how_much_want_to_borrow">Quanto você precisa?</string>

@@ -25,4 +25,6 @@ public class CommonConstants {
 
     // Dados de parcelas de pagamento
     public static final int DUE_DATE_MISSING_DAYS_ALERT = 5;
+
+    public static final double LATE_PAYMENT_CHARGE_PERCENTAGE = 0.20;
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -41,7 +42,7 @@ public class ListAllLoanApplicationsSpecifier implements IGenericListSpecifier, 
     }
 
     @Override
-    public void SetPrefixMessage(TextView textView, Context context) {
+    public void SetPrefixMessage(TextView textView, TextView txtPrefixSubMessage, Context context) {
         textView.setText(R.string.loan_applications_list_prefix);
         textView.setTextAppearance(R.style.TextAppearance_AppCompat_Small);
     }

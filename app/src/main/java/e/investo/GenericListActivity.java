@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,9 +32,12 @@ public class GenericListActivity extends BaseActivity {
 
         mListSpecifier = (IGenericListSpecifier) getIntent().getSerializableExtra(EXTRA_LIST_SPECIFIER);
 
-        mListSpecifier.OnCreate(getBaseContext(), (ViewGroup) findViewById(R.id.list_root_container));
+        mListSpecifier.OnCreate(GenericListActivity.this, (ViewGroup) findViewById(R.id.list_root_container));
 
-        mListSpecifier.SetPrefixMessage((TextView) findViewById(R.id.list_prefix_message), getBaseContext());
+        mListSpecifier.SetPrefixMessage(
+                (TextView) findViewById(R.id.list_prefix_message),
+                (TextView) findViewById(R.id.list_prefix_sub_message),
+                getBaseContext());
 
         mListSpecifier.SetOnLoadCompletedEventListener(new OnLoadCompletedEventListener() {
             @Override
