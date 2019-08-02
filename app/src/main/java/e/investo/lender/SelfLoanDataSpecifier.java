@@ -33,6 +33,7 @@ import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
+import e.investo.data.LoggedUserInfo;
 import e.investo.data.SystemInfo;
 import e.investo.data.comparators.SingleLoanDataCreationDateComparator;
 import e.investo.lender.adapter.SelfLoanDataAdapter;
@@ -75,11 +76,11 @@ public class SelfLoanDataSpecifier implements IGenericListSpecifier, Serializabl
 
     @Override
     public void LoadDataAsync(final Context context) {
-        String userId = SystemInfo.Instance.LoggedUserID;
+        LoggedUserInfo loggedUserInfo = SystemInfo.Instance.getLoggedUserInfo(context);
 
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
-        Query query = databaseReference.child("Investimento").orderByChild("idUser").equalTo(userId);
+        Query query = databaseReference.child("Investimento").orderByChild("idUser").equalTo(loggedUserInfo.ID);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override

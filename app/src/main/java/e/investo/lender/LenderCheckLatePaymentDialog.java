@@ -1,5 +1,6 @@
 package e.investo.lender;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -23,17 +24,22 @@ import e.investo.common.CommonFormats;
 import e.investo.common.DateUtils;
 import e.investo.connection.Connection;
 import e.investo.data.InterestsAndFineResult;
+import e.investo.data.LoanData;
 import e.investo.data.PaymentData;
 import e.investo.data.PaymentParcel;
 import e.investo.data.PaymentParcelUnion;
 
 public class LenderCheckLatePaymentDialog extends Dialog implements View.OnClickListener {
 
+    Activity mOwnerActivity;
+    LoanData mLoanData;
     PaymentData mPaymentData;
 
-    public LenderCheckLatePaymentDialog(Context context, PaymentData paymentData) {
+    public LenderCheckLatePaymentDialog(Context context, Activity ownerActivity, LoanData loanData, PaymentData paymentData) {
         super(context);
 
+        mOwnerActivity = ownerActivity;
+        mLoanData = loanData;
         mPaymentData = paymentData;
     }
 
@@ -74,7 +80,8 @@ public class LenderCheckLatePaymentDialog extends Dialog implements View.OnClick
         switch (v.getId()) {
             case R.id.btnAgree:
                 saveAutoCharge();
-                Toast.makeText(getContext(), getContext().getString(R.string.payment_made), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getContext().getString(R.string.auto_charge_activated_action), Toast.LENGTH_SHORT).show();
+                restartActivity();
                 break;
             default:
                 break;
@@ -83,6 +90,9 @@ public class LenderCheckLatePaymentDialog extends Dialog implements View.OnClick
     }
 
     private void saveAutoCharge() {
+        mLoanData.autoChargeActivated = true;
+        mLoanData.setAutoChargeActivationDate(DateUtils.getCurrentDate(true));
+
         DatabaseReference databaseReference =
                 Connection.GetDatabaseReference()
                         .child("Investimento")
@@ -90,7 +100,12 @@ public class LenderCheckLatePaymentDialog extends Dialog implements View.OnClick
 
         Map<String, Object> postValues = new HashMap<>();
         postValues.put("autoChargeActivated", true);
+        postValues.put("autoChargeActivationDateLong", mLoanData.autoChargeActivationDateLong);
 
         databaseReference.updateChildren(postValues);
+    }
+
+    private void restartActivity() {
+        mOwnerActivity.recreate();
     }
 }

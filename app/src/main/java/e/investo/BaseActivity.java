@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import e.investo.borrower.BorrowerLoanApplicationsSpecifier;
 import e.investo.connection.Connection;
+import e.investo.data.LoggedUserInfo;
 import e.investo.data.SystemInfo;
 import e.investo.lender.ListAllLoanApplicationsSpecifier;
 import e.investo.lender.SelfLoanDataSpecifier;
@@ -25,11 +26,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         actionBar.setLogo(R.mipmap.ic_launcher_foreground);
         actionBar.setDisplayUseLogoEnabled(true);
 
+        LoggedUserInfo loggedUserInfo = SystemInfo.Instance.getLoggedUserInfo(BaseActivity.this);
+
         MenuItem menuItem = menu.findItem(R.id.menu_user_profile);
-        if (SystemInfo.Instance.LoggedUserName != null)
-            menuItem.setTitle(SystemInfo.Instance.LoggedUserName.substring(0, SystemInfo.Instance.LoggedUserName.indexOf(' ')));
-        if (SystemInfo.Instance.LoggedUserPhoto != null)
-            menuItem.setIcon(new BitmapDrawable(getResources(), SystemInfo.Instance.LoggedUserPhoto));
+        if (loggedUserInfo.Name != null)
+            menuItem.setTitle(loggedUserInfo.Name.substring(0, loggedUserInfo.Name.indexOf(' ')));
+        if (loggedUserInfo.Photo != null)
+            menuItem.setIcon(new BitmapDrawable(getResources(), loggedUserInfo.Photo));
 
         return true;
     }
@@ -60,11 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 return true;
 
             case R.id.menu_logout:
-                Connection.logOut();
-                intent = new Intent(getBaseContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+                SystemInfo.Instance.logOut(getBaseContext());
                 return true;
 
             default:
@@ -72,4 +71,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

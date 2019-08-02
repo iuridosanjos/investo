@@ -35,6 +35,7 @@ import e.investo.common.LoadingSemaphore;
 import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
+import e.investo.data.LoggedUserInfo;
 import e.investo.data.PaymentData;
 import e.investo.data.SystemInfo;
 
@@ -87,7 +88,9 @@ public class BorrowerLoanApplicationsSpecifier implements IGenericListSpecifier,
     public void LoadDataAsync(final Context context) {
         DatabaseReference databaseReference = Connection.GetDatabaseReference();
 
-        Query query = databaseReference.child("Aplicacoes").orderByChild("OwnerId").equalTo(SystemInfo.Instance.LoggedUserID);
+        LoggedUserInfo loggedUserInfo = SystemInfo.Instance.getLoggedUserInfo(context);
+
+        Query query = databaseReference.child("Aplicacoes").orderByChild("OwnerId").equalTo(loggedUserInfo.ID);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override

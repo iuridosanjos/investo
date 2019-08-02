@@ -1,5 +1,6 @@
 package e.investo.lender;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -12,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +42,6 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
     private OnLoadCompletedEventListener mListener;
     private LoanData mLoanData;
     private String mEstablishmentName;
-    private boolean mIsBorrower;
 
     public LenderPaymentParcelsHistorySpecifier(LoanData loanData, String establishmentName)
     {
@@ -62,12 +63,12 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
 
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        int pixels = CommonConversions.ConvertDPValueToPixels(context.getResources(), 10);
-        llp.setMargins(0, pixels, 0, pixels); // llp.setMargins(left, top, right, bottom);
+        int pixels10dp = CommonConversions.ConvertDPValueToPixels(context.getResources(), 10);
+        llp.setMargins(0, 0, 0, mLoanData.autoChargeActivated ? 0 : pixels10dp); // llp.setMargins(left, top, right, bottom);
         textView.setLayoutParams(llp);
 
         if (mLoanData.autoChargeActivated) {
-            txtPrefixSubMessage.setText(getTitle(context));
+            txtPrefixSubMessage.setText(context.getString(R.string.auto_charge_activated_notification));
             txtPrefixSubMessage.setTextAppearance(R.style.TextAppearance_AppCompat_Medium);
             txtPrefixSubMessage.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             txtPrefixSubMessage.setTextColor(ContextCompat.getColor(context, R.color.colorForegroundInsidePrimaryDark));
@@ -75,21 +76,17 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
             txtPrefixSubMessage.setTypeface(textView.getTypeface(), Typeface.BOLD);
 
             llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            pixels = CommonConversions.ConvertDPValueToPixels(context.getResources(), 10);
-            llp.setMargins(0, pixels, 0, pixels); // llp.setMargins(left, top, right, bottom);
+            int pixels5dp = CommonConversions.ConvertDPValueToPixels(context.getResources(), 5);
+            llp.setMargins(0, pixels5dp, 0, pixels10dp); // llp.setMargins(left, top, right, bottom);
             txtPrefixSubMessage.setLayoutParams(llp);
-
         }
+
+        txtPrefixSubMessage.setVisibility(mLoanData.autoChargeActivated ? View.VISIBLE : View.GONE);
     }
 
     private String getTitle(Context context)
     {
-        String text;
-        if (mIsBorrower)
-            text = context.getString(R.string.borrower_payment_data_history_list_prefix);
-        else
-            text = context.getString(R.string.lender_payment_data_history_list_prefix);
-
+        String text = context.getString(R.string.lender_payment_data_history_list_prefix);
         return String.format(text, mEstablishmentName.toUpperCase());
     }
 
@@ -135,11 +132,11 @@ public class LenderPaymentParcelsHistorySpecifier implements IGenericListSpecifi
     public void OnClick(Context context, Object item) {
         PaymentParcel parcel = (PaymentParcel)item;
 
-        /* Apenas se as parcelas não estiverem pagas ainda
-        if (parcel.isLatePayment() && !parcel.autoChargeActivated) {
-            LenderCheckLatePaymentDialog dialog = new LenderCheckLatePaymentDialog(context, parcel.paymentData);
+        // Apenas se as parcelas estiverem atrasadas e a cobrança automática não estiver ativada
+        if (parcel.isLatePayment() && !mLoanData.autoChargeActivated) {
+            LenderCheckLatePaymentDialog dialog = new LenderCheckLatePaymentDialog(context, (Activity)context, mLoanData, parcel.paymentData);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
-        }*/
+        }
     }
 }

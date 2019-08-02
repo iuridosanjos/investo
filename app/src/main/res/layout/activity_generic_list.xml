@@ -14,7 +14,8 @@
         android:id="@+id/linear_layout_prefix_message"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/list_prefix_message"
@@ -23,8 +24,7 @@
             android:text="Texto de prefixo"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:layout_marginTop="10dp"/>
+            android:paddingEnd="10dp"/>
 
         <TextView
             android:id="@+id/list_prefix_sub_message"
@@ -34,8 +34,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:visibility="gone"/>
 
         <ListView

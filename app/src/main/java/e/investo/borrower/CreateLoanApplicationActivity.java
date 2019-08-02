@@ -21,6 +21,7 @@ import e.investo.common.CommonFormats;
 import e.investo.common.DateUtils;
 import e.investo.connection.Connection;
 import e.investo.data.LoanApplication;
+import e.investo.data.LoggedUserInfo;
 import e.investo.data.MaskType;
 import e.investo.data.MaskUtil;
 import e.investo.data.SystemInfo;
@@ -189,11 +190,13 @@ public class CreateLoanApplicationActivity extends BaseActivity {
 
     private void saveLoanApplication()
     {
+        LoggedUserInfo loggedUserInfo = SystemInfo.Instance.getLoggedUserInfo(CreateLoanApplicationActivity.this);
+
         LoanApplication loanApplication = new LoanApplication();
         loanApplication.setIdAplication(UUID.randomUUID().toString());
         loanApplication.setCreationDate(Calendar.getInstance().getTime());
-        loanApplication.OwnerId = SystemInfo.Instance.LoggedUserID;
-        loanApplication.OwnerName = SystemInfo.Instance.LoggedUserName;
+        loanApplication.OwnerId = loggedUserInfo.ID;
+        loanApplication.OwnerName = loggedUserInfo.Name;
         loanApplication.MonthlyInterests = getMonthlyInterests(); // Em tese esse valor será dito apenas depois que a análise for concluída
 
         // Informações da empresa

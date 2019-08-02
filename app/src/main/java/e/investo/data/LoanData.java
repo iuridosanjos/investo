@@ -18,6 +18,7 @@ public class LoanData implements Serializable {
 
     // Cobrança automática foi ativada
     public boolean autoChargeActivated;
+    public long autoChargeActivationDateLong;
 
     // Dados de pagamento. Dados das parcelas.
     public PaymentData paymentData;
@@ -37,6 +38,18 @@ public class LoanData implements Serializable {
 
     public void setCreationDate(Date creationDate) {
         creationDateLong = creationDate.getTime();
+    }
+
+    @Exclude
+    public Date getAutoChargeActivationDate() {
+        return autoChargeActivationDateLong > 0 ? new Date(autoChargeActivationDateLong) : null;
+    }
+
+    public void setAutoChargeActivationDate(Date autoChargeActivationDate) {
+        if (autoChargeActivationDate == null)
+            autoChargeActivationDateLong = 0;
+        else
+            autoChargeActivationDateLong = autoChargeActivationDate.getTime();
     }
 
     public String getIdApplication() {

@@ -25,6 +25,7 @@ import e.investo.common.DateUtils;
 import e.investo.connection.Connection;
 import e.investo.data.LoanData;
 import e.investo.data.LoanApplication;
+import e.investo.data.LoggedUserInfo;
 import e.investo.data.PaymentData;
 import e.investo.data.PaymentParcel;
 import e.investo.data.SystemInfo;
@@ -91,9 +92,11 @@ public class ChooseLenderAmountActivity extends BaseActivity {
     }
 
     private LoanData saveLoanData() {
+        LoggedUserInfo loggedUserInfo = SystemInfo.Instance.getLoggedUserInfo(ChooseLenderAmountActivity.this);
+
         LoanData loanData = new LoanData();
         loanData.id = UUID.randomUUID().toString();
-        loanData.setIdUser(SystemInfo.Instance.LoggedUserID);
+        loanData.setIdUser(loggedUserInfo.ID);
         loanData.setIdApplication(mLoan.getIdAplication());
         loanData.setCreationDate(DateUtils.getCurrentDate(true));
         loanData.value = getLendAmount();

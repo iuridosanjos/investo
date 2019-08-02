@@ -6,13 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
-
-import e.investo.data.LoanApplication;
 
 public class GenericListActivity extends BaseActivity {
 
@@ -25,7 +22,7 @@ public class GenericListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loan_applications_list);
+        setContentView(R.layout.activity_generic_list);
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.hide();
